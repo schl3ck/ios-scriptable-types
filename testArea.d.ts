@@ -9,13 +9,15 @@
  * 
  * Use this to configure an alert presented modally or as a sheet. After configuring the alert, call presentAlert() or presentSheet() to present the alert. The two presentations methods will return a value which carries the index of the action that was selected when fulfilled.
  */
-declare interface Alert {
+export interface Alert {
+
 	/**
 	 * Title displayed in the alert. Usually a short string.
 	 */
-	title: {string: string};
+	title: {[key: string]: string};
 	/**
 	 * Detailed message displayed in the alert.
+	 * @deprecated
 	 */
 	message: string;
 
@@ -27,6 +29,11 @@ declare interface Alert {
 	 * @param subtitle 
 	 */
 	static text(title: string, subtitle: string): UITableCell
+}
+export namespace Alert {
+	interface Title {
+		title: string;
+	}
 }
 
 /*~ If you need to declare several types, place them inside a namespace
