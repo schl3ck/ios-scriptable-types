@@ -140,10 +140,15 @@ request.get("/")
 
 			article.children().each((i, el) => {
 				el = $(el);
-				const tagName = el[0].tagName.toLowerCase();
+				let tagName = el[0].tagName.toLowerCase();
+				if (tagName === "div") {
+					el = el.children(":first-child");
+					tagName = el[0].tagName.toLowerCase();
+				}
 				// strip all non ASCII chars, replace "new ..." with "constructor", remove any "+" or "-" at the beginning
 				let text = el.text().replace(/[^ -\u007f]/g, "").replace(/new [^(]+/, "constructor").replace(/^[-+]/, "");
-				const outerHTML = `<${tagName}>${el.html()}</${tagName}>`;
+				// construct outerHTML and replace "<pre>...</pre>" with "<pre><code>...</code></pre>"
+				const outerHTML = `<${tagName}>${el.html()}</${tagName}>`.replace(/<pre>/g, "$&<code>").replace(/<\/pre>/g, "</code>$&");
 				if (skip && tagName !== "h3") return;
 				switch (tagName) {
 					case "h1":
@@ -169,7 +174,7 @@ request.get("/")
 						break;
 					case "ul":
 					case "p":
-					case "div":
+					case "pre":
 						{
 							let o;
 							switch (mode) {
@@ -198,7 +203,7 @@ request.get("/")
 									break;
 							}
 							o = {
-								type: tagName === "div" ? "code" : "text",
+								type: tagName === "pre" ? "code" : "text",
 								value: o
 							};
 							if (structure.isGlobal || isStructureDescription) {
@@ -291,8 +296,9 @@ function processDescription(obj, structure, options) {
 	let descr = obj.description.map((item) => (item.value.text.includes("Deprecated in version") || item.value.text.includes("DeprecatedVersion ") ? "@deprecated " : "") +
 		turndownService
 			.turndown(item.value.html)
-			.replace(/```(\s+\{)/, "```json$1")
-			.replace(/```(\s+(?!\{))/, "```javascript$1"))
+		// .replace(/```(\s+\{)/, "```json$1")
+		// .replace(/```(\s+(?!\{))/, "```javascript$1"))
+	)
 		.join("\n\n")
 		.replace(/^/gm, " * ");
 
@@ -348,5 +354,4 @@ ${code.replace(/\[([^\]]+)\]/g, "$1[]")}`;
 
 // TODO: "The following values are supported:" and "Set to one of the following values" for enums
 // TODO: "[\[email protected\]](/cdn-cgi/l/email-protection)" replace with "my@example.com"
-// TODO: code blocks are not indented
 // TODO: add global properties
