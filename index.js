@@ -300,7 +300,8 @@ function processDescription(obj, structure, options) {
 		// .replace(/```(\s+(?!\{))/, "```javascript$1"))
 	)
 		.join("\n\n")
-		.replace(/^/gm, " * ");
+		.replace(/^/gm, " * ")
+		.replace(/\[email\sprotected\]/g, "my@example.com");
 
 	let interfaceName = "";
 	let interfaceAnyType = false;
@@ -353,5 +354,4 @@ ${code.replace(/\[([^\]]+)\]/g, "$1[]")}`;
 }
 
 // TODO: "The following values are supported:" and "Set to one of the following values" for enums
-// TODO: "[\[email protected\]](/cdn-cgi/l/email-protection)" replace with "my@example.com"
 // TODO: add global properties

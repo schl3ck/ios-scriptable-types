@@ -769,7 +769,7 @@ export class Contact {
 	 *       "identifier": "UUID-ABC-123",
 	 *       "label": "Home",
 	 *       "localizedLabel": "Home",
-	 *       "value": "[email protected]"
+	 *       "value": "my@example.com"
 	 *     }
 	 * 
 	 * The identifier uniquely identifies the email address on this device. The label is a description of the email address and the value holds the email address itself.
