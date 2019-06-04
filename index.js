@@ -193,10 +193,13 @@ request.get("/")
 							switch (mode) {
 								case "description":
 									o = {
-										html: outerHTML,
-										text: text
-											.replace(/fn\([^)]*\)$/gm, "$& -> void")		// convert function type without return value "fn(...)" to "fn(...) -> void"
-											.replace(/fn\(([^)]*)\) ->/g, "($1) =>")		// strip "fn" from function type and replace "->" with "=>"
+										type: tagName === "pre" ? "code" : "text",
+										value: {
+											html: outerHTML,
+											text: text
+												.replace(/fn\([^)]*\)$/gm, "$& -> void")		// convert function type without return value "fn(...)" to "fn(...) -> void"
+												.replace(/fn\(([^)]*)\) ->/g, "($1) =>")		// strip "fn" from function type and replace "->" with "=>"
+										}
 									};
 									break;
 								case "parameters":
@@ -215,10 +218,6 @@ request.get("/")
 									o.description = text.replace(o.type, "").trim();
 									break;
 							}
-							o = {
-								type: tagName === "pre" ? "code" : "text",
-								value: o
-							};
 							if (structure.isGlobal || isStructureDescription) {
 								structure[mode].push ? structure[mode].push(o) : (structure[mode] = o);
 							} else {
@@ -274,7 +273,7 @@ ${structure.interfaces.map((i) => `declare interface ${i.name} ${i.content}`).jo
 
 
 /**
- * Processes The description of `obj`
+ * Processes the description of `obj`
  * @param {object} obj The object from which the description should be processed
  * @param {object} structure The structure object (interface or class) which contains `obj`
  * @param {object} options Some options
@@ -298,26 +297,71 @@ function processDescription(obj, structure, options) {
 		obj.description.splice(obj.description.indexOf(code), 1);
 		code = code.value.text;
 
+		// add "void" type to functions that don't have a type
+		code = code.replace(/\)$/m, "): void");
+
 		if (structure.isGlobal) {
 			// prefix "export [function|var]"
 			let isFunction = new RegExp(`^(?:static )?${obj.title}\\([^)]*\\)(:)?`, "m").test(code);
 			code = `export ${isFunction ? "function" : "var"} ${code}`;
 		}
-		if (obj.enum && obj.enum.length && /: string$/.test(code)) {
-			code = code.replace(/: string$/, ": " + obj.enum.map((i) => `"${i}"`).join(" | "));
+
+		if (obj.enum && obj.enum.length && /: string/.test(code)) {
+			if (code.count(/: string/g) > 1) {
+				logStatus(
+					cc.color("yellow") +
+					`Warning: multiple occurrences found for regex /: string/ at ${structure.title}${structure.isGlobal ? "" : `.${obj.title}`}\n` +
+					cc.color("reset"),
+					true
+				);
+			}
+			let enumValues = obj.enum.map((i) => `"${i}"`).join(" | ");
+			code = code.replace(/: string/, ": " + enumValues);
+
+			// also replace in JSDoc @param if one would be inserted
+			if (obj.parameters && obj.parameters.length) {
+				for (let i = 0; i < obj.parameters.length; i++) {
+					const param = obj.parameters[i];
+					if (param.type === "string") {
+						param.type = enumValues;
+						break;	// stop after the first occcurrence
+					}
+				}
+			}
 		}
 	}
 	code = code || "";
 
-	let descr = obj.description.map((item) => (item.value.text.includes("Deprecated in version") || item.value.text.includes("DeprecatedVersion ") ? "@deprecated " : "") +
-		turndownService
-			.turndown(item.value.html)
-		// .replace(/```(\s+\{)/, "```json$1")
-		// .replace(/```(\s+(?!\{))/, "```javascript$1"))
-	)
-		.join("\n\n")
-		.replace(/^/gm, " * ")
-		.replace(/\[email\sprotected\]/g, "my@example.com");
+	let descr = obj
+		.description
+		.filter((item) => !item.value.text.includes("Deprecated in version") && !item.value.text.includes("DeprecatedVersion "))
+		.map((item) =>
+			turndownService
+				.turndown(item.value.html)
+			// .replace(/```(\s+\{)/, "```json$1")
+			// .replace(/```(\s+(?!\{))/, "```javascript$1"))
+		)
+		.join("\n\n");
+
+	let deprecated = obj
+		.description
+		.filter((item) => item.value.text.includes("Deprecated in version") || item.value.text.includes("DeprecatedVersion "))
+		.map((item) => "@deprecated " + turndownService.turndown(item.value.html))
+		.join("\n");
+	if (deprecated) {
+		descr += "\n\n" + deprecated;
+	}
+
+	if (obj.parameters && obj.parameters.length) {
+		descr += "\n" + obj.parameters.map((i) => `@param {${i.type}} ${i.name} - ${i.description}`).join("\n");
+	}
+	if (obj.returns && obj.returns.type) {
+		descr += `\n@returns {${obj.returns.type}} ${obj.returns.description}`;
+	}
+
+	descr = descr
+		.replace(/\[email\sprotected\]/g, "my@example.com")
+		.replace(/^/gm, " * ");
 
 	// if (/\* \*/.test(descr)) {
 	// 	console.log(structure.title, ".", obj.title, "\n", descr, "\n\n");
@@ -370,7 +414,8 @@ function processDescription(obj, structure, options) {
 	return `/**
 ${descr}
  */
-${code.replace(/\[([^\]]+)\]/g, "$1[]")}`;
+${code.replace(/\[([^\]]+)\]/g, "$1[]")}`
+		.replace(/\bbool\b/gi, "$&ean");
 }
 
 /**
@@ -383,6 +428,4 @@ function logStatus(message, updateStatus) {
 }
 
 
-// TODO: "The following values are supported:" and "Set to one of the following values" for enums
 // TODO: add global properties
-// TODO: output line 832

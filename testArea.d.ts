@@ -25,8 +25,11 @@ export interface Alert {
 	 * *Constructs a text cell.*
 	 * 
 	 * Constructs a new cell containing a text.
+	 * 
 	 * @param title 
 	 * @param subtitle 
+	 * 
+	 * some more text
 	 */
 	static text(title: string, subtitle: string): UITableCell
 }
