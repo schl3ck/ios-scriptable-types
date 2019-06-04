@@ -3,6 +3,8 @@ const fs = require("fs");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const turndown = require("turndown");
+const cc = require("console-control-strings");
+
 
 const outputFilename = "scriptable.d.ts";
 // eslint-disable-next-line no-unused-vars
@@ -52,7 +54,7 @@ request.get("/")
 			return l.startsWith("#") ? undefined : l;
 		}).get();
 
-		console.log("Loading all sub pages...");
+		console.log(`Loading ${links.length} sub pages...`);
 
 		return Promise.all(
 			links.map((link) => {
@@ -65,8 +67,10 @@ request.get("/")
 		process.exit(1);
 	})
 	.then((responses) => {
-		console.log("Processing subpages...");
-		responses.forEach(($) => {
+		console.log(`Processing ${responses.length} subpages...`);
+		responses.forEach(($, responseNumber) => {
+			logStatus(`Processing sub page ${responseNumber + 1}/${responses.length}`, responseNumber > 0);
+
 			let article = $("article.md-content__inner");
 
 			/**
@@ -93,6 +97,7 @@ request.get("/")
 			 * @property {Description[]} description
 			 * @property {Parameters[]} parameters
 			 * @property {Returns} returns
+			 * @property {string[]} enum
 			 */
 			/**
 			 * Holds the current property while it is collected
@@ -101,7 +106,8 @@ request.get("/")
 			let current = {
 				description: [],
 				parameters: [],
-				returns: {}
+				returns: {},
+				enum: []
 			};
 
 			let structure = {
@@ -124,7 +130,11 @@ request.get("/")
 				/**
 				 * @type {Returns}
 				 */
-				returns: {}
+				returns: {},
+				/**
+				 * @type {string[]}
+				 */
+				enum: []
 			};
 
 			let skip = false;
@@ -161,7 +171,8 @@ request.get("/")
 						current = {
 							description: [],
 							parameters: [],
-							returns: {}
+							returns: {},
+							enum: []
 						};
 						break;
 					case (structure.isGlobal ? "thisShouldNeverMatch" : "h2"):
@@ -173,6 +184,8 @@ request.get("/")
 						mode = text.toLowerCase().includes("parameters") ? "parameters" : "returns";
 						break;
 					case "ul":
+						(structure.isGlobal ? structure : current).enum = el.children("li").map((i, el) => $(el).text()).get();
+					// FALLTHROUGH!
 					case "p":
 					case "pre":
 						{
@@ -256,7 +269,7 @@ ${structure.interfaces.map((i) => `declare interface ${i.name} ${i.content}`).jo
 		});
 
 		fs.writeFileSync(outputFilename, definitions.join("\n\n\n"));
-		console.log("\nDONE\n\n");
+		logStatus("\nDONE\n\n", true);
 	});
 
 
@@ -286,9 +299,12 @@ function processDescription(obj, structure, options) {
 		code = code.value.text;
 
 		if (structure.isGlobal) {
-			// prefix "export [function|var|const]"
+			// prefix "export [function|var]"
 			let isFunction = new RegExp(`^(?:static )?${obj.title}\\([^)]*\\)(:)?`, "m").test(code);
 			code = `export ${isFunction ? "function" : "var"} ${code}`;
+		}
+		if (obj.enum && obj.enum.length && /: string$/.test(code)) {
+			code = code.replace(/: string$/, ": " + obj.enum.map((i) => `"${i}"`).join(" | "));
 		}
 	}
 	code = code || "";
@@ -302,6 +318,10 @@ function processDescription(obj, structure, options) {
 		.join("\n\n")
 		.replace(/^/gm, " * ")
 		.replace(/\[email\sprotected\]/g, "my@example.com");
+
+	// if (/\* \*/.test(descr)) {
+	// 	console.log(structure.title, ".", obj.title, "\n", descr, "\n\n");
+	// }
 
 	let interfaceName = "";
 	let interfaceAnyType = false;
@@ -331,7 +351,7 @@ function processDescription(obj, structure, options) {
 		let interf = JSON.stringify(JSON.parse(obj.description[i + 1].value.text), (k, v) => {
 			if (!k)
 				return v;
-			let t = typeof v;
+			let t = typeof (v == null ? "" : v);
 			!types.includes(t) && types.push(t);
 			return t;
 		}, "\t").replace(/(:\s*)"([a-zA-Z]+)"/g, "$1$2");
@@ -353,5 +373,16 @@ ${descr}
 ${code.replace(/\[([^\]]+)\]/g, "$1[]")}`;
 }
 
+/**
+ * Logs a status message, optionally overwriting the last printed line
+ * @param {string} message - The message to log
+ * @param {boolean} updateStatus - True, if it should update the line above the cursor (last printed line)
+ */
+function logStatus(message, updateStatus) {
+	console.log(`${updateStatus ? cc.up(1) + cc.gotoSOL() + cc.eraseLine() : ""}${message}`);
+}
+
+
 // TODO: "The following values are supported:" and "Set to one of the following values" for enums
 // TODO: add global properties
+// TODO: output line 832

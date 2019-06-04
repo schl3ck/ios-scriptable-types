@@ -19,7 +19,7 @@ export interface Alert {
 	 * Detailed message displayed in the alert.
 	 * @deprecated
 	 */
-	message: string;
+	message: "alert" | "popup";
 
 	/**
 	 * *Constructs a text cell.*

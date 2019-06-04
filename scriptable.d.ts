@@ -349,7 +349,7 @@ export class CalendarEvent {
 	 * 
 	 * Be aware that not all calendars support all of these availabilities and some calendars may not support availability at all. Use `Calendar.supportsAvailability()` to check if a calendar supports a specific availability.
 	 */
-	availability: string
+	availability: "busy" | "free" | "tentative" | "unavailable"
 	
 	/**
 	 * _Time zone of event._
@@ -709,7 +709,7 @@ export namespace Contact {
 		"localizedLabel": string,
 		"service": string,
 		"url": string,
-		"userIdentifier": object,
+		"userIdentifier": string,
 		"username": string
 	}
 }
@@ -829,7 +829,7 @@ export class Contact {
 	 * 
 	 * The identifier uniquely identifies the social profile on this device. The label is a description of the social profile, the service is the social profile's service name, the URL contains a link to the social profile, the userIdentifier is the identifier of the social profile and the username is the name for the social profile.
 	 */
-	socialProfiles: {string: string}[]
+	socialProfiles: Contact.SocialProfiles[]
 	
 	/**
 	 * _Note for the contact._
@@ -2263,7 +2263,7 @@ export class Notification {
 	 * 
 	 * By default the notification is delivered with no sound.
 	 */
-	sound: string
+	sound: "default" | "accept" | "alert" | "complete" | "event" | "failure" | "piano_error" | "piano_success" | "popup"
 	
 	/**
 	 * _URL to open when notification is tapped._
