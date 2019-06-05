@@ -5,12 +5,10 @@ const cheerio = require("cheerio");
 const turndown = require("turndown");
 const cc = require("console-control-strings");
 
+const ignoreFunctionsWithoutType = require("./ignoreFunctionsWithoutType");
+
 
 const outputFilename = "scriptable.d.ts";
-// eslint-disable-next-line no-unused-vars
-const regex = {
-
-};
 
 let turndownService = new turndown({
 	codeBlockStyle: "indented",
@@ -67,7 +65,6 @@ request.get("/")
 		process.exit(1);
 	})
 	.then((responses) => {
-		console.log(`Processing ${responses.length} subpages...`);
 		responses.forEach(($, responseNumber) => {
 			logStatus(`Processing sub page ${responseNumber + 1}/${responses.length}`, responseNumber > 0);
 
@@ -267,6 +264,49 @@ ${structure.interfaces.map((i) => `declare interface ${i.name} ${i.content}`).jo
 			definitions.push(str);
 		});
 
+		// adding globals that are not in the documentation
+		const globals = require("./globals");
+		let processedGlobals = [];
+		Object.entries(globals).forEach(([key, gl], globalNumber, globals) => {
+			logStatus(`Processing global ${globalNumber + 1}/${globals.length}`, true);
+
+			if ("aliasFor" in gl) {
+				let parts = gl.aliasFor.split(".");
+				const regexFirstPart = new RegExp(String.raw`^export (?:class|interface|function|var) ${parts[0]}\b`, "m");
+				let definition = definitions.find((def) => regexFirstPart.test(def));
+				let exportType = definition.match(/^export (class|interface|function|var)/m)[1];
+				if (exportType === "class" || exportType === "interface") {
+					const regexSecondPart = new RegExp(String.raw`^(?:static )?${parts[1]}\b`, "m");
+					definition = definition.replace(/^\s+/gm, "").split("/**");
+					definition = definition.find((def) => regexSecondPart.test(def));
+					definition = "/**" + definition;
+					definition = definition.replace(/^static /m, "");
+					let isFunction = new RegExp(String.raw`^${parts[1]}\([^)]*\):?`, "m").test(definition);
+					definition = definition.replace(new RegExp(String.raw`^${parts[1]}\b`, "m"), `export ${isFunction ? "function" : "var"} $&`);
+				}
+
+				definition = definition.replace(new RegExp(String.raw`^(export (?:function|var) )${parts[1] || parts[0]}\b`, "m"), `$1${key}`);
+				processedGlobals.push(definition);
+			} else {
+				let description = gl.description;
+				
+				if (gl.parameters && gl.parameters.length) {
+					description += "\n" + gl.parameters.map((param) => `@param {${param.type}} ${param.name} - ${param.description}`).join("\n");
+				}
+				if (gl.returns && gl.returns.type) {
+					description += `\n@returns {${gl.returns.type}} ${gl.returns.description}`;
+				}
+
+				processedGlobals.push(`/**
+${description.replace(/^/gm, " * ")}
+ */
+export ${gl.definition}
+`);
+			}
+		});
+		
+		processedGlobals.forEach((i) => definitions.push(i));
+
 		fs.writeFileSync(outputFilename, definitions.join("\n\n\n"));
 		logStatus("\nDONE\n\n", true);
 	});
@@ -290,19 +330,25 @@ function processDescription(obj, structure, options) {
 
 	let code, codeLength = 0;
 	if (options.extractDefinition) {
-		const regexFilterCodeDefinition = new RegExp(`^(?:static )?${obj.title}(?:(\\([^)]*\\))|(:)){1,2}`, "m");
+		const regexFilterCodeDefinition = new RegExp(String.raw`^(?:static )?${obj.title}(?:(\([^)]*\))|:){1,2}`, "m");
 		code = obj.description.filter((item) => item.type === "code");
 		codeLength = code.length;
 		code = code.find((i) => regexFilterCodeDefinition.test(i.value.text));
 		obj.description.splice(obj.description.indexOf(code), 1);
 		code = code.value.text;
 
-		// add "void" type to functions that don't have a type
-		code = code.replace(/\)$/m, "): void");
+		// add "void" type to functions that don't have a type, excluding all functions defined in file "ignoreFunctionsWithoutType.js"
+		let ignore = ignoreFunctionsWithoutType
+			.filter((i) => !i.includes(".") || i.split(".", 2)[0] === structure.title)
+			.map((i) => i.split(".", 2).pop());
+		if (!ignore.includes("*")) {
+			let regex = String.raw`(?<!${ignore.map((i) => "\\b" + i).join("|")})\([^)]*\)$`;
+			code = code.replace(new RegExp(regex, "m"), "$&: void");
+		}
 
 		if (structure.isGlobal) {
 			// prefix "export [function|var]"
-			let isFunction = new RegExp(`^(?:static )?${obj.title}\\([^)]*\\)(:)?`, "m").test(code);
+			let isFunction = new RegExp(String.raw`^(?:static )?${obj.title}\([^)]*\):?`, "m").test(code);
 			code = `export ${isFunction ? "function" : "var"} ${code}`;
 		}
 
@@ -427,5 +473,3 @@ function logStatus(message, updateStatus) {
 	console.log(`${updateStatus ? cc.up(1) + cc.gotoSOL() + cc.eraseLine() : ""}${message}`);
 }
 
-
-// TODO: add global properties

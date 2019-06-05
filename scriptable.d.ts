@@ -17,7 +17,7 @@ export class Alert {
 	/**
 	 * _Constructs a new alert._
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Adds an action to the alert._
@@ -392,7 +392,7 @@ export class CalendarEvent {
 	 * 
 	 * In order to add the event to your calendar, you must call the save() function.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Adds a recurrence rule._
@@ -501,7 +501,7 @@ export class CallbackURL {
 	 * Constructs an object that opens x-callback-url requests and waits for a response from the target app.
 	 * @param {string} baseURL - Base URL of the request. This is usally something like my-app://x-callback-url/action
 	 */
-	constructor(baseURL: string): void
+	constructor(baseURL: string)
 	
 	/**
 	 * _Construct CallbackURL._
@@ -659,7 +659,7 @@ export class Color {
 	 * @param {string} hex - Hex value.
 	 * @param {number} alpha - Alpha value.
 	 */
-	constructor(hex: string, alpha: number): void
+	constructor(hex: string, alpha: number)
 }
 
 
@@ -930,7 +930,7 @@ export class Contact {
 	 * 
 	 * In order to add the contact to your address book, you must queue it for insertion using `Contact.add()`. When you're done making changes to the address book you should call `Contact.persistChanges()` to persist the changes.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Fetches contacts._
@@ -1053,7 +1053,7 @@ export class ContactsGroup {
 	 * 
 	 * In order to add the group to your address book, you must queue it for insertion using `Contact.add()`. When you're done making changes to the address book you should call `Contact.persistChanges()` to persist the changes.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Fetches contacts groups._
@@ -1238,7 +1238,7 @@ export class DatePicker {
 	 * 
 	 * The date picker can be configured towards picking a date with or without time, just a time or picking hours and minutes for a timer.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Presents the date picker displaying hours and minutes._
@@ -1524,7 +1524,7 @@ export class DrawContext {
 	 * 
 	 * Constructs a new canvas to draw images, shapes and texts on. Before drawing to the context, beginDrawing() should be called.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Retrieves the image._
@@ -2104,7 +2104,7 @@ export class Image {
  * For more information about modules, refer to the documentation on the `module` variable.
  * @param {string} name - Name of the module to import.
  */
-export function importModule(name: string): void
+export function importModule(name: string)
 
 
 /**
@@ -2266,7 +2266,7 @@ export class Mail {
 	 * 
 	 * Constructs a mail to be sent either as a text message or an iMessage.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Send the mail._
@@ -2326,7 +2326,7 @@ export class Message {
 	 * 
 	 * Constructs a message to be sent either as a text message or an iMessage.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Send the message._
@@ -2562,7 +2562,7 @@ export class Notification {
 	/**
 	 * _Constructs a notification._
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Schedules the notification._
@@ -2735,7 +2735,7 @@ export class Path {
 	 * 
 	 * Use the methods on the path to create complex shapes.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Moves to a point._
@@ -2934,7 +2934,7 @@ export class Point {
 	 * @param {number} x - X value.
 	 * @param {number} y - Y value.
 	 */
-	constructor(x: number, y: number): void
+	constructor(x: number, y: number)
 }
 
 
@@ -3041,7 +3041,7 @@ export class Rect {
 	 * @param {number} width - Width of rectangle.
 	 * @param {number} height - Height of rectangle.
 	 */
-	constructor(x: number, y: number, width: number, height: number): void
+	constructor(x: number, y: number, width: number, height: number)
 }
 
 
@@ -3364,7 +3364,7 @@ export class Reminder {
 	 * 
 	 * In order to add the reminder to your calendar, you must call the save() function.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Adds a recurrence rule._
@@ -3684,7 +3684,7 @@ export class Request {
 	 * Constructs a new request that will be sent to the provided URL. The request is not sent until an appropriate load method is called, e.g. loadImage for downloading and interpreting the response as an image.
 	 * @param {string} url - URL to send request to.
 	 */
-	constructor(url: string): void
+	constructor(url: string)
 	
 	/**
 	 * _Sends request._
@@ -3858,7 +3858,7 @@ export class Size {
 	 * @param {number} width - Width value.
 	 * @param {number} height - Height value.
 	 */
-	constructor(width: number, height: number): void
+	constructor(width: number, height: number)
 }
 
 
@@ -3896,7 +3896,7 @@ export class UITable {
 	 * 
 	 * Use a table to present data in a structured manner.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Adds a row._
@@ -4096,7 +4096,7 @@ export class UITableRow {
 	 * 
 	 * Rows are shown vertically in a UITable. A row contains cells which are displayed horizontally.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Adds a cell._
@@ -4261,7 +4261,7 @@ export class WebView {
 	 * 
 	 * Constructs a new web view. Use a web view to evaluate JavaScript on websites.
 	 */
-	constructor(): void
+	constructor()
 	
 	/**
 	 * _Loads HTML and renders it._
@@ -4426,7 +4426,7 @@ export class XMLParser {
 	 * Constructs an even driven XML parser. It does not itself do any parsing therfore the callback functions must be set before starting to parse.
 	 * @param {string} string - XML string to be parsed.
 	 */
-	constructor(string: string): void
+	constructor(string: string)
 	
 	/**
 	 * _Starts parsing._
@@ -4436,3 +4436,57 @@ export class XMLParser {
 	 */
 	parse(): boolean
 }
+
+
+
+/**
+* _Logs a message to the console._
+* 
+* The message will have a default appearance. Refer to `console.error(message)` to log errors.
+* 
+* You can also use the global function `log(message)` which is a shorthand for `console.log`.
+* @param {any} message - Message to log to the console.
+*/
+export function log(message: any): void
+
+
+
+/**
+* _Logs a warning message to the console._
+* 
+* The message will have a distinctive appearance. Refer to `console.log(message)` to log informative messages and `console.error(message)` to log errors.
+* 
+* You can also use the global function `logWarning(message)` which is a shorthand for `console.warn`.
+* @param {any} message - Message to log to the console.
+*/
+export function logWarning(message: any): void
+
+
+
+/**
+* _Logs an error message to the console._
+* 
+* The message will have a distinctive appearance. Refer to `console.log(message)` to log informative message and `console.warn(message)` to log warnings.
+* 
+* You can also use the global function `logError(message)` which is a shorthand for `console.error`.
+* @param {any} message - Message to log to the console.
+*/
+export function logError(message: any): void
+
+
+
+/**
+ * Decodes base64 into a binary string ("ASCII to binary")
+ * @param {string} str - The string to decode
+ * @returns {string} The decoded binary string
+ */
+export function atob(str: string): string
+
+
+
+/**
+ * Encodes a binary string as base64 ("binary to ASCII")
+ * @param {string} str - The string to encode
+ * @returns {string} The base64 encoded string
+ */
+export function btoa(str: string): string
