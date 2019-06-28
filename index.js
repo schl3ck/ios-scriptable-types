@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const fs = require("fs");
+const path = require("path");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const turndown = require("turndown");
@@ -8,7 +9,8 @@ const cc = require("console-control-strings");
 const ignoreFunctionsWithoutType = require("./ignoreFunctionsWithoutType");
 
 
-const outputFilename = "scriptable.d.ts";
+const outputFilename = "out/index.d.ts";
+const templateFile = "template.d.ts";
 
 let turndownService = new turndown({
 	codeBlockStyle: "indented",
@@ -194,7 +196,7 @@ request.get("/")
 										value: {
 											html: outerHTML,
 											text: text
-												.replace(/fn\([^)]*\)$/gm, "$& -> void")		// convert function type without return value "fn(...)" to "fn(...) -> void"
+												.replace(/fn\([^)]*\)$/gm, "$& -> any")		// convert function type without return value "fn(...)" to "fn(...) -> void"
 												.replace(/fn\(([^)]*)\) ->/g, "($1) =>")		// strip "fn" from function type and replace "->" with "=>"
 										}
 									};
@@ -243,7 +245,7 @@ request.get("/")
 				str += processDescription(structure, structure, { checkForInterface: false, extractDefinition: structure.isGlobal });
 			}
 			if (!structure.isGlobal) {
-				str += "export " + (structure.isClass ? "class" : "interface") + " " + structure.title + " {\n";
+				str += "declare " + (structure.isClass ? "class" : "interface") + " " + structure.title + " {\n";
 				str += structure.properties.map((prop) => {
 					return processDescription(prop, structure, { checkForInterface: true, extractDefinition: true });
 				})
@@ -252,7 +254,7 @@ request.get("/")
 				str += "\n}\n";
 
 				if (structure.interfaces.length) {
-					let ints = `export namespace ${structure.title} {
+					let ints = `declare namespace ${structure.title} {
 ${structure.interfaces.map((i) => `declare interface ${i.name} ${i.content}`).join("\n").replace(/^/gm, "\t")}
 }
 
@@ -272,9 +274,9 @@ ${structure.interfaces.map((i) => `declare interface ${i.name} ${i.content}`).jo
 
 			if ("aliasFor" in gl) {
 				let parts = gl.aliasFor.split(".");
-				const regexFirstPart = new RegExp(String.raw`^export (?:class|interface|function|var) ${parts[0]}\b`, "m");
+				const regexFirstPart = new RegExp(String.raw`^declare (?:class|interface|function|var) ${parts[0]}\b`, "m");
 				let definition = definitions.find((def) => regexFirstPart.test(def));
-				let exportType = definition.match(/^export (class|interface|function|var)/m)[1];
+				let exportType = definition.match(/^declare (class|interface|function|var)/m)[1];
 				if (exportType === "class" || exportType === "interface") {
 					const regexSecondPart = new RegExp(String.raw`^(?:static )?${parts[1]}\b`, "m");
 					definition = definition.replace(/^\s+/gm, "").split("/**");
@@ -282,14 +284,14 @@ ${structure.interfaces.map((i) => `declare interface ${i.name} ${i.content}`).jo
 					definition = "/**" + definition;
 					definition = definition.replace(/^static /m, "");
 					let isFunction = new RegExp(String.raw`^${parts[1]}\([^)]*\):?`, "m").test(definition);
-					definition = definition.replace(new RegExp(String.raw`^${parts[1]}\b`, "m"), `export ${isFunction ? "function" : "var"} $&`);
+					definition = definition.replace(new RegExp(String.raw`^${parts[1]}\b`, "m"), `declare ${isFunction ? "function" : "var"} $&`);
 				}
 
-				definition = definition.replace(new RegExp(String.raw`^(export (?:function|var) )${parts[1] || parts[0]}\b`, "m"), `$1${key}`);
+				definition = definition.replace(new RegExp(String.raw`^(declare (?:function|var) )${parts[1] || parts[0]}\b`, "m"), `$1${key}`);
 				processedGlobals.push(definition);
 			} else {
 				let description = gl.description;
-				
+
 				if (gl.parameters && gl.parameters.length) {
 					description += "\n" + gl.parameters.map((param) => `@param {${param.type}} ${param.name} - ${param.description}`).join("\n");
 				}
@@ -300,14 +302,23 @@ ${structure.interfaces.map((i) => `declare interface ${i.name} ${i.content}`).jo
 				processedGlobals.push(`/**
 ${description.replace(/^/gm, " * ")}
  */
-export ${gl.definition}
+declare ${gl.definition}
 `);
 			}
 		});
-		
+
 		processedGlobals.forEach((i) => definitions.push(i));
 
-		fs.writeFileSync(outputFilename, definitions.join("\n\n\n"));
+		// load template file
+		let template = fs.readFileSync(templateFile);
+
+		let contents = template + "\n" + definitions.join("\n\n\n");
+
+		if (outputFilename.includes("/")) {
+			fs.mkdirSync(path.dirname(outputFilename), { recursive: true });
+		}
+
+		fs.writeFileSync(outputFilename, contents);
 		logStatus("\nDONE\n\n", true);
 	});
 
@@ -349,7 +360,7 @@ function processDescription(obj, structure, options) {
 		if (structure.isGlobal) {
 			// prefix "export [function|var]"
 			let isFunction = new RegExp(String.raw`^(?:static )?${obj.title}\([^)]*\):?`, "m").test(code);
-			code = `export ${isFunction ? "function" : "var"} ${code}`;
+			code = `declare ${isFunction ? "function" : "var"} ${code}`;
 		}
 
 		if (obj.enum && obj.enum.length && /: string/.test(code)) {
