@@ -245,7 +245,8 @@ request.get("/")
 				str += processDescription(structure, structure, { checkForInterface: false, extractDefinition: structure.isGlobal });
 			}
 			if (!structure.isGlobal) {
-				str += "declare " + (structure.isClass ? "class" : "interface") + " " + structure.title + " {\n";
+				// if it is not a class, it has to be a global variable with a custom object as type
+				str += "declare " + (structure.isClass ? "class" : "var") + " " + structure.title + (structure.isClass ? "" : ":") + " {\n";
 				str += structure.properties.map((prop) => {
 					return processDescription(prop, structure, { checkForInterface: true, extractDefinition: true });
 				})
@@ -276,8 +277,8 @@ ${structure.interfaces.map((i) => `declare interface ${i.name} ${i.content}`).jo
 				let parts = gl.aliasFor.split(".");
 				const regexFirstPart = new RegExp(String.raw`^declare (?:class|interface|function|var) ${parts[0]}\b`, "m");
 				let definition = definitions.find((def) => regexFirstPart.test(def));
-				let exportType = definition.match(/^declare (class|interface|function|var)/m)[1];
-				if (exportType === "class" || exportType === "interface") {
+				let exportType = definition.match(/^declare (class|interface|function|var) [^\n]+/m);
+				if (exportType[1] === "class" || exportType[1] === "interface" || (exportType[1] === "var" && exportType[0].includes(":") && exportType[0].endsWith("{"))) {
 					const regexSecondPart = new RegExp(String.raw`^(?:static )?${parts[1]}\b`, "m");
 					definition = definition.replace(/^\s+/gm, "").split("/**");
 					definition = definition.find((def) => regexSecondPart.test(def));
@@ -466,12 +467,16 @@ function processDescription(obj, structure, options) {
 
 	if (interfaceName) {
 		code = code.replace(interfaceAnyType ? /\bany\b/ : /\{string: \b.*?\b\}/, structure.title + "." + interfaceName);
+	} else {
+		// replace "{string: string}" with correct typescript definition
+		code = code.replace(/\{string: string\}/, "{[key: string]: string}");
+		descr = descr.replace(/\{string: string\}/g, "{[key: string]: string}");
 	}
 
 	return `/**
 ${descr}
  */
-${code.replace(/\[([^\]]+)\]/g, "$1[]")}`
+${code.replace(/(?<!\{)\[([^\]]+)\]/g, "$1[]")}`
 		.replace(/\bbool\b/gi, "$&ean");
 }
 

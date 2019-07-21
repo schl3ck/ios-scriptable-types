@@ -1,9 +1,13 @@
+// Type definitions for iOS-Scriptable 1.3
+// Project: https://scriptable.app/
+// Definitions by: schl3ck <https://github.com/schl3ck>
+
 /**
  * _Presents an alert._
  * 
  * Use this to configure an alert presented modally or as a sheet. After configuring the alert, call presentAlert() or presentSheet() to present the alert. The two presentations methods will return a value which carries the index of the action that was selected when fulfilled.
  */
-export class Alert {
+declare class Alert {
 	/**
 	 * Title displayed in the alert. Usually a short string.
 	 */
@@ -100,7 +104,7 @@ export class Alert {
  * 
  * Arguments are passed to the script when the script is executed from a share sheet. You can specify the types of arguments a script supports from the script settings.
  */
-export interface args {
+declare var args: {
 	/**
 	 * _Number of arguments supplied by a share sheet._
 	 * 
@@ -160,7 +164,7 @@ export interface args {
 	 * 
 	 * Query parameters are supplied to a script when running it from a URL scheme. See the documentation on Scriptables URL schems for more information.
 	 */
-	queryParameters: {string: string}
+	queryParameters: {[key: string]: string}
 	
 	/**
 	 * _Arguments passed from a Siri Shortcut._
@@ -169,7 +173,7 @@ export interface args {
 	 * 
 	 * For example, a script that checks the wather may expect an argument with the key "city". When creating a Siri Shortcut for the script, the argument should be passed with the value containing the name of the city to to check the weather for.
 	 */
-	siriShortcutArguments: {string: string}
+	siriShortcutArguments: {[key: string]: string}
 	
 	/**
 	 * _Notification being handled by the script._
@@ -188,7 +192,7 @@ export interface args {
  * 
  * Use the Calendar type to get a specific calendar. The calendar is used with the Reminder and CalendarEvent types when fetching reminders or events from a specific calendar or when inserting into a calendar. If you are fetching reminders or events from all calendars, you do not need to pass the calendars when performing the fetch with the Reminder or CalendarEvent types.
  */
-export class Calendar {
+declare class Calendar {
 	/**
 	 * _Calendar identifier._
 	 */
@@ -293,7 +297,7 @@ export class Calendar {
 
 
 
-export namespace CalendarEvent {
+declare namespace CalendarEvent {
 	declare interface Attendees {
 		"isCurrentUser": boolean,
 		"name": string,
@@ -308,7 +312,7 @@ export namespace CalendarEvent {
  * 
  * Used for creating, fetching and removing events from your calendars.
  */
-export class CalendarEvent {
+declare class CalendarEvent {
 	/**
 	 * _Identifier of event._
 	 */
@@ -494,7 +498,7 @@ export class CalendarEvent {
  * 
  * Opens apps that support x-callback-url and waits for a response from the target application. You can find a list of apps that support x-callback-url at [x-callback-url.com/apps](http://x-callback-url.com/apps/).
  */
-export class CallbackURL {
+declare class CallbackURL {
 	/**
 	 * _Construct CallbackURL._
 	 * 
@@ -516,9 +520,9 @@ export class CallbackURL {
 	 * _Opens the callback URL._
 	 * 
 	 * Opens the target app and waits for the target app to perform the action. The returned promise contains the query parameters supplied by the target app when it invokes the callback. If the action failed in the target app or the action was cancelled, the promise will be rejected. The promise is also rejected if the action times out because the target app did not invoke the callback.
-	 * @returns {Promise<{string: string}>} Promise that provides the query parameters supplied by the target app when it invokes the callback.
+	 * @returns {Promise<{[key: string]: string}>} Promise that provides the query parameters supplied by the target app when it invokes the callback.
 	 */
-	open(): Promise<{string: string}>
+	open(): Promise<{[key: string]: string}>
 	
 	/**
 	 * _Creates the callback URL._
@@ -536,7 +540,7 @@ export class CallbackURL {
  * 
  * A color can be created using a hex value, e.g. #FF0000 and optionally an alpha or it can be created using the provided system colors.
  */
-export class Color {
+declare class Color {
 	/**
 	 * _HEX representation._
 	 */
@@ -669,7 +673,7 @@ export class Color {
  * 
  * Contains information about the configuration the script is currently being run under.
  */
-export interface config {
+declare var config: {
 	/**
 	 * Whether the script is running in the app.
 	 */
@@ -703,7 +707,7 @@ export interface config {
  * 
  * The console can be used to log information when running your script. The log may be useful when debugging your script, e.g. to examine values of variables.
  */
-export interface console {
+declare var console: {
 	/**
 	 * _Logs a message to the console._
 	 * 
@@ -749,7 +753,7 @@ export interface console {
 
 
 
-export namespace Contact {
+declare namespace Contact {
 	declare interface EmailAddresses {
 		"identifier": string,
 		"label": string,
@@ -788,7 +792,7 @@ export namespace Contact {
  * 
  * The type represents a contact in the address book. You can use the type to fetch and update contacts in the address book. If you are signed into multiple accounts on the device, you may have multiple sources that populate the address book. A source is is represented as a `ContactsContainer`. A contact may be in only one container. A CardDAV account usually has a single container whereas an Exchange account may have multiple containers.
  */
-export class Contact {
+declare class Contact {
 	/**
 	 * _Uniquely identifies the contact on the device._
 	 */
@@ -842,6 +846,8 @@ export class Contact {
 	 *     }
 	 * 
 	 * The identifier uniquely identifies the email address on this device. The label is a description of the email address and the value holds the email address itself.
+	 * 
+	 * When updating this property, you must set the entire array of email addresses that you would like to store on the contact. Each value in the array must have the "value" key. The other keys are optional.
 	 */
 	emailAddresses: Contact.EmailAddresses[]
 	
@@ -858,6 +864,8 @@ export class Contact {
 	 *     }
 	 * 
 	 * The identifier uniquely identifies the phone number on this device. The label is a description of the phone number and the value holds the phone number itself.
+	 * 
+	 * When updating this property, you must set the entire array of phone numbers that you would like to store on the contact. Each value in the array must have the "value" key. The other keys are optional.
 	 */
 	phoneNumbers: Contact.PhoneNumbers[]
 	
@@ -878,6 +886,8 @@ export class Contact {
 	 *     }
 	 * 
 	 * The identifier uniquely identifies the phone number on this device. The label is a description of the phone number and the value holds the phone number itself.
+	 * 
+	 * When updating this property, you must set the entire array of postal addresses that you would like to store on the contact. The "identifier" key is optional.
 	 */
 	postalAddresses: Contact.PostalAddresses[]
 	
@@ -897,6 +907,8 @@ export class Contact {
 	 *     }
 	 * 
 	 * The identifier uniquely identifies the social profile on this device. The label is a description of the social profile, the service is the social profile's service name, the URL contains a link to the social profile, the userIdentifier is the identifier of the social profile and the username is the name for the social profile.
+	 * 
+	 * When updating this property, you must set the entire array of social profiles that you would like to store on the contact. The "identifier" key is optional.
 	 */
 	socialProfiles: Contact.SocialProfiles[]
 	
@@ -999,7 +1011,7 @@ export class Contact {
  * 
  * If you're signed into multiple accounts on your device, you may have multiple contact containers. A contact can be in only one container. CardDAV accounts usually have a single container whereas Exchange accounts may have multiple containers. A container may have multiple groups. While a single contact can only belong to one container, a contact may belong to many groups.
  */
-export class ContactsContainer {
+declare class ContactsContainer {
 	/**
 	 * _Identifier of the contacts container._
 	 */
@@ -1037,7 +1049,7 @@ export class ContactsContainer {
  * 
  * A contacts container may have several groups of contacts. A contact can only belong to a single contacts container but may belong to zero or more contacts groups. For example, an iCloud account has only one container but may have many groups.
  */
-export class ContactsGroup {
+declare class ContactsGroup {
 	/**
 	 * _Identifier of the contacts group._
 	 */
@@ -1119,7 +1131,7 @@ export class ContactsGroup {
  * 
  * Raw data representation of strings, files and images.
  */
-export class Data {
+declare class Data {
 	/**
 	 * _Creates data from string._
 	 * 
@@ -1193,7 +1205,7 @@ export class Data {
  * 
  * The date picker can be configured towards picking a date with or without time, just a time or picking hours and minutes for a timer.
  */
-export class DatePicker {
+declare class DatePicker {
 	/**
 	 * _Minimum date that is selected in the picker._
 	 * 
@@ -1282,7 +1294,7 @@ export class DatePicker {
  * 
  * Reads information about the current device and its screen.
  */
-export class Device {
+declare class Device {
 	/**
 	 * _Name identifying the device._
 	 * 
@@ -1432,7 +1444,7 @@ export class Device {
  * 
  * Presents an interface that lets you dictate a text. You can specify the locale of the text you want to dictate when calling the start() function. Dictation must manually be stopped from the presented interface when you are finished dictating.
  */
-export class Dictation {
+declare class Dictation {
 	/**
 	 * _Starts dictation._
 	 * 
@@ -1450,7 +1462,7 @@ export class Dictation {
  * 
  * Use this to present a picker that allows opening a document from Files app or exporting a document to Files app. When opening a document, the picker will prompt you to select one or more documents after which you will get the path for the documents. Use the FileManager to read the content of these files. When exporting a document, the picker will ask you to select a destination to store the document.
  */
-export class DocumentPicker {
+declare class DocumentPicker {
 	/**
 	 * _Opens a document._
 	 * 
@@ -1497,7 +1509,7 @@ export class DocumentPicker {
  * 
  * An instance of DrawContext is a canvas on which you can draw an image using shapes, texts and other images. You must specify the size of your canvas by setting the size property. In order to start drawing your image, you must call beginDrawing(). At any point after beginning your drawing and before ending your drawing can you call getImage() to get an image object of your drawing. When you are done drawing your image, you should call endDrawing().
  */
-export class DrawContext {
+declare class DrawContext {
 	/**
 	 * _Size of canvas._
 	 * 
@@ -1709,7 +1721,7 @@ export class DrawContext {
  * 
  * A FileManager lets you read files stored on the disk and make changes to them. Paths to files are supplied as strings.
  */
-export class FileManager {
+declare class FileManager {
 	/**
 	 * _Creates a local FileManager._
 	 * 
@@ -2046,7 +2058,7 @@ export class FileManager {
  * 
  * Images objects contains image data. APIs in Scriptable that work with images, either by taking an image as input or returning an image, will use this the Image type.
  */
-export class Image {
+declare class Image {
 	/**
 	 * _Size of the image in pixels._
 	 */
@@ -2104,7 +2116,7 @@ export class Image {
  * For more information about modules, refer to the documentation on the `module` variable.
  * @param {string} name - Name of the module to import.
  */
-export function importModule(name: string)
+declare function importModule(name: string)
 
 
 /**
@@ -2112,7 +2124,7 @@ export function importModule(name: string)
  * 
  * The keychain is a secure storage for credentials, keys etc. Use the `set()` method to add values to the keychain. You can then later use the `get()` method to retrieve the value.
  */
-export class Keychain {
+declare class Keychain {
 	/**
 	 * _Check if keychain contains a key._
 	 * 
@@ -2156,7 +2168,7 @@ export class Keychain {
  * 
  * Uses GPS, WiFi and cellular hardware to determine your location. The first time you use the API, the application will prompt you to authorize access to your location. If you do not authorize access, the application cannot fetch your location. You can change this later from the system settings.
  */
-export class Location {
+declare class Location {
 	/**
 	 * _Fetches your location._
 	 * 
@@ -2211,7 +2223,7 @@ export class Location {
  * 
  * Presents UI for sending a mail.
  */
-export class Mail {
+declare class Mail {
 	/**
 	 * _Recipients of the mail._
 	 * 
@@ -2306,7 +2318,7 @@ export class Mail {
  * 
  * Presents UI for sending a message.
  */
-export class Message {
+declare class Message {
 	/**
 	 * _Recipients of the message._
 	 * 
@@ -2383,7 +2395,7 @@ export class Message {
  * 
  * The `circle.js` module exports the functions `area` and `circumference`. You can add any function or object to the `exports` of a module to make them available when the module is imported with `importModule`.
  */
-export interface module {
+declare var module: {
 	/**
 	 * _Path to file containing the module._
 	 * 
@@ -2419,7 +2431,7 @@ export interface module {
 
 
 
-export namespace Notification {
+declare namespace Notification {
 	declare interface Actions {
 		"title": string,
 		"url": string
@@ -2431,7 +2443,7 @@ export namespace Notification {
  * 
  * Notifications are scheduled for delivery at some point in the future. A notification may be delivered even when Scriptable is not running.
  */
-export class Notification {
+declare class Notification {
 	/**
 	 * _Identifier of the notification._
 	 * 
@@ -2684,7 +2696,7 @@ export class Notification {
  * 
  * Copy and paste strings and images to and from the pasteboard.
  */
-export class Pasteboard {
+declare class Pasteboard {
 	/**
 	 * _Copies a string to the pasteboard._
 	 * @param {string} string - The string to copy to the pasteboard.
@@ -2729,7 +2741,7 @@ export class Pasteboard {
  * 
  * Shapes can be descriped using a path. Use an instance of Path to create complex shapes that can be drawn to a DrawContext.
  */
-export class Path {
+declare class Path {
 	/**
 	 * _Constructs a path._
 	 * 
@@ -2829,7 +2841,7 @@ export class Path {
  * 
  * In order to read from your photo library, you must grant the app access to your photo library. The first time you use the APIs, the app will prompt for access but if you deny the request, all API calls will fail. In that case you must enable access to the photo library from the system settings.
  */
-export class Photos {
+declare class Photos {
 	/**
 	 * _Presents the photo library for picking an image._
 	 * 
@@ -2918,7 +2930,7 @@ export class Photos {
  * 
  * The structure encapsulates a coordinate in a two-dimensional coordinate system.
  */
-export class Point {
+declare class Point {
 	/**
 	 * _X value._
 	 */
@@ -2944,7 +2956,7 @@ export class Point {
  * 
  * Use the quick look to present a file, an image or text string. The quick look will try to choose the best suited presentation of the item.
  */
-export class QuickLook {
+declare class QuickLook {
 	/**
 	 * _Presents the item._
 	 * 
@@ -2961,7 +2973,7 @@ export class QuickLook {
  * 
  * The structure has a width, height and a coordinate in a two-dimensional coordinate system.
  */
-export class Rect {
+declare class Rect {
 	/**
 	 * _Minimum X value._
 	 * 
@@ -3051,7 +3063,7 @@ export class Rect {
  * 
  * A recurrence rule specifies how often a reminder or a calendar event should repeat.
  */
-export class RecurrenceRule {
+declare class RecurrenceRule {
 	/**
 	 * _Constructs a daily recurrence rule._
 	 * 
@@ -3311,7 +3323,7 @@ export class RecurrenceRule {
  * 
  * Used for creating, fetching and removing reminders from your calendars.
  */
-export class Reminder {
+declare class Reminder {
 	/**
 	 * _Identifier of reminder._
 	 */
@@ -3624,7 +3636,7 @@ export class Reminder {
  * 
  * Performs a URL request and returns the response in an appropriate format.
  */
-export class Request {
+declare class Request {
 	/**
 	 * _URL to send request to._
 	 */
@@ -3642,7 +3654,7 @@ export class Request {
 	 * 
 	 * Key value pairs where the key is the name of an HTTP header and the value will be sent as the value for the HTTP header.
 	 */
-	headers: {string: string}
+	headers: {[key: string]: string}
 	
 	/**
 	 * _Body to send with the request._
@@ -3774,7 +3786,7 @@ export class Request {
  * 
  * Presents a website either in-app or by leaving the app an opening the Safari app.
  */
-export class Safari {
+declare class Safari {
 	/**
 	 * _Presents a website in-app._
 	 * 
@@ -3799,7 +3811,7 @@ export class Safari {
  * 
  * Allows for accessing information about the script that is currently being run and controlling selected parts of the script execution.
  */
-export class Script {
+declare class Script {
 	/**
 	 * _Name of the script._
 	 */
@@ -3824,7 +3836,7 @@ export class Script {
  * 
  * The activity picker presents activities that can be performed on a set of items. For example sending an item via an email or SMS, saving an item to disk or opening an item in a third party app. Available activites vary depending on the provided items.
  */
-export class ShareSheet {
+declare class ShareSheet {
 	/**
 	 * _Presents the activity picker._
 	 * 
@@ -3842,7 +3854,7 @@ export class ShareSheet {
  * 
  * The structure has a width and a height to specify a two-dimensional size.
  */
-export class Size {
+declare class Size {
 	/**
 	 * _Width value._
 	 */
@@ -3868,7 +3880,7 @@ export class Size {
  * 
  * If used in a script triggered by a Siri Shortcut, Siri will speak the text.
  */
-export class Speech {
+declare class Speech {
 	/**
 	 * Speaks a text.
 	 * @param {string} text - Text to speak.
@@ -3883,7 +3895,7 @@ export class Speech {
  * 
  * Tables present data in a structured manner. A table contains rows which in turn contains cells.
  */
-export class UITable {
+declare class UITable {
 	/**
 	 * _Whether to show separators._
 	 * 
@@ -3942,7 +3954,7 @@ export class UITable {
  * 
  * Cells are shown horizontally in a UITableRow which in turn is shown vertically in a UITable. Cells have content, e.g. a text or an image.
  */
-export class UITableCell {
+declare class UITableCell {
 	/**
 	 * _Relative width of the cell._
 	 * 
@@ -3959,7 +3971,7 @@ export class UITableCell {
 	 * 
 	 * Buttons cannot be tapped when the table is presented in Siri.
 	 */
-	onTap: () => void
+	onTap: () => any
 	
 	/**
 	 * _Whether to dismiss the table when the button is tapped._
@@ -4048,7 +4060,7 @@ export class UITableCell {
  * 
  * Rows can be added to an instance of UITable. A row is shown vertically in a UITable in the order they are added to the table. Rows contain cells which are shown horizontally in the order they are added to the row.
  */
-export class UITableRow {
+declare class UITableRow {
 	/**
 	 * _Spacing between cells._
 	 * 
@@ -4073,6 +4085,8 @@ export class UITableRow {
 	/**
 	 * _Whether to dismiss the table when the row is selected._
 	 * 
+	 * This property will only have an effect if the row is selectable, i.e. `onSelect` has a value. Otherwise it is ignored.
+	 * 
 	 * Defaults to true.
 	 */
 	dismissOnSelect: boolean
@@ -4084,7 +4098,7 @@ export class UITableRow {
 	 * 
 	 * Rows cannot be tapped when the tables is presented in Siri.
 	 */
-	onSelect: (number) => void
+	onSelect: (number) => any
 	
 	/**
 	 * _Background color._
@@ -4171,16 +4185,16 @@ export class UITableRow {
  * 
  * In addition to the `scriptable://` scheme, you can also perform the above actions using the universal link `open.scriptable.app`, e.g. `https://open.scriptable.app/run?scriptName=Example`
  */
-export class URLScheme {
+declare class URLScheme {
 	/**
 	 * _Gets all parameters from invocation of URL scheme._
 	 * 
 	 * Gets all the query parameters that were passed in the URL when running this script by invoking its URL scheme.
 	 * 
 	 * @deprecated Deprecated in version 1.3. Use args.queryParameters instead.
-	 * @returns {{string: string}} All query parameters.
+	 * @returns {{[key: string]: string}} All query parameters.
 	 */
-	static allParameters(): {string: string}
+	static allParameters(): {[key: string]: string}
 	
 	/**
 	 * _Gets a parameters from invocation of URL scheme._
@@ -4227,7 +4241,7 @@ export class URLScheme {
  * 
  * A universally unique value that can be used to identify items.
  */
-export class UUID {
+declare class UUID {
 	/**
 	 * _Get string value._
 	 * 
@@ -4246,7 +4260,7 @@ export class UUID {
  * 
  * The web view also supports evaluating JavaScript on a website.
  */
-export class WebView {
+declare class WebView {
 	/**
 	 * _Function called upon load of a request._
 	 * 
@@ -4374,46 +4388,46 @@ export class WebView {
  * 
  * The XMLParser is an event driven XML parser that calls provided callback functions when it encounters elements to be parsed. It does not iself do any parsing.
  */
-export class XMLParser {
+declare class XMLParser {
 	/**
 	 * _Function called when the parser begins parsing a document._
 	 */
-	didStartDocument: () => void
+	didStartDocument: () => any
 	
 	/**
 	 * _Function called when the parser ends parsing a document._
 	 * 
 	 * The the parser calls the function, it has successfully completed parsing the document.
 	 */
-	didEndDocument: () => void
+	didEndDocument: () => any
 	
 	/**
 	 * _Function called when starting to parse an element._
 	 * 
 	 * Called by the parser when it encounters a start tag for an element. The function takes the element name as a parameter. Use this function to update your state and prepare for receiving the characters of the element. After this function is called, the parser will call the foundCharacters callback function with all or parts of the characters of the element.
 	 */
-	didStartElement: (string) => void
+	didStartElement: (string) => any
 	
 	/**
 	 * _Function called when ended parsing an element._
 	 * 
 	 * Called by the parser when it encounters an end tag for an element. The function takes the element name as a parameter.
 	 */
-	didEndElement: (string) => void
+	didEndElement: (string) => any
 	
 	/**
 	 * _Function called when the parser finds characters of an element._
 	 * 
 	 * The parser calls this function with a string whenever it finds characters for the current element. This function may be called several times for a single element.
 	 */
-	foundCharacters: (string) => void
+	foundCharacters: (string) => any
 	
 	/**
 	 * _Function called when the parser encounters an error._
 	 * 
 	 * The parser will call this function when it encounters a fatal error preventing it from continuing to parse. When the function is called the parsing is stopped.
 	 */
-	parseErrorOccurred: (string) => void
+	parseErrorOccurred: (string) => any
 	
 	/**
 	 * _XML string to be parsed._
@@ -4447,7 +4461,7 @@ export class XMLParser {
 * You can also use the global function `log(message)` which is a shorthand for `console.log`.
 * @param {any} message - Message to log to the console.
 */
-export function log(message: any): void
+declare function log(message: any): void
 
 
 
@@ -4459,7 +4473,7 @@ export function log(message: any): void
 * You can also use the global function `logWarning(message)` which is a shorthand for `console.warn`.
 * @param {any} message - Message to log to the console.
 */
-export function logWarning(message: any): void
+declare function logWarning(message: any): void
 
 
 
@@ -4471,7 +4485,7 @@ export function logWarning(message: any): void
 * You can also use the global function `logError(message)` which is a shorthand for `console.error`.
 * @param {any} message - Message to log to the console.
 */
-export function logError(message: any): void
+declare function logError(message: any): void
 
 
 
@@ -4480,7 +4494,7 @@ export function logError(message: any): void
  * @param {string} str - The string to decode
  * @returns {string} The decoded binary string
  */
-export function atob(str: string): string
+declare function atob(str: string): string
 
 
 
@@ -4489,4 +4503,4 @@ export function atob(str: string): string
  * @param {string} str - The string to encode
  * @returns {string} The base64 encoded string
  */
-export function btoa(str: string): string
+declare function btoa(str: string): string
