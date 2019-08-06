@@ -7,8 +7,14 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Crawl Scriptable Docs",
-			"program": "${workspaceFolder}/index.js"
+			"name": "Build from Tern",
+			"program": "${workspaceFolder}/buildFromTernDefinition.js"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Build from Docs",
+			"program": "${workspaceFolder}/buildFromDocs.js"
 		}
 	]
 }

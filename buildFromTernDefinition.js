@@ -1,15 +1,20 @@
 /* eslint-disable no-console */
+
+// this is the key for the long documentation
+const longDocKey = "!scriptable.description";
+
+
+
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
-const cheerio = require("cheerio");
 const turndown = require("turndown");
 const cc = require("console-control-strings");
 
 const ignoreFunctionsWithoutType = require("./ignoreFunctionsWithoutType");
 
 
-const outputFilename = "dist/index.d.ts";
+const outputFilename = "dist/scriptable.d.ts";
 const templateFile = "template.d.ts";
 
 let turndownService = new turndown({
@@ -28,7 +33,7 @@ let request = axios.create({
 	timeout: 15000
 });
 
-console.log("Loading main webpage...");
+console.log("Loading JSON file...");
 
 if (!String.prototype.count) {
 	Object.defineProperty(String.prototype, "count", {
@@ -41,201 +46,124 @@ if (!String.prototype.count) {
 	});
 }
 
-request.get("/")
+request.get("/scriptable.json")
 	.catch((err) => {
-		console.error("There was an error while loading the main page:\n", err);
+		console.error("There was an error while loading the Tern definition file:\n", err);
 		process.exit(1);
 	})
 	.then((response) => {
+		response = response.data;
 
-		let $ = cheerio.load(response.data);
-		let links = $("div.md-sidebar--primary[data-md-component='navigation'] ul.md-nav__list a.md-nav__link:not(.md-nav__link--active)").map((i, el) => {
-			let l = $(el).attr("href");
-			return l.startsWith("#") ? undefined : l;
-		}).get();
+		let symbols = Object.entries(response).filter((k) => k[0] !== "define" && k[0] !== "details" && !k[0].startsWith("!"));
 
-		console.log(`Loading ${links.length} sub pages...`);
+		let topLevelSymbols = {};
 
-		return Promise.all(
-			links.map((link) => {
-				return request.get(link).then((response) => cheerio.load(response.data));
-			})
-		);
-	})
-	.catch((err) => {
-		console.error("There was an error while loading all sub pages:\n", err);
-		process.exit(1);
-	})
-	.then((responses) => {
-		responses.forEach(($, responseNumber) => {
-			logStatus(`Processing sub page ${responseNumber + 1}/${responses.length}`, responseNumber > 0);
-
-			let article = $("article.md-content__inner");
-
-			/**
-			 * @typedef {object} Description
-			 * @property {"text"|"code"} type
-			 * @property {object} value
-			 * @property {string} value.html
-			 * @property {string} value.text
-			 */
-			/**
-			 * @typedef {object} Parameters
-			 * @property {string} name
-			 * @property {string} type
-			 * @property {string} description
-			 */
-			/**
-			 * @typedef {object} Returns
-			 * @property {string} type
-			 * @property {string} description
-			 */
-			/**
-			 * @typedef {object} CurrentProperty
-			 * @property {string} title
-			 * @property {Description[]} description
-			 * @property {Parameters[]} parameters
-			 * @property {Returns} returns
-			 * @property {string[]} enum
-			 */
-			/**
-			 * Holds the current property while it is collected
-			 * @type {CurrentProperty}
-			 */
-			let current = {
-				description: [],
-				parameters: [],
-				returns: {},
-				enum: []
+		// save all defined classes & variables
+		for (const [symbol, symbolData] of symbols) {
+			let struct = topLevelSymbols[symbol] = {
+				type: symbol[0] == symbol[0].toUpperCase() ? "class" : "var",
+				shortDoc: symbolData["!doc"],
+				longDoc: symbolData[longDocKey],
+				url: symbolData["!url"],
+				definition: (symbolData["!type"] || "").replace("fn", "constructor").replace(/ -> \+.*$/, ""),
+				properties: {},
+				functions: {}
 			};
 
-			let structure = {
-				title: "",
-				/**
-				 * @type {Description[]}
-				 */
-				description: [],
-				isClass: true,
-				/**
-				 * @type {CurrentProperty[]}
-				 */
-				properties: [],
-				interfaces: [],
-				isGlobal: false,
-				/**
-				 * @type {Parameters}
-				 */
-				parameters: [],
-				/**
-				 * @type {Returns}
-				 */
-				returns: {},
-				/**
-				 * @type {string[]}
-				 */
-				enum: []
+			for (const [prop, propData] of Object.entries(symbolData)) {
+				if (/!doc|!url|!type/.test(prop) || prop === longDocKey) continue;
+				struct[(propData["!type"] || "").includes("fn") ? "functions" : "properties"][prop] = {
+					shortDoc: propData["!doc"],
+					longDoc: propData[longDocKey],
+					url: propData["!url"],
+					definition: propData["!type"] || ""
+				};
+			}
+		}
+
+		// add all global functions or whatever is inside of "indexEntries" and "details"...
+		for (const entry of response.indexEntries) {
+			let details = response.details.find((i) => i.id === entry.pageEntryId);
+			topLevelSymbols[entry.title] = {
+				type: details.headline.toLowerCase(),
+				shortDoc: entry.summary,
+				longDoc: details.description,
+				url: details.url,
+				definition: details.decleration || ""
 			};
+		}
 
-			let skip = false;
+		// process content of "!define"
+		for (const [symbol, symbolData] of Object.entries(response["!define"])) {
+			let struct = topLevelSymbols[symbol];
+			for (const [prop, propData] of Object.entries(symbolData)) {
+				struct[(propData["!type"] || "").includes("fn") ? "functions" : "properties"][prop] = {
+					shortDoc: propData["!doc"],
+					longDoc: propData[longDocKey],
+					url: propData["!url"],
+					definition: propData["!type"] || ""
+				};
+			}
+		}
+
+
+
+
+		/**
+		 * @typedef {object} Description
+		 * @property {"text"|"code"} type
+		 * @property {object} value
+		 * @property {string} value.html
+		 * @property {string} value.text
+		 */
+		/**
+		 * @typedef {object} Parameters
+		 * @property {string} name
+		 * @property {string} type
+		 * @property {string} description
+		 */
+		/**
+		 * @typedef {object} Returns
+		 * @property {string} type
+		 * @property {string} description
+		 */
+		/**
+		 * @typedef {object} CurrentProperty
+		 * @property {string} title
+		 * @property {Description[]} description
+		 * @property {Parameters[]} parameters
+		 * @property {Returns} returns
+		 * @property {string[]} enum
+		 */
+		let structure = {
+			title: "",
 			/**
-			 * describes in which block the iteration is
-			 * @type {"description"|"parameters"|"returns"}
+			 * @type {Description[]}
 			 */
-			let mode = "";
-			let isStructureDescription = true;
+			description: [],
+			isClass: true,
+			/**
+			 * @type {CurrentProperty[]}
+			 */
+			properties: [],
+			interfaces: [],
+			isGlobal: false,
+			/**
+			 * @type {Parameters}
+			 */
+			parameters: [],
+			/**
+			 * @type {Returns}
+			 */
+			returns: {},
+			/**
+			 * @type {string[]}
+			 */
+			enum: []
+		};
 
-			let tableOfContents = $("label.md-nav__title[for='__toc'] + ul > li > a:not(:contains('Parameters')):not(:contains('Return value'))");
-			structure.isGlobal = tableOfContents.length === 0;
-
-			article.children().each((i, el) => {
-				el = $(el);
-				let tagName = el[0].tagName.toLowerCase();
-				if (tagName === "div") {
-					el = el.children(":first-child");
-					tagName = el[0].tagName.toLowerCase();
-				}
-				// strip all non ASCII chars, replace "new ..." with "constructor", remove any "+" or "-" at the beginning
-				let text = el.text().replace(/[^ -\u007f]/g, "").replace(/new [^(]+/, "constructor").replace(/^[-+]/, "");
-				// construct outerHTML and replace "<pre>...</pre>" with "<pre><code>...</code></pre>"
-				const outerHTML = `<${tagName}>${el.html()}</${tagName}>`.replace(/<pre>/g, "$&<code>").replace(/<\/pre>/g, "</code>$&");
-				if (skip && tagName !== "h3") return;
-				switch (tagName) {
-					case "h1":
-						structure.title = text;
-						structure.isClass = /^[A-Z]/.test(structure.title.trim());
-						mode = "description";
-						break;
-					case "hr":
-						current && structure.properties.push(current);
-						current = {
-							description: [],
-							parameters: [],
-							returns: {},
-							enum: []
-						};
-						break;
-					case (structure.isGlobal ? "thisShouldNeverMatch" : "h2"):
-						isStructureDescription = structure.isGlobal;
-						current.title = text;
-						mode = "description";
-						break;
-					case (structure.isGlobal ? "h2" : "h3"):
-						mode = text.toLowerCase().includes("parameters") ? "parameters" : "returns";
-						break;
-					case "ul":
-						(structure.isGlobal ? structure : current).enum = el.children("li").map((i, el) => $(el).text()).get();
-					// FALLTHROUGH!
-					case "p":
-					case "pre":
-						{
-							let o;
-							switch (mode) {
-								case "description":
-									o = {
-										type: tagName === "pre" ? "code" : "text",
-										value: {
-											html: outerHTML,
-											text: text
-												.replace(/fn\([^)]*\)$/gm, "$& -> any")		// convert function type without return value "fn(...)" to "fn(...) -> void"
-												.replace(/fn\(([^)]*)\) ->/g, "($1) =>")		// strip "fn" from function type and replace "->" with "=>"
-										}
-									};
-									break;
-								case "parameters":
-									o = {
-										name: el.find("strong").text(),
-										type: el.find("em").text(),
-										description: text
-									};
-									o.description = text.replace(o.name, "").replace(o.type, "").trim();
-									break;
-								case "returns":
-									o = {
-										type: el.find("em").text(),
-										description: text
-									};
-									o.description = text.replace(o.type, "").trim();
-									break;
-							}
-							if (structure.isGlobal || isStructureDescription) {
-								structure[mode].push ? structure[mode].push(o) : (structure[mode] = o);
-							} else {
-								current[mode].push ? current[mode].push(o) : (current[mode] = o);
-							}
-
-							// let tmp = structure.isGlobal ? structure : current;
-							// if (o.type === "code" && tmp.description.filter((i) => i.type === "code").length > 1) {
-							// 	console.log(`${structure.title}.${current.title}:\n${
-							// 		tmp.description
-							// 			.filter((i) => i.type === "code" && new RegExp(`^${current.title || structure.title}(?:(\\([^)]*\\))|(:)){1,2}`, "m").test(i.value.text))
-							// 			.map((i) => i.value.text)
-							// 			.join("\n")
-							// 	}\n`);
-							// }
-						}
-						break;
-				}
-			});
+		// for each symbol
+		{
 			// return;
 			current && current.description.length && structure.properties.push(current);
 
@@ -265,7 +193,7 @@ ${structure.interfaces.map((i) => `declare interface ${i.name} ${i.content}`).jo
 			}
 
 			definitions.push(str);
-		});
+		}
 
 		// adding globals that are not in the documentation
 		const globals = require("./globals");
@@ -323,6 +251,23 @@ declare ${gl.definition}
 		logStatus("\nDONE\n\n", true);
 	});
 
+
+function convertURL(url) {
+	let query = url.match(/^scriptable:\/\/docs\?(.*)$/)[1].split("&");
+	let bridge, method;
+	for (const part of query) {
+		let parts = part.split("=");
+		switch (parts[0]) {
+			case "bridgeName":
+				bridge = parts[1];
+				break;
+			case "methodName":
+				method = parts[1];
+				break;
+		}
+	}
+	return `https://docs.scriptable.app/${bridge}/#${method}`;
+}
 
 /**
  * Processes the description of `obj`

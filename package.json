@@ -4,7 +4,10 @@
   "description": "Type definitions for the iOS app Scriptable",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node buildFromTernDefinition.js",
+    "build:tern": "node buildFromTernDefinition.js",
+    "build:docs": "node buildFromDocs.js",
+    "getUrls": "node getInvalidUrlsFromTern.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
