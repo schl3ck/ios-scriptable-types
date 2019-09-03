@@ -2,7 +2,11 @@
 
 // this is the key for the long documentation
 const longDocKey = "!scriptable.description";
-
+const functionParameters = {
+	key: "!scriptable.parameters",
+	name: "!scriptable.name",
+	description: "!scriptable.description"
+};
 
 
 const fs = require("fs");
@@ -11,14 +15,12 @@ const axios = require("axios");
 const turndown = require("turndown");
 const cc = require("console-control-strings");
 
-const ignoreFunctionsWithoutType = require("./ignoreFunctionsWithoutType");
-
-
 const outputFilename = "dist/scriptable.d.ts";
 const templateFile = "template.d.ts";
 
 let turndownService = new turndown({
 	codeBlockStyle: "indented",
+	br: "\n"
 }).remove("button").addRule("strike", {
 	filter: ["del", "s", "strike"],
 	replacement: (content) => {
@@ -56,6 +58,29 @@ request.get("/scriptable.json")
 
 		let symbols = Object.entries(response).filter((k) => k[0] !== "define" && k[0] !== "details" && !k[0].startsWith("!"));
 
+		/**
+		 * @typedef {object} NestedSymbol
+		 * @property {string | undefined} shortDoc 
+		 * @property {string | undefined} longDoc 
+		 * @property {string} url 
+		 * @property {string} definition 
+		 * @property {string} name 
+		 * @property {object[]} parameters 
+		 * @property {string} parameters[].name 
+		 * @property {string} parameters[].doc 
+		 */
+		/**
+		 * @typedef {object} TopLevelSymbolExtension
+		 * @property {"class" | "var"} type 
+		 * @property {{[key: string]: NestedSymbol}} properties 
+		 * @property {{[key: string]: NestedSymbol}} functions
+		 */
+		/**
+		 * @typedef {NestedSymbol | TopLevelSymbolExtension} TopLevelSymbol
+		 */
+		/**
+		 * @type {{[key: string]: TopLevelSymbol}}
+		 */
 		let topLevelSymbols = {};
 
 		// save all defined classes & variables
@@ -65,32 +90,37 @@ request.get("/scriptable.json")
 				shortDoc: symbolData["!doc"],
 				longDoc: symbolData[longDocKey],
 				url: symbolData["!url"],
-				definition: (symbolData["!type"] || "").replace("fn", "constructor").replace(/ -> \+.*$/, ""),
+				definition: processType(symbolData["!type"], symbol, { mayBeCtor: true }),
+				parameters: (symbolData[functionParameters.key] || []).map((param) => {
+					return {
+						name: param[functionParameters.name],
+						doc: param[functionParameters.description]
+					};
+				}),
 				properties: {},
-				functions: {}
+				functions: {},
+				name: symbol
 			};
+			if (struct.type === "var" && struct.definition.includes("(")) {
+				struct.type = "function";
+			}
 
 			for (const [prop, propData] of Object.entries(symbolData)) {
-				if (/!doc|!url|!type/.test(prop) || prop === longDocKey) continue;
+				if (/!doc|!url|!type/.test(prop) || prop === longDocKey || prop === functionParameters.key) continue;
 				struct[(propData["!type"] || "").includes("fn") ? "functions" : "properties"][prop] = {
 					shortDoc: propData["!doc"],
 					longDoc: propData[longDocKey],
 					url: propData["!url"],
-					definition: propData["!type"] || ""
+					definition: processType(propData["!type"], prop, { static: true }),
+					parameters: (propData[functionParameters.key] || []).map((param) => {
+						return {
+							name: param[functionParameters.name],
+							doc: param[functionParameters.description]
+						};
+					}),
+					name: prop
 				};
 			}
-		}
-
-		// add all global functions or whatever is inside of "indexEntries" and "details"...
-		for (const entry of response.indexEntries) {
-			let details = response.details.find((i) => i.id === entry.pageEntryId);
-			topLevelSymbols[entry.title] = {
-				type: details.headline.toLowerCase(),
-				shortDoc: entry.summary,
-				longDoc: details.description,
-				url: details.url,
-				definition: details.decleration || ""
-			};
 		}
 
 		// process content of "!define"
@@ -101,142 +131,53 @@ request.get("/scriptable.json")
 					shortDoc: propData["!doc"],
 					longDoc: propData[longDocKey],
 					url: propData["!url"],
-					definition: propData["!type"] || ""
+					definition: processType(propData["!type"], prop),
+					parameters: (propData[functionParameters.key] || []).map((param) => {
+						return {
+							name: param[functionParameters.name],
+							doc: param[functionParameters.description]
+						};
+					}),
+					name: prop
 				};
 			}
 		}
 
+		// (function() {})();
 
-
-
-		/**
-		 * @typedef {object} Description
-		 * @property {"text"|"code"} type
-		 * @property {object} value
-		 * @property {string} value.html
-		 * @property {string} value.text
-		 */
-		/**
-		 * @typedef {object} Parameters
-		 * @property {string} name
-		 * @property {string} type
-		 * @property {string} description
-		 */
-		/**
-		 * @typedef {object} Returns
-		 * @property {string} type
-		 * @property {string} description
-		 */
-		/**
-		 * @typedef {object} CurrentProperty
-		 * @property {string} title
-		 * @property {Description[]} description
-		 * @property {Parameters[]} parameters
-		 * @property {Returns} returns
-		 * @property {string[]} enum
-		 */
-		let structure = {
-			title: "",
-			/**
-			 * @type {Description[]}
-			 */
-			description: [],
-			isClass: true,
-			/**
-			 * @type {CurrentProperty[]}
-			 */
-			properties: [],
-			interfaces: [],
-			isGlobal: false,
-			/**
-			 * @type {Parameters}
-			 */
-			parameters: [],
-			/**
-			 * @type {Returns}
-			 */
-			returns: {},
-			/**
-			 * @type {string[]}
-			 */
-			enum: []
-		};
-
-		// for each symbol
-		{
-			// return;
-			current && current.description.length && structure.properties.push(current);
-
+		for (const symbol of Object.values(topLevelSymbols)) {
+			let interfaces = [];
 			let str = "";
-
-			if (structure.description) {
-				str += processDescription(structure, structure, { checkForInterface: false, extractDefinition: structure.isGlobal });
-			}
-			if (!structure.isGlobal) {
-				// if it is not a class, it has to be a global variable with a custom object as type
-				str += "declare " + (structure.isClass ? "class" : "var") + " " + structure.title + (structure.isClass ? "" : ":") + " {\n";
-				str += structure.properties.map((prop) => {
-					return processDescription(prop, structure, { checkForInterface: true, extractDefinition: true });
+			str += processDescription(symbol, { checkForInterface: true, emitParameters: false }) + "\n";
+			if (symbol.interface) interfaces.push(symbol.interface);
+			// if it is not a class, it has to be a global variable with a custom object as type
+			str += `declare ${symbol.type}`;
+			if (symbol.type === "function") {
+				str += ` ${symbol.definition}`;
+			} else {
+				str += ` ${symbol.name}${symbol.type === "var" ? ":" : ""} {\n`;
+				const props = [...Object.values(symbol.properties), symbol.definition.length ? symbol : {}, ...Object.values(symbol.functions)].filter((prop) => Object.getOwnPropertyNames(prop).length);
+				str += props.map((prop) => {
+					let str = processDescription(prop, { checkForInterface: true, parent: symbol.name });
+					if (prop.interface) interfaces.push(prop.interface);
+					return `${str}\n${prop.definition}`;
 				})
 					.join("\n\n")
 					.replace(/^/gm, "\t");
 				str += "\n}\n";
+			}
 
-				if (structure.interfaces.length) {
-					let ints = `declare namespace ${structure.title} {
-${structure.interfaces.map((i) => `declare interface ${i.name} ${i.content}`).join("\n").replace(/^/gm, "\t")}
+			if (interfaces.length) {
+				let ints = `declare namespace ${symbol.name} {
+${interfaces.map((i) => `declare interface ${i}`).join("\n").replace(/^/gm, "\t")}
 }
 
 `;
-					str = ints + str;
-				}
+				str = ints + str;
 			}
 
 			definitions.push(str);
 		}
-
-		// adding globals that are not in the documentation
-		const globals = require("./globals");
-		let processedGlobals = [];
-		Object.entries(globals).forEach(([key, gl], globalNumber, globals) => {
-			logStatus(`Processing global ${globalNumber + 1}/${globals.length}`, true);
-
-			if ("aliasFor" in gl) {
-				let parts = gl.aliasFor.split(".");
-				const regexFirstPart = new RegExp(String.raw`^declare (?:class|interface|function|var) ${parts[0]}\b`, "m");
-				let definition = definitions.find((def) => regexFirstPart.test(def));
-				let exportType = definition.match(/^declare (class|interface|function|var) [^\n]+/m);
-				if (exportType[1] === "class" || exportType[1] === "interface" || (exportType[1] === "var" && exportType[0].includes(":") && exportType[0].endsWith("{"))) {
-					const regexSecondPart = new RegExp(String.raw`^(?:static )?${parts[1]}\b`, "m");
-					definition = definition.replace(/^\s+/gm, "").split("/**");
-					definition = definition.find((def) => regexSecondPart.test(def));
-					definition = "/**" + definition;
-					definition = definition.replace(/^static /m, "");
-					let isFunction = new RegExp(String.raw`^${parts[1]}\([^)]*\):?`, "m").test(definition);
-					definition = definition.replace(new RegExp(String.raw`^${parts[1]}\b`, "m"), `declare ${isFunction ? "function" : "var"} $&`);
-				}
-
-				definition = definition.replace(new RegExp(String.raw`^(declare (?:function|var) )${parts[1] || parts[0]}\b`, "m"), `$1${key}`);
-				processedGlobals.push(definition);
-			} else {
-				let description = gl.description;
-
-				if (gl.parameters && gl.parameters.length) {
-					description += "\n" + gl.parameters.map((param) => `@param {${param.type}} ${param.name} - ${param.description}`).join("\n");
-				}
-				if (gl.returns && gl.returns.type) {
-					description += `\n@returns {${gl.returns.type}} ${gl.returns.description}`;
-				}
-
-				processedGlobals.push(`/**
-${description.replace(/^/gm, " * ")}
- */
-declare ${gl.definition}
-`);
-			}
-		});
-
-		processedGlobals.forEach((i) => definitions.push(i));
 
 		// load template file
 		let template = fs.readFileSync(templateFile);
@@ -252,119 +193,85 @@ declare ${gl.definition}
 	});
 
 
-function convertURL(url) {
-	let query = url.match(/^scriptable:\/\/docs\?(.*)$/)[1].split("&");
-	let bridge, method;
-	for (const part of query) {
-		let parts = part.split("=");
-		switch (parts[0]) {
-			case "bridgeName":
-				bridge = parts[1];
-				break;
-			case "methodName":
-				method = parts[1];
-				break;
-		}
-	}
-	return `https://docs.scriptable.app/${bridge}/#${method}`;
+/**
+ * 
+ * @param {string|undefined} type The type to process
+ * @param {string} name The name of the current type
+ * @param {object} options Some options
+ * @param {boolean} options.mayBeCtor If it is a function, it will be treated as a constructor if it returns "+name"
+ * @param {boolean} options.static If it is a function, it gets the _static_ keyword prepended
+ */
+function processType(type, name, options = {}) {
+	type = type || "";
+	let funcRepl = name + "(";
+	if (options.static) funcRepl = "static " + funcRepl;
+	if (options.mayBeCtor && new RegExp(" -> \\+" + name).test(type)) funcRepl = "constructor(";
+	// type = type
+	return type
+		.replace(/\+/g, "")									// remove + infront of +Alert which means it is an instance
+		.replace(/^(?!fn\().+$/i, `${name}: $&`)			// add name for simple properties
+		.replace(/^fn\(.*\)(?! -> )/, "$& -> void")			// add void return type for functions that don't return anything
+		.replace(/^fn\(/, funcRepl)							// replace function
+		.replace(/^(constructor\(.*\)) -> .+$/, "$1")		// remove return type from constructor
+		.replace(" -> ", ": ")								// replace Tern function return type with TypeScript's
+		.replace(/(?<!Promise)\[([^\]]+)\]/g, "$1[]")		// replace array definition
+		.replace(/Promise\[:t=(.+)\]/g, "Promise<$1>")		// replace Promise type#
+		.replace(/Promise(?!<)/g, "Promise<any>")			// add any type to promise to generate valid TypeScript
+		.replace(/\bbool\b/g, "boolean");
 }
 
 /**
  * Processes the description of `obj`
  * @param {object} obj The object from which the description should be processed
- * @param {object} structure The structure object (interface or class) which contains `obj`
- * @param {object} options Some options
- * @param {boolean} options.checkForInterface If the code blocks in the description should be checked for a possible interface
- * @param {boolean} options.extractDefinition If the definition should be extracted from the contained code blocks
+ * @param {string} obj.shortDoc 
+ * @param {string} obj.longDoc 
+ * @param {string} obj.type 
+ * @param {string} obj.definition 
+ * @param {string} obj.url 
+ * @param {string} obj.name 
+ * @param {string} obj.interface This will contain the type definition of the interface if one was found
+ * @param {object} [options] Some options
+ * @param {boolean} [options.checkForInterface] If the code blocks in the description should be checked for a possible interface
+ * @param {string} [options.parent] Name of parent if there is one
+ * @param {boolean} [options.emitParameters] If the found parameters should be added to the JSDoc
  */
-function processDescription(obj, structure, options) {
+function processDescription(obj, options) {
 	function checkOptions(prop, def) {
 		if (!(prop in options)) options[prop] = def;
 	}
 	if (!options) options = {};
 	checkOptions("checkForInterface", true);
-	checkOptions("extractDefinition", true);
+	checkOptions("parent", "");
+	checkOptions("emitParameters", true);
 
-	let code, codeLength = 0;
-	if (options.extractDefinition) {
-		const regexFilterCodeDefinition = new RegExp(String.raw`^(?:static )?${obj.title}(?:(\([^)]*\))|:){1,2}`, "m");
-		code = obj.description.filter((item) => item.type === "code");
-		codeLength = code.length;
-		code = code.find((i) => regexFilterCodeDefinition.test(i.value.text));
-		obj.description.splice(obj.description.indexOf(code), 1);
-		code = code.value.text;
+	if (!obj.shortDoc || obj.shortDoc === obj.longDoc) obj.shortDoc = "";
+	if (!obj.longDoc) obj.longDoc = "";
 
-		// add "void" type to functions that don't have a type, excluding all functions defined in file "ignoreFunctionsWithoutType.js"
-		let ignore = ignoreFunctionsWithoutType
-			.filter((i) => !i.includes(".") || i.split(".", 2)[0] === structure.title)
-			.map((i) => i.split(".", 2).pop());
-		if (!ignore.includes("*")) {
-			let regex = String.raw`(?<!${ignore.map((i) => "\\b" + i).join("|")})\([^)]*\)$`;
-			code = code.replace(new RegExp(regex, "m"), "$&: void");
-		}
-
-		if (structure.isGlobal) {
-			// prefix "export [function|var]"
-			let isFunction = new RegExp(String.raw`^(?:static )?${obj.title}\([^)]*\):?`, "m").test(code);
-			code = `declare ${isFunction ? "function" : "var"} ${code}`;
-		}
-
-		if (obj.enum && obj.enum.length && /: string/.test(code)) {
-			if (code.count(/: string/g) > 1) {
-				logStatus(
-					cc.color("yellow") +
-					`Warning: multiple occurrences found for regex /: string/ at ${structure.title}${structure.isGlobal ? "" : `.${obj.title}`}\n` +
-					cc.color("reset"),
-					true
-				);
-			}
-			let enumValues = obj.enum.map((i) => `"${i}"`).join(" | ");
-			code = code.replace(/: string/, ": " + enumValues);
-
-			// also replace in JSDoc @param if one would be inserted
-			if (obj.parameters && obj.parameters.length) {
-				for (let i = 0; i < obj.parameters.length; i++) {
-					const param = obj.parameters[i];
-					if (param.type === "string") {
-						param.type = enumValues;
-						break;	// stop after the first occcurrence
-					}
-				}
-			}
+	let descr = ("<em>" + obj.shortDoc + "</em>\n\n").replace("<em></em>\n\n", "");
+	descr += obj.longDoc
+		.replace(/<code>\s*\{/g, "<pre>$&")
+		.replace(/\}\s*<\/code>/g, "$&</pre>");
+		
+	if (/(\n\s*-\s+\w+)+/.test(descr)) {
+		let list = descr.match(/(\n\s*-\s+\w+)+/);
+		list = list && list[0].trim();
+		const items = list.replace(/(^|\n)-\s+/g, "$1").split("\n");
+		descr = descr.replace(list, `<ul>${items.map((s) => `<li>${s}</li>`).join("")}</ul>`);
+		if (/: string/.test(obj.definition)) {
+			obj.definition = obj.definition.replace(/: string/, ": " + items.map((s) => `"${s}"`).join(" | "));
 		}
 	}
-	code = code || "";
 
-	let descr = obj
-		.description
-		.filter((item) => !item.value.text.includes("Deprecated in version") && !item.value.text.includes("DeprecatedVersion "))
-		.map((item) =>
-			turndownService
-				.turndown(item.value.html)
-			// .replace(/```(\s+\{)/, "```json$1")
-			// .replace(/```(\s+(?!\{))/, "```javascript$1"))
-		)
-		.join("\n\n");
+	descr = turndownService.turndown(descr.replace(/\n\n/g, "<br>"));
 
-	let deprecated = obj
-		.description
-		.filter((item) => item.value.text.includes("Deprecated in version") || item.value.text.includes("DeprecatedVersion "))
-		.map((item) => "@deprecated " + turndownService.turndown(item.value.html))
-		.join("\n");
-	if (deprecated) {
-		descr += "\n\n" + deprecated;
-	}
-
-	if (obj.parameters && obj.parameters.length) {
-		descr += "\n" + obj.parameters.map((i) => `@param {${i.type}} ${i.name} - ${i.description}`).join("\n");
+	if (options.emitParameters && obj.parameters && obj.parameters.length) {
+		descr += "\n" + obj.parameters.map((i) => `@param ${i.name} - ${i.doc}`).join("\n");
 	}
 	if (obj.returns && obj.returns.type) {
-		descr += `\n@returns {${obj.returns.type}} ${obj.returns.description}`;
+		descr += `\n@returns {${obj.returns.type}} ${obj.returns.doc}`;
 	}
 
-	descr = descr
-		.replace(/\[email\sprotected\]/g, "my@example.com")
-		.replace(/^/gm, " * ");
+	descr = descr.replace(/^/gm, " * ");
 
 	// if (/\* \*/.test(descr)) {
 	// 	console.log(structure.title, ".", obj.title, "\n", descr, "\n\n");
@@ -373,56 +280,37 @@ function processDescription(obj, structure, options) {
 	let interfaceName = "";
 	let interfaceAnyType = false;
 
-	if (options.checkForInterface && codeLength > 1 && descr.includes("on the following form:")) {
-		let i = obj.description.findIndex((item) => item.value.text.includes("on the following form:"));
-		// if (prop.description[i].text.includes("array") && /^[a-zA-z_$][a-zA-Z0-9_$]*:/.test(code)) {
-		// 	// simple
-		// 	// code = code.replace(/(:\s*)(.+)$/, "$1$2[]");
-		// 	code = code.split(":");
-		// 	//			  (  [  {  <
-		// 	let parens = [0, 0, 0, 0];
-		// 	let incr = ["(", "[", "{", "<"];
-		// 	let decr = [")", "]", "}", ">"];
-		// 	let i;
-		// 	for (i = 0; i < code.length; i++) {
-		// 		const c = code[i];
-		// 		incr.forEach((p, i) => c.includes(p) && parens[i]++);
-		// 		decr.forEach((p, i) => c.includes(p) && parens[i]--);
-		// 		if (parens.every(p => p === 0)) break;
-		// 	}
-		// 	i < code.length - 1 && i++;
-		// 	code[i] = code[i] + "[]";
-		// 	code = code.join(":");
-		// }
+	if (options.checkForInterface && obj.longDoc.includes("on the following form:")) {
+		let example = obj.longDoc.match(/<code>\s*(\{.*?\})\s*<\/code>/s);
+		if (!example) {
+			const str = "Description included \"on the following form:\", but the RegEx couldn't find a code example. Symbol: " +
+				(options.parent ? options.parent + "." : "") + obj.name + "\nDescription:\n" + obj.longDoc;
+			console.error(str);
+			throw new Error(str);
+		}
+		example = example[1];
 		let types = [];
-		let interf = JSON.stringify(JSON.parse(obj.description[i + 1].value.text), (k, v) => {
+		let interf = JSON.stringify(JSON.parse(example), (k, v) => {
 			if (!k)
 				return v;
 			let t = typeof (v == null ? "" : v);
 			!types.includes(t) && types.push(t);
 			return t;
 		}, "\t").replace(/(:\s*)"([a-zA-Z]+)"/g, "$1$2");
-		interfaceName = obj.title[0].toUpperCase() + obj.title.substring(1);
+		interfaceName = obj.name[0].toUpperCase() + obj.name.substring(1);
 		interfaceAnyType = types.length > 1;
-		structure.interfaces.push({
-			name: interfaceName,
-			content: interf
-		});
+		obj.interface = interfaceName + " " + interf;
 	}
 
 	if (interfaceName) {
-		code = code.replace(interfaceAnyType ? /\bany\b/ : /\{string: \b.*?\b\}/, structure.title + "." + interfaceName);
+		obj.definition = obj.definition.replace(interfaceAnyType ? /\bany\b/ : /\{string: \b.*?\b\}/, (options.parent ? options.parent + "." : "") + interfaceName);
 	} else {
 		// replace "{string: string}" with correct typescript definition
-		code = code.replace(/\{string: string\}/, "{[key: string]: string}");
-		descr = descr.replace(/\{string: string\}/g, "{[key: string]: string}");
+		obj.definition = obj.definition.replace(/\{string: (.+)\}/, "{[key: string]: $1}");
+		descr = descr.replace(/\{string: (.+)\}/, "{[key: string]: $1}");
 	}
 
-	return `/**
-${descr}
- */
-${code.replace(/(?<!\{)\[([^\]]+)\]/g, "$1[]")}`
-		.replace(/\bbool\b/gi, "$&ean");
+	return `/**\n${descr}\n*/`;
 }
 
 /**

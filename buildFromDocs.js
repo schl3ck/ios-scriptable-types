@@ -9,7 +9,7 @@ const cc = require("console-control-strings");
 const ignoreFunctionsWithoutType = require("./ignoreFunctionsWithoutType");
 
 
-const outputFilename = "dist/scriptable.d.ts";
+const outputFilename = "dist/scriptable_doc.d.ts";
 const templateFile = "template.d.ts";
 
 let turndownService = new turndown({
