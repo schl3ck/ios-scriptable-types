@@ -8,7 +8,6 @@ const functionParameters = {
 	description: "!scriptable.description"
 };
 
-
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
@@ -56,7 +55,7 @@ request.get("/scriptable.json")
 	.then((response) => {
 		response = response.data;
 
-		let symbols = Object.entries(response).filter((k) => k[0] !== "define" && k[0] !== "details" && !k[0].startsWith("!"));
+		let symbols = Object.entries(response).filter((k) => !k[0].startsWith("!"));
 
 		/**
 		 * @typedef {object} NestedSymbol
@@ -71,7 +70,7 @@ request.get("/scriptable.json")
 		 */
 		/**
 		 * @typedef {object} TopLevelSymbolExtension
-		 * @property {"class" | "var"} type 
+		 * @property {"class" | "var" | "function"} type 
 		 * @property {{[key: string]: NestedSymbol}} properties 
 		 * @property {{[key: string]: NestedSymbol}} functions
 		 */
@@ -86,6 +85,9 @@ request.get("/scriptable.json")
 		// save all defined classes & variables
 		for (const [symbol, symbolData] of symbols) {
 			let struct = topLevelSymbols[symbol] = {
+				/**
+				 * @type {"class" | "var" | "fucntion"}
+				 */
 				type: symbol[0] == symbol[0].toUpperCase() ? "class" : "var",
 				shortDoc: symbolData["!doc"],
 				longDoc: symbolData[longDocKey],
@@ -107,7 +109,7 @@ request.get("/scriptable.json")
 
 			for (const [prop, propData] of Object.entries(symbolData)) {
 				if (/!doc|!url|!type/.test(prop) || prop === longDocKey || prop === functionParameters.key) continue;
-				struct[(propData["!type"] || "").includes("fn") ? "functions" : "properties"][prop] = {
+				struct[(propData["!type"] || "").includes("fn") ? "functions" : "properties"]["+" + prop] = {
 					shortDoc: propData["!doc"],
 					longDoc: propData[longDocKey],
 					url: propData["!url"],
@@ -215,8 +217,9 @@ function processType(type, name, options = {}) {
 		.replace(/^(constructor\(.*\)) -> .+$/, "$1")		// remove return type from constructor
 		.replace(" -> ", ": ")								// replace Tern function return type with TypeScript's
 		.replace(/(?<!Promise)\[([^\]]+)\]/g, "$1[]")		// replace array definition
-		.replace(/Promise\[:t=(.+)\]/g, "Promise<$1>")		// replace Promise type#
-		.replace(/Promise(?!<)/g, "Promise<any>")			// add any type to promise to generate valid TypeScript
+		.replace(/Promise\[:t=(.+)\]/g, "Promise<$1>")		// replace Promise type
+		.replace(/Promise(?!<)/g, "Promise<void>")			// add void type to promise to generate valid TypeScript, but state that it doesn't carry a value
+		.replace(/^((?:atob|btoa)\(.*\): )void$/, "$1string")	// set return type of atob() and btoa() to string if they are set to void because of the missing return type replacement earlier
 		.replace(/\bbool\b/g, "boolean");
 }
 
@@ -244,25 +247,63 @@ function processDescription(obj, options) {
 	checkOptions("parent", "");
 	checkOptions("emitParameters", true);
 
+	if (obj.shortDoc && obj.shortDoc.startsWith("!prop_fn ") && /\(.*\)(: )?(?!.*\).*$)/.test(obj.definition)) {
+		// we got a property that is not a function but a property that holds a function object
+		obj.definition = obj.definition
+			.replace(/\)$/, "): void")					// add any type to these without any return type
+			.replace(/\): (?!.*\).*$)/, ") => ")		// foo(bar: string): boolean     =>   foo(bar: string) => boolean
+			.replace(/^[^(]+/, "$&: ");					// foo(bar: string) => boolean   =>   foo: (bar: string) => boolean
+
+		obj.shortDoc = obj.shortDoc.replace(/^!prop_fn /, "");
+	}
+
 	if (!obj.shortDoc || obj.shortDoc === obj.longDoc) obj.shortDoc = "";
 	if (!obj.longDoc) obj.longDoc = "";
 
 	let descr = ("<em>" + obj.shortDoc + "</em>\n\n").replace("<em></em>\n\n", "");
+	// find code blocks that contain at least one space and surround them with <pre></pre>
+	// one space because inline code usually doesn't include a space
 	descr += obj.longDoc
-		.replace(/<code>\s*\{/g, "<pre>$&")
-		.replace(/\}\s*<\/code>/g, "$&</pre>");
-		
-	if (/(\n\s*-\s+\w+)+/.test(descr)) {
+		.replace(/<code>(?:[^<]|<[^/]|<\/[^c]|<\/c[^o]|<\/co[^d]|<\/cod[^e]|<\/code[^>])+(\s+(?:[^<]|<[^/]|<\/[^c]|<\/c[^o]|<\/co[^d]|<\/cod[^e]|<\/code[^>])*)+<\/code>/g, "<pre>$&</pre>");
+	/* to understand that regex:
+		search for <code>
+		*: search for anything except <
+			otherwise search for < and anything except /
+			otherwise search for </ and anything except c
+			otherwise search for </c and anything except o
+			otherwise search for </co and anything except d
+			otherwise search for </cod and anything except e
+			otherwise search for </code and anything except >
+				==> this searches for anything except "</code>" as we only want to include the contents of one code block
+			otherwise search for any whitespace
+			and repeat at *
+		if we encounter "</code>" and there was a space inside, it is a match
+	*/
+
+	// convert unordered lists
+	if (/(\n\s*-\s+[^\n]+)+/.test(descr)) {
 		let list = descr.match(/(\n\s*-\s+\w+)+/);
 		list = list && list[0].trim();
-		const items = list.replace(/(^|\n)-\s+/g, "$1").split("\n");
-		descr = descr.replace(list, `<ul>${items.map((s) => `<li>${s}</li>`).join("")}</ul>`);
-		if (/: string/.test(obj.definition)) {
+		const items = list.replace(/(^|\n)-\s+/g, "$1").split("\n").map((s) => s.trim());
+		descr = descr.replace(list, `<ul>${items.map((s) => `<li>${s}</li>`).join("\n")}</ul>`);
+		if (/: string/.test(obj.definition) && !items.some((s) => s.includes(" "))) {
 			obj.definition = obj.definition.replace(/: string/, ": " + items.map((s) => `"${s}"`).join(" | "));
 		}
 	}
+	// convert ordered lists
+	if (/(\n\s*\d+\.\s+[^\n]+)+/.test(descr)) {
+		let list = descr.match(/(\n\s*\d+\.\s+[^\n]+)+/);
+		list = list && list[0].trim();
+		const items = list.replace(/(^|\n)\d+\.\s+/g, "$1").split("\n");
+		descr = descr.replace(list, `<ol>${items.map((s) => `<li>${s}</li>`).join("\n")}</ol>`);
+	}
 
-	descr = turndownService.turndown(descr.replace(/\n\n/g, "<br>"));
+	descr = descr.replace(/\n\n/g, "<br>")
+		// the following regex works the same as the one above to search for <code> blocks, except it doens't match "</code></pre>" in between and we are looking for "<br>" instead of a space. If we could define subpatterns like in PRCE, then it would look much cleaner...
+		.replace(/<pre><code>(?:[^<]|<[^/]|<\/[^c]|<\/c[^o]|<\/co[^d]|<\/cod[^e]|<\/code[^>]|<\/code>[^<]|<\/code><[^/]|<\/code><\/[^p]|<\/code><\/p[^r]|<\/code><\/pr[^e]|<\/code><\/pre[^>])*(?:<br>(?:[^<]|<[^/]|<\/[^c]|<\/c[^o]|<\/co[^d]|<\/cod[^e]|<\/code[^>]|<\/code>[^<]|<\/code><[^/]|<\/code><\/[^p]|<\/code><\/p[^r]|<\/code><\/pr[^e]|<\/code><\/pre[^>])*)+<\/code><\/pre>/g, function(match) {
+			return match.replace(/<br>/g, "\n\n");
+		});
+	descr = turndownService.turndown(descr);
 
 	if (options.emitParameters && obj.parameters && obj.parameters.length) {
 		descr += "\n" + obj.parameters.map((i) => `@param ${i.name} - ${i.doc}`).join("\n");
@@ -310,7 +351,7 @@ function processDescription(obj, options) {
 		descr = descr.replace(/\{string: (.+)\}/, "{[key: string]: $1}");
 	}
 
-	return `/**\n${descr}\n*/`;
+	return `/**\n${descr}\n */`;
 }
 
 /**
