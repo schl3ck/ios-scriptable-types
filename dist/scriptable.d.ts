@@ -4,20 +4,24 @@
 
 /**
  * _Presents an alert._
+ * @see https://docs.scriptable.app/alert/#-new-alert
  */
 declare class Alert {
 	/**
 	 * Title displayed in the alert. Usually a short string.
+	 * @see https://docs.scriptable.app/alert/#title
 	 */
 	title: string
 	
 	/**
 	 * Detailed message displayed in the alert.
+	 * @see https://docs.scriptable.app/alert/#message
 	 */
 	message: string
 	
 	/**
 	 * _Presents an alert._
+	 * @see https://docs.scriptable.app/alert/#-new-alert
 	 */
 	constructor()
 	
@@ -26,6 +30,7 @@ declare class Alert {
 	 * 
 	 * Adds an action button to the alert. To check if an action was selected, you should use the first parameter provided when the promise returned by presentAlert() and presentSheet() is resolved.
 	 * @param title - Title of the action.
+	 * @see https://docs.scriptable.app/alert/#-addaction
 	 */
 	addAction(title: string): void
 	
@@ -34,6 +39,7 @@ declare class Alert {
 	 * 
 	 * Destructive actions titles have a red text color, signaling that the action may modify or delete data.
 	 * @param title - Title of the action.
+	 * @see https://docs.scriptable.app/alert/#-adddestructiveaction
 	 */
 	addDestructiveAction(title: string): void
 	
@@ -42,6 +48,7 @@ declare class Alert {
 	 * 
 	 * Adds a cancel action to the alert. When a cancel action is selected the index provided by presentAlert() or presentSheet() will always be -1.
 	 * @param title - Title of the action.
+	 * @see https://docs.scriptable.app/alert/#-addcancelaction
 	 */
 	addCancelAction(title: string): void
 	
@@ -53,6 +60,7 @@ declare class Alert {
 	 * Text fields are not supported when using the sheet presentation.
 	 * @param placeholder - Optional placeholder that will be displayed when the text field is empty.
 	 * @param text - Optional default value for the text field.
+	 * @see https://docs.scriptable.app/alert/#-addtextfield
 	 */
 	addTextField(placeholder: string, text: string): void
 	
@@ -62,6 +70,7 @@ declare class Alert {
 	 * Adds a secure text field to the alert controller prompting for user input. Values entered into a secure text field will be hidden behind dots. Retrieve the value for the text field using textFieldValue() and supply the index of the text field. Indices for text fields are assigned in the same order as they are added to the alert starting at 0.
 	 * @param placeholder - Optional placeholder that will be displayed when the text field is empty.
 	 * @param text - Optional default value for the text field.
+	 * @see https://docs.scriptable.app/alert/#-addsecuretextfield
 	 */
 	addSecureTextField(placeholder: string, text: string): void
 	
@@ -70,6 +79,7 @@ declare class Alert {
 	 * 
 	 * Retrieves the value of a text field added using addTextField() or addSecureTextField(). Indices for text fields are assigned in the same order as they are added to the alert starting at 0.
 	 * @param index - Index of text field to retrieve for value.
+	 * @see https://docs.scriptable.app/alert/#-textfieldvalue
 	 */
 	textFieldValue(index: number): string
 	
@@ -77,16 +87,19 @@ declare class Alert {
 	 * _Presents the alert modally._
 	 * 
 	 * This is a shorthand for presentAlert().
+	 * @see https://docs.scriptable.app/alert/#-present
 	 */
 	present(): Promise<number>
 	
 	/**
 	 * _Presents the alert modally._
+	 * @see https://docs.scriptable.app/alert/#-presentalert
 	 */
 	presentAlert(): Promise<number>
 	
 	/**
 	 * _Presents the alert as a sheet._
+	 * @see https://docs.scriptable.app/alert/#-presentsheet
 	 */
 	presentSheet(): Promise<number>
 }
@@ -95,6 +108,7 @@ declare class Alert {
 
 /**
  * _Arguments passed to the script._
+ * @see https://docs.scriptable.app/args
  */
 declare var args: {
 	/**
@@ -103,6 +117,7 @@ declare var args: {
 	 * All plain texts passed to the script from a share sheet.
 	 * 
 	 * If you have enabled "Text" as a share sheet input from the script settings, the script can be run from any share sheet throughout the system that shares plain text.
+	 * @see https://docs.scriptable.app/args/#plaintexts
 	 */
 	plainTexts: string[]
 	
@@ -112,6 +127,7 @@ declare var args: {
 	 * All URLs passed to the script from a share sheet.
 	 * 
 	 * If you have enabled "URLs" as a share sheet input from the script settings, the script can be run from any share sheet throughout the system that shares URLs.
+	 * @see https://docs.scriptable.app/args/#urls
 	 */
 	urls: string[]
 	
@@ -121,6 +137,7 @@ declare var args: {
 	 * All file URLs passed to the script from a share sheet.
 	 * 
 	 * If you have enabled "File URLs" as a share sheet input from the script settings, the script can be run from any share sheet throughout the system that shares URLs pointing to a file.
+	 * @see https://docs.scriptable.app/args/#fileurls
 	 */
 	fileURLs: string[]
 	
@@ -130,6 +147,7 @@ declare var args: {
 	 * All images passed to the script from a share sheet.
 	 * 
 	 * If you have enabled "Images" as a share sheet input from the script settings, the script can be run from any share sheet throughout the system that shares images.
+	 * @see https://docs.scriptable.app/args/#images
 	 */
 	images: Image[]
 	
@@ -137,6 +155,7 @@ declare var args: {
 	 * _Query parameters from a URL scheme._
 	 * 
 	 * Query parameters are supplied to a script when running it from a URL scheme. See the documentation on Scriptables URL schems for more information.
+	 * @see https://docs.scriptable.app/args/#queryparameters
 	 */
 	queryParameters: {[key: string]: string}
 	
@@ -146,6 +165,7 @@ declare var args: {
 	 * When creating a Siri Shortcut in Scriptable, you can define arguments that are passed to the script when the shortcut is run. This lets you differentiate the behaviour of a script based on some predefiend arguments.
 	 * 
 	 * For example, a script that checks the wather may expect an argument with the key "city". When creating a Siri Shortcut for the script, the argument should be passed with the value containing the name of the city to to check the weather for.
+	 * @see https://docs.scriptable.app/args/#sirishortcutarguments
 	 */
 	siriShortcutArguments: {[key: string]: string}
 	
@@ -155,6 +175,7 @@ declare var args: {
 	 * The notification that a script is being run in or the application was opened from.
 	 * 
 	 * The notification contains all information that was set when the notification was originally scheduled, including the `userInfo` property which can be used to contain custom data that might be relevant when running the script.
+	 * @see https://docs.scriptable.app/args/#notification
 	 */
 	notification: Notification
 }
@@ -163,30 +184,36 @@ declare var args: {
 
 /**
  * _Holds reminders and events._
+ * @see https://docs.scriptable.app/calendar
  */
 declare class Calendar {
 	/**
 	 * _Calendar identifier._
+	 * @see https://docs.scriptable.app/calendar/#identifier
 	 */
 	identifier: string
 	
 	/**
 	 * _Title of calendar._
+	 * @see https://docs.scriptable.app/calendar/#title
 	 */
 	title: string
 	
 	/**
 	 * _Whether the calendar is a subscribed calendar._
+	 * @see https://docs.scriptable.app/calendar/#issubscribed
 	 */
 	isSubscribed: boolean
 	
 	/**
 	 * _Indicates whether items can be added, edited, and deleted in the calendar._
+	 * @see https://docs.scriptable.app/calendar/#allowscontentmodifications
 	 */
 	allowsContentModifications: boolean
 	
 	/**
 	 * _Color of calendar._
+	 * @see https://docs.scriptable.app/calendar/#color
 	 */
 	color: Color
 	
@@ -194,6 +221,7 @@ declare class Calendar {
 	 * _Fetches calendars for reminders._
 	 * 
 	 * A calendar can only hold either reminders or events. Call this function to fetch all calendars that can hold reminders.
+	 * @see https://docs.scriptable.app/calendar/#forreminders
 	 */
 	static forReminders(): Promise<Calendar[]>
 	
@@ -201,18 +229,21 @@ declare class Calendar {
 	 * _Fetches calendars for events._
 	 * 
 	 * A calendar can only hold either reminders or events. Call this function to fetch all calendars that can hold events.
+	 * @see https://docs.scriptable.app/calendar/#forevents
 	 */
 	static forEvents(): Promise<Calendar[]>
 	
 	/**
 	 * _Fetches a calendar that holds reminders._
 	 * @param title - Title of calendar.
+	 * @see https://docs.scriptable.app/calendar/#forremindersbytitle
 	 */
 	static forRemindersByTitle(title: string): Promise<Calendar>
 	
 	/**
 	 * _Fetches a calendar that holds events._
 	 * @param title - Title of calendar.
+	 * @see https://docs.scriptable.app/calendar/#foreventsbytitle
 	 */
 	static forEventsByTitle(title: string): Promise<Calendar>
 	
@@ -220,6 +251,7 @@ declare class Calendar {
 	 * _Default calendar for reminders._
 	 * 
 	 * A calendar can only hold either reminders or events. Call this function to get the default calendar that can hold reminders.
+	 * @see https://docs.scriptable.app/calendar/#defaultforreminders
 	 */
 	static defaultForReminders(): Promise<Calendar>
 	
@@ -227,12 +259,14 @@ declare class Calendar {
 	 * _Default calendar for events._
 	 * 
 	 * A calendar can only hold either reminders or events. Call this function to get the default calendar that can hold events.
+	 * @see https://docs.scriptable.app/calendar/#defaultforevents
 	 */
 	static defaultForEvents(): Promise<Calendar>
 	
 	/**
 	 * _Presents a view for picking calendars._
 	 * @param allowMultiple - Whether to allow picking multiple calenders. Defaults to false.
+	 * @see https://docs.scriptable.app/calendar/#presentpicker
 	 */
 	static presentPicker(allowMultiple: boolean): Promise<Calendar[]>
 	
@@ -248,6 +282,7 @@ declare class Calendar {
 	 * 
 	 * Not all calendars support all of these availabilities and some calendars may not support availability at all. Use this function to check if the calendar supports a specific availability.
 	 * @param availability - Availability to check against.
+	 * @see https://docs.scriptable.app/calendar/#-supportsavailability
 	 */
 	supportsAvailability(availability: "busy" | "free" | "tentative" | "unavailable"): boolean
 	
@@ -255,6 +290,7 @@ declare class Calendar {
 	 * _Saves calendar._
 	 * 
 	 * Saves changes to the calendar.
+	 * @see https://docs.scriptable.app/calendar/#-save
 	 */
 	save(): void
 }
@@ -275,40 +311,48 @@ declare namespace CalendarEvent {
  * _Manages events in calendars._
  * 
  * In order to add the event to your calendar, you must call the save() function.
+ * @see https://docs.scriptable.app/calendarevent/#-new-calendarevent
  */
 declare class CalendarEvent {
 	/**
 	 * _Identifier of event._
+	 * @see https://docs.scriptable.app/calendarevent/#identifier
 	 */
 	identifier: string
 	
 	/**
 	 * _Title of event._
+	 * @see https://docs.scriptable.app/calendarevent/#title
 	 */
 	title: string
 	
 	/**
 	 * _Location of event._
+	 * @see https://docs.scriptable.app/calendarevent/#location
 	 */
 	location: string
 	
 	/**
 	 * _Notes associated with event._
+	 * @see https://docs.scriptable.app/calendarevent/#notes
 	 */
 	notes: string
 	
 	/**
 	 * _Start date of event._
+	 * @see https://docs.scriptable.app/calendarevent/#startdate
 	 */
 	startDate: Date
 	
 	/**
 	 * _End date of event._
+	 * @see https://docs.scriptable.app/calendarevent/#enddate
 	 */
 	endDate: Date
 	
 	/**
 	 * _Whether the event is an all-day event._
+	 * @see https://docs.scriptable.app/calendarevent/#isallday
 	 */
 	isAllDay: boolean
 	
@@ -326,6 +370,7 @@ declare class CalendarEvent {
 	 *     }
 	 * 
 	 * Note that the property is read-only since iOS does not expose API to modify the attendees of an event.
+	 * @see https://docs.scriptable.app/calendarevent/#attendees
 	 */
 	attendees: CalendarEvent.Attendees[]
 	
@@ -340,6 +385,7 @@ declare class CalendarEvent {
 	 * *   unavailable
 	 * 
 	 * Be aware that not all calendars support all of these availabilities and some calendars may not support availability at all. Use `Calendar.supportsAvailability()` to check if a calendar supports a specific availability.
+	 * @see https://docs.scriptable.app/calendarevent/#availability
 	 */
 	availability: "busy" | "free" | "tentative" | "unavailable"
 	
@@ -347,11 +393,13 @@ declare class CalendarEvent {
 	 * _Time zone of event._
 	 * 
 	 * Geopolitical region identifier that identifies the time zone, e.g. "Europe/Copenhagen", "America/New\_York" and "Asia/Tokyo".
+	 * @see https://docs.scriptable.app/calendarevent/#timezone
 	 */
 	timeZone: string
 	
 	/**
 	 * _Calendar the event is stored in._
+	 * @see https://docs.scriptable.app/calendarevent/#calendar
 	 */
 	calendar: Calendar
 	
@@ -359,6 +407,7 @@ declare class CalendarEvent {
 	 * _Manages events in calendars._
 	 * 
 	 * In order to add the event to your calendar, you must call the save() function.
+	 * @see https://docs.scriptable.app/calendarevent/#-new-calendarevent
 	 */
 	constructor()
 	
@@ -366,42 +415,49 @@ declare class CalendarEvent {
 	 * _Presents a view for creating a calendar event._
 	 * 
 	 * The presented view supports editing various attributes of the event, including title, location, dates, recurrence and alerts.
+	 * @see https://docs.scriptable.app/calendarevent/#presentcreate
 	 */
 	static presentCreate(): Promise<CalendarEvent>
 	
 	/**
 	 * _Events occurring today._
 	 * @param calendars - Calendars to fetch events for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/calendarevent/#today
 	 */
 	static today(calendars: Calendar[]): Promise<CalendarEvent[]>
 	
 	/**
 	 * _Events occurring tomorrow._
 	 * @param calendars - Calendars to fetch events for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/calendarevent/#tomorrow
 	 */
 	static tomorrow(calendars: Calendar[]): Promise<CalendarEvent[]>
 	
 	/**
 	 * _Events that occurred yesterday._
 	 * @param calendars - Calendars to fetch events for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/calendarevent/#yesterday
 	 */
 	static yesterday(calendars: Calendar[]): Promise<CalendarEvent[]>
 	
 	/**
 	 * _Events that occur this week._
 	 * @param calendars - Calendars to fetch events for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/calendarevent/#thisweek
 	 */
 	static thisWeek(calendars: Calendar[]): Promise<CalendarEvent[]>
 	
 	/**
 	 * _Events that occur next week._
 	 * @param calendars - Calendars to fetch events for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/calendarevent/#nextweek
 	 */
 	static nextWeek(calendars: Calendar[]): Promise<CalendarEvent[]>
 	
 	/**
 	 * _Events that occurred last week._
 	 * @param calendars - Calendars to fetch events for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/calendarevent/#lastweek
 	 */
 	static lastWeek(calendars: Calendar[]): Promise<CalendarEvent[]>
 	
@@ -410,6 +466,7 @@ declare class CalendarEvent {
 	 * @param startDate - Start date to fetch events for.
 	 * @param endDate - End date to fetch events for.
 	 * @param calendars - Calendars to fetch events for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/calendarevent/#between
 	 */
 	static between(startDate: Date, endDate: Date, calendars: Calendar[]): Promise<CalendarEvent[]>
 	
@@ -418,11 +475,13 @@ declare class CalendarEvent {
 	 * 
 	 * Recurrence rules specify when the reminder should be repeated. See the documentation of RecurrenceRule for more information on creating rules.
 	 * @param recurrenceRule - Recurrence rule to add to the reminder.
+	 * @see https://docs.scriptable.app/calendarevent/#-addrecurrencerule
 	 */
 	addRecurrenceRule(recurrenceRule: RecurrenceRule): void
 	
 	/**
 	 * _Removes all recurrence rules._
+	 * @see https://docs.scriptable.app/calendarevent/#-removeallrecurrencerules
 	 */
 	removeAllRecurrenceRules(): void
 	
@@ -430,11 +489,13 @@ declare class CalendarEvent {
 	 * _Saves event._
 	 * 
 	 * Saves changes to an event, inserting it into the calendar if it is newly created.
+	 * @see https://docs.scriptable.app/calendarevent/#-save
 	 */
 	save(): void
 	
 	/**
 	 * _Removes event from calendar._
+	 * @see https://docs.scriptable.app/calendarevent/#-remove
 	 */
 	remove(): void
 	
@@ -442,6 +503,7 @@ declare class CalendarEvent {
 	 * _Presents a view for editing the calendar event._
 	 * 
 	 * The presented view supports editing various attributes of the event, including title, location, dates, recurrence and alerts.
+	 * @see https://docs.scriptable.app/calendarevent/#-presentedit
 	 */
 	presentEdit(): Promise<CalendarEvent>
 }
@@ -452,6 +514,7 @@ declare class CalendarEvent {
  * _Open x-callback-url requests._
  * 
  * Constructs an object that opens x-callback-url requests and waits for a response from the target app.
+ * @see https://docs.scriptable.app/callbackurl/#-new-callbackurl
  */
 declare class CallbackURL {
 	/**
@@ -459,6 +522,7 @@ declare class CallbackURL {
 	 * 
 	 * Constructs an object that opens x-callback-url requests and waits for a response from the target app.
 	 * @param baseURL - Base URL of the request. This is usally something like my-app://x-callback-url/action
+	 * @see https://docs.scriptable.app/callbackurl/#-new-callbackurl
 	 */
 	constructor(baseURL: string)
 	
@@ -468,6 +532,7 @@ declare class CallbackURL {
 	 * Appends a key/value pair to the base URL as a query parameter. The name and value are automatically encoded. Do not add the x-callback-url paramters, i.e. x-source, x-success, x-error and x-cancel as Scriptable will add those.
 	 * @param name - Name of the query parameter to add.
 	 * @param value - Value of the query parameter to add.
+	 * @see https://docs.scriptable.app/callbackurl/#-addparameter
 	 */
 	addParameter(name: string, value: string): void
 	
@@ -475,6 +540,7 @@ declare class CallbackURL {
 	 * _Opens the callback URL._
 	 * 
 	 * Opens the target app and waits for the target app to perform the action. The returned promise contains the query parameters supplied by the target app when it invokes the callback. If the action failed in the target app or the action was cancelled, the promise will be rejected. The promise is also rejected if the action times out because the target app did not invoke the callback.
+	 * @see https://docs.scriptable.app/callbackurl/#-open
 	 */
 	open(): Promise<any>
 	
@@ -482,6 +548,7 @@ declare class CallbackURL {
 	 * _Creates the callback URL._
 	 * 
 	 * Creates a callback URL with the specified base URL and query parameters.
+	 * @see https://docs.scriptable.app/callbackurl/#-geturl
 	 */
 	getURL(): string
 }
@@ -492,30 +559,36 @@ declare class CallbackURL {
  * _Stores color data including opacity._
  * 
  * Constructs a new color with a hex value and optionally an alpha value. The hex value may specify the alpha value but this will be ignored if the alpha value parameter is provided. Examples of valid hex values: #ff0000, #00ff0080 #00f and #ff. The hashtag sign is optional.
+ * @see https://docs.scriptable.app/color/#-new-color
  */
 declare class Color {
 	/**
 	 * _HEX representation._
+	 * @see https://docs.scriptable.app/color/#hex
 	 */
 	hex: string
 	
 	/**
 	 * _Amount of red in the color._
+	 * @see https://docs.scriptable.app/color/#red
 	 */
 	red: number
 	
 	/**
 	 * _Amount of green in the color._
+	 * @see https://docs.scriptable.app/color/#green
 	 */
 	green: number
 	
 	/**
 	 * _Amount of blue in the color._
+	 * @see https://docs.scriptable.app/color/#blue
 	 */
 	blue: number
 	
 	/**
 	 * _Alpha of the color._
+	 * @see https://docs.scriptable.app/color/#alpha
 	 */
 	alpha: number
 	
@@ -525,81 +598,97 @@ declare class Color {
 	 * Constructs a new color with a hex value and optionally an alpha value. The hex value may specify the alpha value but this will be ignored if the alpha value parameter is provided. Examples of valid hex values: #ff0000, #00ff0080 #00f and #ff. The hashtag sign is optional.
 	 * @param hex - Hex value.
 	 * @param alpha - Alpha value.
+	 * @see https://docs.scriptable.app/color/#-new-color
 	 */
 	constructor(hex: string, alpha: number)
 	
 	/**
 	 * _Constructs a black color._
+	 * @see https://docs.scriptable.app/color/#black
 	 */
 	static black(): Color
 	
 	/**
 	 * _Constructs a dark gray color._
+	 * @see https://docs.scriptable.app/color/#darkgray
 	 */
 	static darkGray(): Color
 	
 	/**
 	 * _Constructs a light gray color._
+	 * @see https://docs.scriptable.app/color/#lightgray
 	 */
 	static lightGray(): Color
 	
 	/**
 	 * _Constructs a white color._
+	 * @see https://docs.scriptable.app/color/#white
 	 */
 	static white(): Color
 	
 	/**
 	 * _Constructs a gray color._
+	 * @see https://docs.scriptable.app/color/#gray
 	 */
 	static gray(): Color
 	
 	/**
 	 * _Constructs a red color._
+	 * @see https://docs.scriptable.app/color/#red
 	 */
 	static red(): Color
 	
 	/**
 	 * _Constructs a green color._
+	 * @see https://docs.scriptable.app/color/#green
 	 */
 	static green(): Color
 	
 	/**
 	 * _Constructs a blue color._
+	 * @see https://docs.scriptable.app/color/#blue
 	 */
 	static blue(): Color
 	
 	/**
 	 * _Constructs a cyan color._
+	 * @see https://docs.scriptable.app/color/#cyan
 	 */
 	static cyan(): Color
 	
 	/**
 	 * _Constructs a yellow color._
+	 * @see https://docs.scriptable.app/color/#yellow
 	 */
 	static yellow(): Color
 	
 	/**
 	 * _Constructs a magenta color._
+	 * @see https://docs.scriptable.app/color/#magenta
 	 */
 	static magenta(): Color
 	
 	/**
 	 * _Constructs a orange color._
+	 * @see https://docs.scriptable.app/color/#orange
 	 */
 	static orange(): Color
 	
 	/**
 	 * _Constructs a purple color._
+	 * @see https://docs.scriptable.app/color/#purple
 	 */
 	static purple(): Color
 	
 	/**
 	 * _Constructs a brown color._
+	 * @see https://docs.scriptable.app/color/#brown
 	 */
 	static brown(): Color
 	
 	/**
 	 * _Constructs a transparent color._
+	 * @see https://docs.scriptable.app/color/#clear
 	 */
 	static clear(): Color
 }
@@ -608,30 +697,36 @@ declare class Color {
 
 /**
  * _Configuration the script runs with._
+ * @see https://docs.scriptable.app/config
  */
 declare var config: {
 	/**
 	 * Whether the script is running in the app.
+	 * @see https://docs.scriptable.app/config/#runsinapp
 	 */
 	runsInApp: boolean
 	
 	/**
 	 * Whether the script is running in the action extension.
+	 * @see https://docs.scriptable.app/config/#runsinactionextension
 	 */
 	runsInActionExtension: boolean
 	
 	/**
 	 * Whether the script is running with Siri.
+	 * @see https://docs.scriptable.app/config/#runswithsiri
 	 */
 	runsWithSiri: boolean
 	
 	/**
 	 * Whether the script is running in a notification.
+	 * @see https://docs.scriptable.app/config/#runsinnotification
 	 */
 	runsInNotification: boolean
 	
 	/**
 	 * Whether the script was run from the home screen. You can add a script to the home screen from the script settings.
+	 * @see https://docs.scriptable.app/config/#runsfromhomescreen
 	 */
 	runsFromHomeScreen: boolean
 }
@@ -640,6 +735,7 @@ declare var config: {
 
 /**
  * _Adds messages to the log._
+ * @see https://docs.scriptable.app/console
  */
 declare var console: {
 	/**
@@ -649,6 +745,7 @@ declare var console: {
 	 * 
 	 * You can also use the global function `log(message)` which is a shorthand for `console.log`.
 	 * @param message - Message to log to the console.
+	 * @see https://docs.scriptable.app/console/#log
 	 */
 	static log(message: any): void
 	
@@ -659,6 +756,7 @@ declare var console: {
 	 * 
 	 * You can also use the global function `logWarning(message)` which is a shorthand for `console.warn`.
 	 * @param message - Message to log to the console.
+	 * @see https://docs.scriptable.app/console/#warn
 	 */
 	static warn(message: any): void
 	
@@ -669,6 +767,7 @@ declare var console: {
 	 * 
 	 * You can also use the global function `logError(message)` which is a shorthand for `console.error`.
 	 * @param message - Message to log to the console.
+	 * @see https://docs.scriptable.app/console/#error
 	 */
 	static error(message: any): void
 }
@@ -713,45 +812,54 @@ declare namespace Contact {
  * _Contact in the address book._
  * 
  * In order to add the contact to your address book, you must queue it for insertion using `Contact.add()`. When you're done making changes to the address book you should call `Contact.persistChanges()` to persist the changes.
+ * @see https://docs.scriptable.app/contact/#-new-contact
  */
 declare class Contact {
 	/**
 	 * _Uniquely identifies the contact on the device._
+	 * @see https://docs.scriptable.app/contact/#identifier
 	 */
 	identifier: string
 	
 	/**
 	 * _Name prefix._
+	 * @see https://docs.scriptable.app/contact/#nameprefix
 	 */
 	namePrefix: string
 	
 	/**
 	 * _Given name._
+	 * @see https://docs.scriptable.app/contact/#givenname
 	 */
 	givenName: string
 	
 	/**
 	 * _Middle name._
+	 * @see https://docs.scriptable.app/contact/#middlename
 	 */
 	middleName: string
 	
 	/**
 	 * _Family name._
+	 * @see https://docs.scriptable.app/contact/#familyname
 	 */
 	familyName: string
 	
 	/**
 	 * _Nickname._
+	 * @see https://docs.scriptable.app/contact/#nickname
 	 */
 	nickname: string
 	
 	/**
 	 * _Birthday._
+	 * @see https://docs.scriptable.app/contact/#birthday
 	 */
 	birthday: Date
 	
 	/**
 	 * _Profile picture._
+	 * @see https://docs.scriptable.app/contact/#image
 	 */
 	image: Image
 	
@@ -770,6 +878,7 @@ declare class Contact {
 	 * The identifier uniquely identifies the email address on this device. The label is a description of the email address and the value holds the email address itself.
 	 * 
 	 * When updating this property, you must set the entire array of email addresses that you would like to store on the contact. Each value in the array must have the "value" key. The other keys are optional.
+	 * @see https://docs.scriptable.app/contact/#emailaddresses
 	 */
 	emailAddresses: Contact.EmailAddresses[]
 	
@@ -788,6 +897,7 @@ declare class Contact {
 	 * The identifier uniquely identifies the phone number on this device. The label is a description of the phone number and the value holds the phone number itself.
 	 * 
 	 * When updating this property, you must set the entire array of phone numbers that you would like to store on the contact. Each value in the array must have the "value" key. The other keys are optional.
+	 * @see https://docs.scriptable.app/contact/#phonenumbers
 	 */
 	phoneNumbers: Contact.PhoneNumbers[]
 	
@@ -810,6 +920,7 @@ declare class Contact {
 	 * The identifier uniquely identifies the phone number on this device. The label is a description of the phone number and the value holds the phone number itself.
 	 * 
 	 * When updating this property, you must set the entire array of postal addresses that you would like to store on the contact. The "identifier" key is optional.
+	 * @see https://docs.scriptable.app/contact/#postaladdresses
 	 */
 	postalAddresses: Contact.PostalAddresses[]
 	
@@ -831,31 +942,37 @@ declare class Contact {
 	 * The identifier uniquely identifies the social profile on this device. The label is a description of the social profile, the service is the social profile's service name, the URL contains a link to the social profile, the userIdentifier is the identifier of the social profile and the username is the name for the social profile.
 	 * 
 	 * When updating this property, you must set the entire array of social profiles that you would like to store on the contact. The "identifier" key is optional.
+	 * @see https://docs.scriptable.app/contact/#socialprofiles
 	 */
 	socialProfiles: Contact.SocialProfiles[]
 	
 	/**
 	 * _Note for the contact._
+	 * @see https://docs.scriptable.app/contact/#note
 	 */
 	note: string
 	
 	/**
 	 * _URL addresses._
+	 * @see https://docs.scriptable.app/contact/#urladdresses
 	 */
 	urlAddresses: string
 	
 	/**
 	 * _Name of the organization associated with the contact._
+	 * @see https://docs.scriptable.app/contact/#organizationname
 	 */
 	organizationName: string
 	
 	/**
 	 * _Name of the department associated with the contact._
+	 * @see https://docs.scriptable.app/contact/#departmentname
 	 */
 	departmentName: string
 	
 	/**
 	 * _The contact's job title._
+	 * @see https://docs.scriptable.app/contact/#jobtitle
 	 */
 	jobTitle: string
 	
@@ -863,6 +980,7 @@ declare class Contact {
 	 * _Contact in the address book._
 	 * 
 	 * In order to add the contact to your address book, you must queue it for insertion using `Contact.add()`. When you're done making changes to the address book you should call `Contact.persistChanges()` to persist the changes.
+	 * @see https://docs.scriptable.app/contact/#-new-contact
 	 */
 	constructor()
 	
@@ -871,6 +989,7 @@ declare class Contact {
 	 * 
 	 * Fetches the contacts in the specified containers. A contact can be in only one container.
 	 * @param containers - Containers to fetch contacts from.
+	 * @see https://docs.scriptable.app/contact/#all
 	 */
 	static all(containers: ContactsContainer[]): Promise<Contact[]>
 	
@@ -879,6 +998,7 @@ declare class Contact {
 	 * 
 	 * Fetches the contacts in the specified contacts groups. A contact may belong to many groups.
 	 * @param groups - Groups to fetch contacts from.
+	 * @see https://docs.scriptable.app/contact/#ingroups
 	 */
 	static inGroups(groups: ContactsGroup[]): Promise<Contact[]>
 	
@@ -890,6 +1010,7 @@ declare class Contact {
 	 * For performance reasons, it is best to batch changes to the address book. Therefore you should queue all updates, insertions and removals of contacts and contacts groups to as large batches as possible and then call `Contact.persistChanges()` when you want to persist the changes to the address book.
 	 * @param contact - Contact to queue to be added.
 	 * @param containerIdentifier - Optional. Identifier of container to add the contact to. If null is specified, the contact will be added to the default container.
+	 * @see https://docs.scriptable.app/contact/#add
 	 */
 	static add(contact: Contact, containerIdentifier: string): void
 	
@@ -900,6 +1021,7 @@ declare class Contact {
 	 * 
 	 * For performance reasons, it is best to batch changes to the address book. Therefore you should queue all updates, insertions and removals of contacts and contacts groups to as large batches as possible and then call `Contact.persistChanges()` when you want to persist the changes to the address book.
 	 * @param contact - Contact to queue to be updated.
+	 * @see https://docs.scriptable.app/contact/#update
 	 */
 	static update(contact: Contact): void
 	
@@ -910,6 +1032,7 @@ declare class Contact {
 	 * 
 	 * For performance reasons, it is best to batch changes to the address book. Therefore you should queue all updates, insertions and removals of contacts and contacts groups to as large batches as possible and then call `Contact.persistChanges()` when you want to persist the changes to the address book.
 	 * @param contact - Contact to queue to be deleted.
+	 * @see https://docs.scriptable.app/contact/#delete
 	 */
 	static delete(contact: Contact): void
 	
@@ -919,39 +1042,46 @@ declare class Contact {
 	 * Call this function to persist changes queued with `Contact.add()`, `Contact.update()` and `Contact.delete()`.
 	 * 
 	 * For performance reasons, it is best to batch changes to the address book. Therefore you should queue all updates, insertions and removals of contacts and contacts groups to as large batches as possible and then call `Contact.persistChanges()` when you want to persist the changes to the address book.
+	 * @see https://docs.scriptable.app/contact/#persistchanges
 	 */
-	static persistChanges(): Promise<any>
+	static persistChanges(): Promise<void>
 }
 
 
 
 /**
  * _Collection of contacts._
+ * @see https://docs.scriptable.app/contactscontainer
  */
 declare class ContactsContainer {
 	/**
 	 * _Identifier of the contacts container._
+	 * @see https://docs.scriptable.app/contactscontainer/#identifier
 	 */
 	identifier: string
 	
 	/**
 	 * _Name of the contacts container._
+	 * @see https://docs.scriptable.app/contactscontainer/#name
 	 */
 	name: string
 	
 	/**
 	 * _Fetches default contacts container._
+	 * @see https://docs.scriptable.app/contactscontainer/#default
 	 */
 	static default(): Promise<ContactsContainer>
 	
 	/**
 	 * _Fetches all contacts containers._
+	 * @see https://docs.scriptable.app/contactscontainer/#all
 	 */
 	static all(): Promise<ContactsContainer[]>
 	
 	/**
 	 * _Fetches a contacts container._
 	 * @param identifier - Identifier of the contacts container to fetch.
+	 * @see https://docs.scriptable.app/contactscontainer/#withidentifier
 	 */
 	static withIdentifier(identifier: string): Promise<ContactsContainer>
 }
@@ -962,15 +1092,18 @@ declare class ContactsContainer {
  * _Group of contacts._
  * 
  * In order to add the group to your address book, you must queue it for insertion using `Contact.add()`. When you're done making changes to the address book you should call `Contact.persistChanges()` to persist the changes.
+ * @see https://docs.scriptable.app/contactsgroup/#-new-contactsgroup
  */
 declare class ContactsGroup {
 	/**
 	 * _Identifier of the contacts group._
+	 * @see https://docs.scriptable.app/contactsgroup/#identifier
 	 */
 	identifier: string
 	
 	/**
 	 * _Name of the contacts group._
+	 * @see https://docs.scriptable.app/contactsgroup/#name
 	 */
 	name: string
 	
@@ -978,6 +1111,7 @@ declare class ContactsGroup {
 	 * _Group of contacts._
 	 * 
 	 * In order to add the group to your address book, you must queue it for insertion using `Contact.add()`. When you're done making changes to the address book you should call `Contact.persistChanges()` to persist the changes.
+	 * @see https://docs.scriptable.app/contactsgroup/#-new-contactsgroup
 	 */
 	constructor()
 	
@@ -986,6 +1120,7 @@ declare class ContactsGroup {
 	 * 
 	 * Fetches the contacts groups in the specified containers. A group can be in only one container.
 	 * @param containers - Container to fetch contacts groups from.
+	 * @see https://docs.scriptable.app/contactsgroup/#all
 	 */
 	static all(containers: ContactsContainer[]): Promise<ContactsGroup[]>
 	
@@ -997,6 +1132,7 @@ declare class ContactsGroup {
 	 * For performance reasons, it is best to batch changes to the address book. Therefore you should queue all updates, insertions and removals of contacts and contacts groups to as large batches as possible and then call `Contact.persistChanges()` when you want to persist the changes to the address book.
 	 * @param group - Contacts group to queue to be added.
 	 * @param containerIdentifier - Optional. Identifier of container to add the contacts group to. If null is specified, the group will be added to the default container.
+	 * @see https://docs.scriptable.app/contactsgroup/#add
 	 */
 	static add(group: ContactsGroup, containerIdentifier: string): void
 	
@@ -1007,6 +1143,7 @@ declare class ContactsGroup {
 	 * 
 	 * For performance reasons, it is best to batch changes to the address book. Therefore you should queue all updates, insertions and removals of contacts and contacts groups to as large batches as possible and then call `Contact.persistChanges()` when you want to persist the changes to the address book.
 	 * @param group - Contacts group to queue to be updated.
+	 * @see https://docs.scriptable.app/contactsgroup/#update
 	 */
 	static update(group: ContactsGroup): void
 	
@@ -1017,6 +1154,7 @@ declare class ContactsGroup {
 	 * 
 	 * For performance reasons, it is best to batch changes to the address book. Therefore you should queue all updates, insertions and removals of contacts and contacts groups to as large batches as possible and then call `Contact.persistChanges()` when you want to persist the changes to the address book.
 	 * @param group - Contacts group to queue to be deleted.
+	 * @see https://docs.scriptable.app/contactsgroup/#delete
 	 */
 	static delete(group: ContactsGroup): void
 	
@@ -1025,6 +1163,7 @@ declare class ContactsGroup {
 	 * 
 	 * In order to persist the change, you should call `Contact.persistChanges()`. It is important that the contact is added to the address book. To add the contact to the address book, you should queue it for insertion using `Contact.add()` before persisting the changes.
 	 * @param contact - Contact to add to the group.
+	 * @see https://docs.scriptable.app/contactsgroup/#-addmember
 	 */
 	addMember(contact: Contact): void
 	
@@ -1033,6 +1172,7 @@ declare class ContactsGroup {
 	 * 
 	 * In order to persist the change, you should call `Contact.persistChanges()`. It is important that the contact is added to the address book. To add the contact to the address book, you should queue it for insertion using `Contact.add()` before persisting the changes.
 	 * @param contact - Contact to add to the group.
+	 * @see https://docs.scriptable.app/contactsgroup/#-removemember
 	 */
 	removeMember(contact: Contact): void
 }
@@ -1041,6 +1181,7 @@ declare class ContactsGroup {
 
 /**
  * _Raw data representation._
+ * @see https://docs.scriptable.app/data
  */
 declare class Data {
 	/**
@@ -1048,6 +1189,7 @@ declare class Data {
 	 * 
 	 * The provided string is assumed to be UTF8 encoded. If the string is not UTF8 encoded, the function will return null.
 	 * @param string - String to create data from.
+	 * @see https://docs.scriptable.app/data/#fromstring
 	 */
 	static fromString(string: string): Data
 	
@@ -1056,6 +1198,7 @@ declare class Data {
 	 * 
 	 * Reads the raw data of the file at the specified file path.
 	 * @param filePath - Path of file to read data from.
+	 * @see https://docs.scriptable.app/data/#fromfile
 	 */
 	static fromFile(filePath: string): Data
 	
@@ -1064,18 +1207,21 @@ declare class Data {
 	 * 
 	 * The supplied string must be base 64 encoded otherwise the function will return null.
 	 * @param base64String - Base 64 encoded string to create data from.
+	 * @see https://docs.scriptable.app/data/#frombase64string
 	 */
 	static fromBase64String(base64String: string): Data
 	
 	/**
 	 * _Creates data from JPEG image._
 	 * @param image - JPEG image to convert to data.
+	 * @see https://docs.scriptable.app/data/#fromjpeg
 	 */
 	static fromJPEG(image: Image): Data
 	
 	/**
 	 * _Creates data from PNG image._
 	 * @param image - PNG image to convert to data.
+	 * @see https://docs.scriptable.app/data/#frompng
 	 */
 	static fromPNG(image: Image): Data
 	
@@ -1083,6 +1229,7 @@ declare class Data {
 	 * _Creates a string from the data._
 	 * 
 	 * The data is assumed to represent a UTF8 encoded string. If the string is not UTF8 encoded string, the function will return null.
+	 * @see https://docs.scriptable.app/data/#-torawstring
 	 */
 	toRawString(): string
 	
@@ -1090,11 +1237,13 @@ declare class Data {
 	 * _Creates a base 64 encoded string._
 	 * 
 	 * Creates a base 64 encoded string from the data.
+	 * @see https://docs.scriptable.app/data/#-tobase64string
 	 */
 	toBase64String(): string
 	
 	/**
 	 * _Gets bytes from data._
+	 * @see https://docs.scriptable.app/data/#-getbytes
 	 */
 	getBytes(): number[]
 }
@@ -1107,12 +1256,14 @@ declare class Data {
  * Use the date picker to present a view for selecting a date.
  * 
  * The date picker can be configured towards picking a date with or without time, just a time or picking hours and minutes for a timer.
+ * @see https://docs.scriptable.app/datepicker/#-new-datepicker
  */
 declare class DatePicker {
 	/**
 	 * _Minimum date that is selected in the picker._
 	 * 
 	 * The minimum date, along with the maximum date, specifies the valid date range. The minimum and maximum dates are ignored if the minimum date is greater than the maximum date. The dates are also ignored in countdown-timer mode.
+	 * @see https://docs.scriptable.app/datepicker/#minimumdate
 	 */
 	minimumDate: Date
 	
@@ -1120,6 +1271,7 @@ declare class DatePicker {
 	 * _Maximum date that is selected in the picker._
 	 * 
 	 * The maximum date, along with the minimum date, specifies the valid date range. The minimum and maximum dates are ignored if the minimum date is greater than the maximum date. The dates are also ignored in countdown-timer mode.
+	 * @see https://docs.scriptable.app/datepicker/#maximumdate
 	 */
 	maximumDate: Date
 	
@@ -1127,6 +1279,7 @@ declare class DatePicker {
 	 * _Countdown duration displayed by the date picker._
 	 * 
 	 * Use this property to get and set the duration of a countdown when calling the `pickCountDownDuration()` function to present the picker. The default value is zero and the maximum value is 23:59 (86,399 seconds).
+	 * @see https://docs.scriptable.app/datepicker/#countdownduration
 	 */
 	countdownDuration: number
 	
@@ -1134,6 +1287,7 @@ declare class DatePicker {
 	 * _Interval at which the date picker displays minutes._
 	 * 
 	 * Use the property to set the interval of the minute wheel. The default and minimum value is 1 and the maximum value is 30.
+	 * @see https://docs.scriptable.app/datepicker/#minuteinterval
 	 */
 	minuteInterval: number
 	
@@ -1143,6 +1297,7 @@ declare class DatePicker {
 	 * Use this property to specify the initially selected date and time when picking a date, a time or both using date picker. If no date is specified, the current date and time will be selected initially.
 	 * 
 	 * Be aware that this property does not hold the selected date after the date picker have been dismissed. The promises returned by `pickTime()`, `pickDate()` and `PickDateAndTime()` carries the selected date.
+	 * @see https://docs.scriptable.app/datepicker/#initialdate
 	 */
 	initialDate: Date
 	
@@ -1152,6 +1307,7 @@ declare class DatePicker {
 	 * Use the date picker to present a view for selecting a date.
 	 * 
 	 * The date picker can be configured towards picking a date with or without time, just a time or picking hours and minutes for a timer.
+	 * @see https://docs.scriptable.app/datepicker/#-new-datepicker
 	 */
 	constructor()
 	
@@ -1161,6 +1317,7 @@ declare class DatePicker {
 	 * Use the method to pick a time. The date picker will display hours and minutes and, depending on the locale of the device, an AM/PM designation.
 	 * 
 	 * The returned date will be the current date with the hour and minute set to the selected values. Use the `initialDate` property to set the initially selected date.
+	 * @see https://docs.scriptable.app/datepicker/#-picktime
 	 */
 	pickTime(): Promise<Date>
 	
@@ -1168,6 +1325,7 @@ declare class DatePicker {
 	 * _Presents the date picker displaying day, month and year._
 	 * 
 	 * Use the method to pick a date. The date picker will display the a day, month and year. Use the `initialDate` property to set the initially selected date.
+	 * @see https://docs.scriptable.app/datepicker/#-pickdate
 	 */
 	pickDate(): Promise<Date>
 	
@@ -1175,6 +1333,7 @@ declare class DatePicker {
 	 * _Presents the date picker displaying date and time._
 	 * 
 	 * Use the method to pick a date and a time. The date picker will day, month, year, hour, minutes and, depending on the locale of the device, an AM/PM designation. Use the `initialDate` property to set the initially selected date.
+	 * @see https://docs.scriptable.app/datepicker/#-pickdateandtime
 	 */
 	pickDateAndTime(): Promise<Date>
 	
@@ -1182,6 +1341,7 @@ declare class DatePicker {
 	 * _Presents the date picker for selecting the duration of a countdown._
 	 * 
 	 * Use the method to pick the duration of a countdown, e.g. a timer. The date picker will display hours and minutes. Use the `countdownDuration` property to set the initially selected duration.
+	 * @see https://docs.scriptable.app/datepicker/#-pickcountdownduration
 	 */
 	pickCountdownDuration(): Promise<number>
 }
@@ -1190,27 +1350,32 @@ declare class DatePicker {
 
 /**
  * _Provides information about the device._
+ * @see https://docs.scriptable.app/device
  */
 declare class Device {
 	/**
 	 * _Name identifying the device._
 	 * 
 	 * You can find and edit the name of your device in the system settings.
+	 * @see https://docs.scriptable.app/device/#name
 	 */
 	static name(): string
 	
 	/**
 	 * _Name of the operating system:_
+	 * @see https://docs.scriptable.app/device/#systemname
 	 */
 	static systemName(): string
 	
 	/**
 	 * _Version of the operating system._
+	 * @see https://docs.scriptable.app/device/#systemversion
 	 */
 	static systemVersion(): string
 	
 	/**
 	 * _Model of the device, e.g. "iPhone"._
+	 * @see https://docs.scriptable.app/device/#model
 	 */
 	static model(): string
 	
@@ -1218,6 +1383,7 @@ declare class Device {
 	 * _Whether the device is a phone._
 	 * 
 	 * You can use this property to choose behaviour of a script depending on whether its running on a phone or a pad.
+	 * @see https://docs.scriptable.app/device/#isphone
 	 */
 	static isPhone(): boolean
 	
@@ -1225,6 +1391,7 @@ declare class Device {
 	 * _Whether the device is a pad._
 	 * 
 	 * You can use this property to choose behaviour of a script depending on whether its running on a phone or a pad.
+	 * @see https://docs.scriptable.app/device/#ispad
 	 */
 	static isPad(): boolean
 	
@@ -1232,6 +1399,7 @@ declare class Device {
 	 * _Size of the screen._
 	 * 
 	 * The value is measured in points. For an explanation of the relationship between points and pixels, see the documentation of the `screenScale()` method. The value takes the device rotation into account, so the value will vary between portrait and landscape.
+	 * @see https://docs.scriptable.app/device/#screensize
 	 */
 	static screenSize(): Size
 	
@@ -1239,6 +1407,7 @@ declare class Device {
 	 * _Resolution of the screen._
 	 * 
 	 * The value is measured in pixels. The value does not take the rotation of the deviec into account.
+	 * @see https://docs.scriptable.app/device/#screenresolution
 	 */
 	static screenResolution(): Size
 	
@@ -1246,6 +1415,7 @@ declare class Device {
 	 * _Scale of the screen._
 	 * 
 	 * Standard resolution displays have a scale of 1.0 where one point on the screen equals one pixel. Retina displays will have a scale factor of 2.0 or 3.0 where one point on the screen is four or nine pixels, respectively.
+	 * @see https://docs.scriptable.app/device/#screenscale
 	 */
 	static screenScale(): number
 	
@@ -1253,36 +1423,43 @@ declare class Device {
 	 * _Brightness of the screen in percentage._
 	 * 
 	 * The value range from 0 to 1. To set the screen brightness, refer to `setScreenBrightness()`
+	 * @see https://docs.scriptable.app/device/#screenbrightness
 	 */
 	static screenBrightness(): number
 	
 	/**
 	 * _Whether the device is in portrait with the home button or home indicator at the bottom._
+	 * @see https://docs.scriptable.app/device/#isinportrait
 	 */
 	static isInPortrait(): boolean
 	
 	/**
 	 * _Whether the device is in portrait but upside down with the home button or home indicator at the top._
+	 * @see https://docs.scriptable.app/device/#isinportraitupsidedown
 	 */
 	static isInPortraitUpsideDown(): boolean
 	
 	/**
 	 * _Whether the device is in landscape with the home button or home indicator on the right side._
+	 * @see https://docs.scriptable.app/device/#isinlandscapeleft
 	 */
 	static isInLandscapeLeft(): boolean
 	
 	/**
 	 * _Whether the device is in landscape with the home button or home indicator on the left side._
+	 * @see https://docs.scriptable.app/device/#isinlandscaperight
 	 */
 	static isInLandscapeRight(): boolean
 	
 	/**
 	 * _Whether the device is lying parallel to the ground with the screen facing upwards._
+	 * @see https://docs.scriptable.app/device/#isfaceup
 	 */
 	static isFaceUp(): boolean
 	
 	/**
 	 * _Whether the device is lying parallel to the ground with the screen facing downwards._
+	 * @see https://docs.scriptable.app/device/#isfacedown
 	 */
 	static isFaceDown(): boolean
 	
@@ -1290,21 +1467,25 @@ declare class Device {
 	 * _Current battery level._
 	 * 
 	 * The value is in percentage ranging between 0 and 1.
+	 * @see https://docs.scriptable.app/device/#batterylevel
 	 */
 	static batteryLevel(): number
 	
 	/**
 	 * _Whether the device is being not plugged into power and thus discharging._
+	 * @see https://docs.scriptable.app/device/#isdischarging
 	 */
 	static isDischarging(): boolean
 	
 	/**
 	 * _Whether the device is being charged._
+	 * @see https://docs.scriptable.app/device/#ischarging
 	 */
 	static isCharging(): boolean
 	
 	/**
 	 * _Whether the device is fully charged._
+	 * @see https://docs.scriptable.app/device/#isfullycharged
 	 */
 	static isFullyCharged(): boolean
 	
@@ -1312,16 +1493,19 @@ declare class Device {
 	 * _The preferred langauges._
 	 * 
 	 * The list is ordered according to the language preferences specified in the system settings.
+	 * @see https://docs.scriptable.app/device/#preferredlanguages
 	 */
 	static preferredLanguages(): string[]
 	
 	/**
 	 * _Identifier for the device locale._
+	 * @see https://docs.scriptable.app/device/#locale
 	 */
 	static locale(): string
 	
 	/**
 	 * _Identifier for the device language._
+	 * @see https://docs.scriptable.app/device/#language
 	 */
 	static language(): string
 	
@@ -1330,6 +1514,7 @@ declare class Device {
 	 * 
 	 * The value range from 0 to 1. To set the screen brightness, refer to `setScreenBrightness()`
 	 * @param percentage - Percentage to set the screen brightness to. Value between 0 and 1.
+	 * @see https://docs.scriptable.app/device/#setscreenbrightness
 	 */
 	static setScreenBrightness(percentage: number): void
 }
@@ -1338,6 +1523,7 @@ declare class Device {
 
 /**
  * _Presents an interface for dictation._
+ * @see https://docs.scriptable.app/dictation
  */
 declare class Dictation {
 	/**
@@ -1345,6 +1531,7 @@ declare class Dictation {
 	 * 
 	 * Presents an interface that shows the dictated string. Press "Done" when you are done dictating the text.
 	 * @param locale - Optional string identifier that specifies the language to dictate in. E.g. "en" for English, "it" for Italian and "da" for Danish. Defaults to the locale of the device.
+	 * @see https://docs.scriptable.app/dictation/#start
 	 */
 	static start(locale: string): Promise<string>
 }
@@ -1353,6 +1540,7 @@ declare class Dictation {
 
 /**
  * _Presents a document picker._
+ * @see https://docs.scriptable.app/documentpicker
  */
 declare class DocumentPicker {
 	/**
@@ -1360,6 +1548,7 @@ declare class DocumentPicker {
 	 * 
 	 * Presents a picker that promps for opening a document from the Files app. When fulfilled the returned promise will provide the paths for the selected documents. Use an instance of FileManager to read the contents of the files.
 	 * @param types - Types of files to select. Specified using UTIs. Defaults to all files.
+	 * @see https://docs.scriptable.app/documentpicker/#open
 	 */
 	static open(types: string[]): Promise<string[]>
 	
@@ -1368,6 +1557,7 @@ declare class DocumentPicker {
 	 * 
 	 * Exports the file to a document with. A picker prompting for a destination to export the document to is presented.
 	 * @param path - Path of the file to export.
+	 * @see https://docs.scriptable.app/documentpicker/#export
 	 */
 	static export(path: string): Promise<string[]>
 	
@@ -1377,6 +1567,7 @@ declare class DocumentPicker {
 	 * Exports a string to a new file. The name of the file can optionally be specified. A picker prompting for a destination to export the document to is presented.
 	 * @param content - Content of the document to export.
 	 * @param name - Optional name of the document to export.
+	 * @see https://docs.scriptable.app/documentpicker/#exportstring
 	 */
 	static exportString(content: string, name: string): Promise<string[]>
 	
@@ -1386,6 +1577,7 @@ declare class DocumentPicker {
 	 * Exports an image to a new file. The name of the file can optionally be specified. A picker prompting for a destination to export the document to is presented.
 	 * @param image - Image to export.
 	 * @param name - Optional name of the image to export.
+	 * @see https://docs.scriptable.app/documentpicker/#exportimage
 	 */
 	static exportImage(image: Image, name: string): Promise<string[]>
 }
@@ -1396,12 +1588,14 @@ declare class DocumentPicker {
  * _Context for drawing images._
  * 
  * Constructs a new canvas to draw images, shapes and texts on. Before drawing to the context, beginDrawing() should be called.
+ * @see https://docs.scriptable.app/drawcontext/#-new-drawcontext
  */
 declare class DrawContext {
 	/**
 	 * _Size of canvas._
 	 * 
 	 * Specifies the size of the canvas on which you are drawing. The image returned by getImage() will have this exact size, except if respectScreenScale is true.
+	 * @see https://docs.scriptable.app/drawcontext/#size
 	 */
 	size: Size
 	
@@ -1409,6 +1603,7 @@ declare class DrawContext {
 	 * _Enable to respect the scale of the screen._
 	 * 
 	 * Devices have a screen scale that is used to convert between the logical coordinate space and the device coordinate space. For example, retina screens have a screen scale of 2 or 3 meaning that one point in the logical coordinate space is represented by four or nine pixels. Respecting the screen scale will multiply the specified size of the canvas by the screen scale. For example a canvas of size 200 by 200 will be 600 by 600 when the image is rendered on a retina screen with a screen scale of 3. When respecting the screen scale is disabled, you may experience that your images looks blurry because essentially the size you have specified will be stretched when rendered on the screen. Default is false.
+	 * @see https://docs.scriptable.app/drawcontext/#respectscreenscale
 	 */
 	respectScreenScale: boolean
 	
@@ -1416,6 +1611,7 @@ declare class DrawContext {
 	 * _Determines whether the context is opaque._
 	 * 
 	 * When enabled your image will be rendered opaque. Default is true.
+	 * @see https://docs.scriptable.app/drawcontext/#opaque
 	 */
 	opaque: boolean
 	
@@ -1423,6 +1619,7 @@ declare class DrawContext {
 	 * _Context for drawing images._
 	 * 
 	 * Constructs a new canvas to draw images, shapes and texts on. Before drawing to the context, beginDrawing() should be called.
+	 * @see https://docs.scriptable.app/drawcontext/#-new-drawcontext
 	 */
 	constructor()
 	
@@ -1430,6 +1627,7 @@ declare class DrawContext {
 	 * _Retrieves the image._
 	 * 
 	 * Call this to retrieve the image you have drawn to the context. Note that this should be called before calling endDrawing().
+	 * @see https://docs.scriptable.app/drawcontext/#-getimage
 	 */
 	getImage(): Image
 	
@@ -1439,6 +1637,7 @@ declare class DrawContext {
 	 * Draws the image in the rectangle. The image will be scaled to fit within the rectangle.
 	 * @param image - Image to draw.
 	 * @param rect - Rectangle to draw the image in.
+	 * @see https://docs.scriptable.app/drawcontext/#-drawimageinrect
 	 */
 	drawImageInRect(image: Image, rect: Rect): void
 	
@@ -1448,6 +1647,7 @@ declare class DrawContext {
 	 * Draws the image at the point. The top-left corner of the image will be drawn at the specified point.
 	 * @param image - Image to draw.
 	 * @param point - Point at which to draw top-left corner of the image.
+	 * @see https://docs.scriptable.app/drawcontext/#-drawimageatpoint
 	 */
 	drawImageAtPoint(image: Image, point: Point): void
 	
@@ -1456,6 +1656,7 @@ declare class DrawContext {
 	 * 
 	 * Sets the fill color to be used when performing a fill operation. Any fill operation performed afterwards will fill with the specified color until another call to setFillColor is made.
 	 * @param color - Color to set for filling.
+	 * @see https://docs.scriptable.app/drawcontext/#-setfillcolor
 	 */
 	setFillColor(color: Color): void
 	
@@ -1464,6 +1665,7 @@ declare class DrawContext {
 	 * 
 	 * Sets the stroke color to be used when performing a stroke operation. Any stroke operation performed afterwards will stroke with the specified color until another call to setStrokeColor is made.
 	 * @param color - Color to set for stroking.
+	 * @see https://docs.scriptable.app/drawcontext/#-setstrokecolor
 	 */
 	setStrokeColor(color: Color): void
 	
@@ -1472,6 +1674,7 @@ declare class DrawContext {
 	 * 
 	 * Sets the line width to be used when performing a stroke operation.
 	 * @param width - Line width to use for stroking.
+	 * @see https://docs.scriptable.app/drawcontext/#-setlinewidth
 	 */
 	setLineWidth(width: number): void
 	
@@ -1480,6 +1683,7 @@ declare class DrawContext {
 	 * 
 	 * Fills the rectangle width the color set when calling setFillColor.
 	 * @param rect - Rectangle to fill.
+	 * @see https://docs.scriptable.app/drawcontext/#-fill
 	 */
 	fill(rect: Rect): void
 	
@@ -1488,6 +1692,7 @@ declare class DrawContext {
 	 * 
 	 * Fills the rectangle width the color set when calling setFillColor.
 	 * @param rect - Rectangle to fill.
+	 * @see https://docs.scriptable.app/drawcontext/#-fillrect
 	 */
 	fillRect(rect: Rect): void
 	
@@ -1496,6 +1701,7 @@ declare class DrawContext {
 	 * 
 	 * Fills the ellipse that fits within the supplied rectangle with the color set when calling setFillColor.
 	 * @param rect - Rectangle incapsulating the ellipse to fill.
+	 * @see https://docs.scriptable.app/drawcontext/#-fillellipse
 	 */
 	fillEllipse(rect: Rect): void
 	
@@ -1504,6 +1710,7 @@ declare class DrawContext {
 	 * 
 	 * Draws a line around the rectangle using the color set when calling setStrokeColor. The line will have the width set when calling setLineWidth.
 	 * @param rect - Rectangle to stroke.
+	 * @see https://docs.scriptable.app/drawcontext/#-stroke
 	 */
 	stroke(rect: Rect): void
 	
@@ -1512,6 +1719,7 @@ declare class DrawContext {
 	 * 
 	 * Draws a line around the rectangle using the color set when calling setStrokeColor. The line will have the width set when calling setLineWidth.
 	 * @param rect - Rectangle to stroke.
+	 * @see https://docs.scriptable.app/drawcontext/#-strokerect
 	 */
 	strokeRect(rect: Rect): void
 	
@@ -1520,6 +1728,7 @@ declare class DrawContext {
 	 * 
 	 * Draws a line around the ellipse that fits within the supplied rectangle. The line will have the color set when calling setStrokeColor and the width set when calling setLineWidth.
 	 * @param rect - Rectangle incapsulating the ellipse to stroke.
+	 * @see https://docs.scriptable.app/drawcontext/#-strokeellipse
 	 */
 	strokeEllipse(rect: Rect): void
 	
@@ -1528,6 +1737,7 @@ declare class DrawContext {
 	 * 
 	 * After adding a path to the context, the path can be stroked or filled by calling strokePath and fillPath. Note that only the path that was added latest will be affected by calls to strokePath and fillPath.
 	 * @param path - Path to add to the context.
+	 * @see https://docs.scriptable.app/drawcontext/#-addpath
 	 */
 	addPath(path: Path): void
 	
@@ -1535,6 +1745,7 @@ declare class DrawContext {
 	 * _Strokes the path that was added the latest._
 	 * 
 	 * The path that was latest added to the context is stroked with the color set using setStrokeColor and the line widht set using setLineWidth.
+	 * @see https://docs.scriptable.app/drawcontext/#-strokepath
 	 */
 	strokePath(): void
 	
@@ -1542,6 +1753,7 @@ declare class DrawContext {
 	 * _Fills the path that was added the latest._
 	 * 
 	 * The path that was latest added to the context is filles with the color set using setFillColor.
+	 * @see https://docs.scriptable.app/drawcontext/#-fillpath
 	 */
 	fillPath(): void
 	
@@ -1551,6 +1763,7 @@ declare class DrawContext {
 	 * Call this to draw a text string to the context. The top-left of the text will be drawn at the specified position.
 	 * @param text - Text to draw.
 	 * @param pos - Position to draw the top-left of the text at.
+	 * @see https://docs.scriptable.app/drawcontext/#-drawtext
 	 */
 	drawText(text: string, pos: Point): void
 	
@@ -1560,6 +1773,7 @@ declare class DrawContext {
 	 * Call this to draw a text string in a rectangle. Specify how the text should be aligned within the rectangle by calling setTextAlignedLeft, setTextAlignedCenter or setTextAlignedRight before drawing the text.
 	 * @param text - Text to draw.
 	 * @param rect - Rectangle to draw text in.
+	 * @see https://docs.scriptable.app/drawcontext/#-drawtextinrect
 	 */
 	drawTextInRect(text: string, rect: Rect): void
 	
@@ -1568,6 +1782,7 @@ declare class DrawContext {
 	 * 
 	 * Sets the font size to be used when drawing text strings to the context.
 	 * @param size - Font size to use when drawing text.
+	 * @see https://docs.scriptable.app/drawcontext/#-setfontsize
 	 */
 	setFontSize(size: number): void
 	
@@ -1576,6 +1791,7 @@ declare class DrawContext {
 	 * 
 	 * Sets the text color to be used when drawing text strings to the context.
 	 * @param color - Color to use when drawing text.
+	 * @see https://docs.scriptable.app/drawcontext/#-settextcolor
 	 */
 	setTextColor(color: Color): void
 	
@@ -1583,6 +1799,7 @@ declare class DrawContext {
 	 * _Specifies that texts should be left aligned._
 	 * 
 	 * Sets text alignment to left. Texts drawn after calling this will be left aligned inside the provided rectangle.
+	 * @see https://docs.scriptable.app/drawcontext/#-settextalignedleft
 	 */
 	setTextAlignedLeft(): void
 	
@@ -1590,6 +1807,7 @@ declare class DrawContext {
 	 * _Specifies that texts should be center aligned._
 	 * 
 	 * Sets text alignment to center. Texts drawn after calling this will be center aligned inside the provided rectangle.
+	 * @see https://docs.scriptable.app/drawcontext/#-settextalignedcenter
 	 */
 	setTextAlignedCenter(): void
 	
@@ -1597,6 +1815,7 @@ declare class DrawContext {
 	 * _Specifies that texts should be right aligned._
 	 * 
 	 * Sets text alignment to right. Texts drawn after calling this will be right aligned inside the provided rectangle.
+	 * @see https://docs.scriptable.app/drawcontext/#-settextalignedright
 	 */
 	setTextAlignedRight(): void
 }
@@ -1605,12 +1824,14 @@ declare class DrawContext {
 
 /**
  * _Read and write files on disk._
+ * @see https://docs.scriptable.app/filemanager
  */
 declare class FileManager {
 	/**
 	 * _Creates a local FileManager._
 	 * 
 	 * Creates a file manager for operating with files stored locally.
+	 * @see https://docs.scriptable.app/filemanager/#local
 	 */
 	static local(): FileManager
 	
@@ -1618,6 +1839,7 @@ declare class FileManager {
 	 * _Creates an iCloud FileManager._
 	 * 
 	 * Creates a file manager for operating with files stored in iCloud. iCloud must be enabled on the device in order to use this.
+	 * @see https://docs.scriptable.app/filemanager/#icloud
 	 */
 	static iCloud(): FileManager
 	
@@ -1628,6 +1850,7 @@ declare class FileManager {
 	 * 
 	 * The function will error if the file does not exist or if it exists in iCloud but have not been download. Use `fileExists(filePath)` to check if a file exists and `downloadFileFromiCloud(filePath)` to download the file. Note that it is always safe to call `downloadFileFromiCloud(filePath)`, even if the file is stored locally on the device.
 	 * @param filePath - Path of the file to read.
+	 * @see https://docs.scriptable.app/filemanager/#-read
 	 */
 	read(filePath: string): Data
 	
@@ -1636,6 +1859,7 @@ declare class FileManager {
 	 * 
 	 * The function will error if the file does not exist or if it exists in iCloud but have not been download. Use `fileExists(filePath)` to check if a file exists and `downloadFileFromiCloud(filePath)` to download the file. Note that it is always safe to call `downloadFileFromiCloud(filePath)`, even if the file is stored locally on the device.
 	 * @param filePath - Path of the file to read.
+	 * @see https://docs.scriptable.app/filemanager/#-readstring
 	 */
 	readString(filePath: string): string
 	
@@ -1646,6 +1870,7 @@ declare class FileManager {
 	 * 
 	 * The function will error if the file does not exist or if it exists in iCloud but have not been download. Use `fileExists(filePath)` to check if a file exists and `downloadFileFromiCloud(filePath)` to download the file. Note that it is always safe to call `downloadFileFromiCloud(filePath)`, even if the file is stored locally on the device.
 	 * @param filePath - Path of the file to read.
+	 * @see https://docs.scriptable.app/filemanager/#-readimage
 	 */
 	readImage(filePath: string): Image
 	
@@ -1653,6 +1878,7 @@ declare class FileManager {
 	 * _Write data to a file._
 	 * @param filePath - Path of file to write to.
 	 * @param content - Data to write to disk.
+	 * @see https://docs.scriptable.app/filemanager/#-write
 	 */
 	write(filePath: string, content: Data): void
 	
@@ -1662,6 +1888,7 @@ declare class FileManager {
 	 * Writes the content to the specified file path on disk. If the file does not already exist, it will be created. If the file already exists the contents of the file will be overwritten with the new content.
 	 * @param filePath - Path of file to write to.
 	 * @param content - Content to write to disk.
+	 * @see https://docs.scriptable.app/filemanager/#-writestring
 	 */
 	writeString(filePath: string, content: string): void
 	
@@ -1671,6 +1898,7 @@ declare class FileManager {
 	 * Writes the image to the specified file path on disk. If the file does not already exist, it will be created. If the file already exists the contents of the file will be overwritten with the new content.
 	 * @param filePath - Path of file to write to.
 	 * @param image - Image to write to disk.
+	 * @see https://docs.scriptable.app/filemanager/#-writeimage
 	 */
 	writeImage(filePath: string, image: Image): void
 	
@@ -1679,6 +1907,7 @@ declare class FileManager {
 	 * 
 	 * Removes the file at the specified path. Use with caution. Removed files cannot be restored.
 	 * @param filePath - Path of file to remove.
+	 * @see https://docs.scriptable.app/filemanager/#-remove
 	 */
 	remove(filePath: string): void
 	
@@ -1688,6 +1917,7 @@ declare class FileManager {
 	 * Moves the file from the source path to the destination path. Caution: This operation will replace any existing file at the the destination.
 	 * @param sourceFilePath - Path of the file to move.
 	 * @param destinationFilePath - Path to move the file to.
+	 * @see https://docs.scriptable.app/filemanager/#-move
 	 */
 	move(sourceFilePath: string, destinationFilePath: string): void
 	
@@ -1697,6 +1927,7 @@ declare class FileManager {
 	 * Copies the file from the source path to the destination path. Caution: This operation will replace any existing file at the the destination.
 	 * @param sourceFilePath - Path of the file to copy.
 	 * @param destinationFilePath - Path to copy the file to.
+	 * @see https://docs.scriptable.app/filemanager/#-copy
 	 */
 	copy(sourceFilePath: string, destinationFilePath: string): void
 	
@@ -1705,12 +1936,14 @@ declare class FileManager {
 	 * 
 	 * Checks if the file exists at the specified file path. Checking this before moving or copying to a destination can be a good idea as those operations will replace any existing file at the destination file path.
 	 * @param filePath - File path to examine.
+	 * @see https://docs.scriptable.app/filemanager/#-fileexists
 	 */
 	fileExists(filePath: string): boolean
 	
 	/**
 	 * _Checks if a path points to a directory._
 	 * @param path - Path to examine.
+	 * @see https://docs.scriptable.app/filemanager/#-isdirectory
 	 */
 	isDirectory(path: string): boolean
 	
@@ -1720,6 +1953,7 @@ declare class FileManager {
 	 * You can optionally create all intermediate directories.
 	 * @param path - Path of directory to create.
 	 * @param intermediateDirectories - Whether to create all intermediate directories. Defaults to false.
+	 * @see https://docs.scriptable.app/filemanager/#-createdirectory
 	 */
 	createDirectory(path: string, intermediateDirectories: boolean): void
 	
@@ -1727,6 +1961,7 @@ declare class FileManager {
 	 * _Path of temporary directory._
 	 * 
 	 * Used to retrieve the path of a temporary directory on disk. The operating system may at anytime delete files stored in this directory and therefore you should not rely on it for long time storage. If you need long time storage, see documentsDirectory() or libraryDirectory(). This directory is not shared between the app, the action extension and Siri.
+	 * @see https://docs.scriptable.app/filemanager/#-temporarydirectory
 	 */
 	temporaryDirectory(): string
 	
@@ -1734,6 +1969,7 @@ declare class FileManager {
 	 * _Path of documents directory._
 	 * 
 	 * Used to retrieve the path to the documents directory. Your scripts are stored in this directory. If you have iCloud enabled, your scripts will be stored in the documents directory in iCloud otherwise they will be stored in the local documents directory. The directory can be used for long time storage. Documents stored in this directory can be accessed using the Files app. Note that files stored in the local documents directory will not appear in the Files app unless you enable the "Scriptable Local" file provider. Visit the Files app to enable the file provider.
+	 * @see https://docs.scriptable.app/filemanager/#-documentsdirectory
 	 */
 	documentsDirectory(): string
 	
@@ -1741,6 +1977,7 @@ declare class FileManager {
 	 * _Path of library directory._
 	 * 
 	 * Used to retrieve the path to the documents directory. The directory can be used for long time storage. Documents stored in this directory cannot be accessed using the Files app.
+	 * @see https://docs.scriptable.app/filemanager/#-librarydirectory
 	 */
 	libraryDirectory(): string
 	
@@ -1750,6 +1987,7 @@ declare class FileManager {
 	 * Joins two paths to created one path. For example to join the path to a directory with the name of a file. This is the suggested approach for creating new file paths passed to the read and write functions of a FileManager.
 	 * @param lhsPath - Left-hand side part of the new path.
 	 * @param rhsPath - Right-hand side part of the new path.
+	 * @see https://docs.scriptable.app/filemanager/#-joinpath
 	 */
 	joinPath(lhsPath: string, rhsPath: string): string
 	
@@ -1760,6 +1998,7 @@ declare class FileManager {
 	 * 
 	 * The function will error if the file does not exist or if it exists in iCloud but have not been download. Use `fileExists(filePath)` to check if a file exists and `downloadFileFromiCloud(filePath)` to download the file. Note that it is always safe to call `downloadFileFromiCloud(filePath)`, even if the file is stored locally on the device.
 	 * @param filePath - Path of file to read tags from.
+	 * @see https://docs.scriptable.app/filemanager/#-alltags
 	 */
 	allTags(filePath: string): string[]
 	
@@ -1771,6 +2010,7 @@ declare class FileManager {
 	 * The function will error if the file does not exist or if it exists in iCloud but have not been download. Use `fileExists(filePath)` to check if a file exists and `downloadFileFromiCloud(filePath)` to download the file. Note that it is always safe to call `downloadFileFromiCloud(filePath)`, even if the file is stored locally on the device.
 	 * @param filePath - Path of file to add the tag to.
 	 * @param tag - Tag to add. This can be an existing tag or a new tag.
+	 * @see https://docs.scriptable.app/filemanager/#-addtag
 	 */
 	addTag(filePath: string, tag: string): void
 	
@@ -1780,6 +2020,7 @@ declare class FileManager {
 	 * The function will error if the file does not exist or if it exists in iCloud but have not been download. Use `fileExists(filePath)` to check if a file exists and `downloadFileFromiCloud(filePath)` to download the file. Note that it is always safe to call `downloadFileFromiCloud(filePath)`, even if the file is stored locally on the device.
 	 * @param filePath - Path of file to remove the tag from.
 	 * @param tag - Tag to remove.
+	 * @see https://docs.scriptable.app/filemanager/#-removetag
 	 */
 	removeTag(filePath: string, tag: string): void
 	
@@ -1793,6 +2034,7 @@ declare class FileManager {
 	 * The function will error if the file does not exist or if it exists in iCloud but have not been download. Use `fileExists(filePath)` to check if a file exists and `downloadFileFromiCloud(filePath)` to download the file. Note that it is always safe to call `downloadFileFromiCloud(filePath)`, even if the file is stored locally on the device.
 	 * @param filePath - Path of file to read extended attribute from.
 	 * @param name - Name of the extended attribute to read.
+	 * @see https://docs.scriptable.app/filemanager/#-readextendedattribute
 	 */
 	readExtendedAttribute(filePath: string, name: string): string
 	
@@ -1805,6 +2047,7 @@ declare class FileManager {
 	 * @param filePath - Path of file to add an extended attribute to.
 	 * @param value - Value of the extended attribute.
 	 * @param name - Name of the extended attribute. This is used to retrieve the value at a later point.
+	 * @see https://docs.scriptable.app/filemanager/#-writeextendedattribute
 	 */
 	writeExtendedAttribute(filePath: string, value: string, name: string): void
 	
@@ -1816,6 +2059,7 @@ declare class FileManager {
 	 * The function will error if the file does not exist or if it exists in iCloud but have not been download. Use `fileExists(filePath)` to check if a file exists and `downloadFileFromiCloud(filePath)` to download the file. Note that it is always safe to call `downloadFileFromiCloud(filePath)`, even if the file is stored locally on the device.
 	 * @param filePath - Path of file to add an extended attribute to.
 	 * @param name - Name of the extended attribute to remove.
+	 * @see https://docs.scriptable.app/filemanager/#-removeextendedattribute
 	 */
 	removeExtendedAttribute(filePath: string, name: string): void
 	
@@ -1824,6 +2068,7 @@ declare class FileManager {
 	 * 
 	 * Extended attributes are metadata that can be stored on a file. Note that extended attributes are not synced with iCloud.
 	 * @param filePath - Path of file to read extended attributes from.
+	 * @see https://docs.scriptable.app/filemanager/#-allextendedattributes
 	 */
 	allExtendedAttributes(filePath: string): string[]
 	
@@ -1832,6 +2077,7 @@ declare class FileManager {
 	 * 
 	 * The Uniform Type Identifier is a string that identifies the type of file.
 	 * @param filePath - Path of file to get UTI of.
+	 * @see https://docs.scriptable.app/filemanager/#-getuti
 	 */
 	getUTI(filePath: string): string
 	
@@ -1840,6 +2086,7 @@ declare class FileManager {
 	 * 
 	 * Lists all the contents in the specified directory. The returned array contains file paths to all files in the directory.
 	 * @param directoryPath - Path to directory.
+	 * @see https://docs.scriptable.app/filemanager/#-listcontents
 	 */
 	listContents(directoryPath: string): string[]
 	
@@ -1849,6 +2096,7 @@ declare class FileManager {
 	 * Takes a file path and returns the name of the file. Also supports getting the name of a directory. The returned file name optionally includes the extension of the file.
 	 * @param filePath - path of file to get name of.
 	 * @param includeFileExtension - Whether or not the file extension should be included. Defaults to false.
+	 * @see https://docs.scriptable.app/filemanager/#-filename
 	 */
 	fileName(filePath: string, includeFileExtension: boolean): string
 	
@@ -1857,6 +2105,7 @@ declare class FileManager {
 	 * 
 	 * Takes a file path and returns the extension of the file, e.g. ".jpg" or ".js". Returns en empty string for directories.
 	 * @param filePath - Path of file to get extension from.
+	 * @see https://docs.scriptable.app/filemanager/#-fileextension
 	 */
 	fileExtension(filePath: string): string
 	
@@ -1871,6 +2120,7 @@ declare class FileManager {
 	 * 
 	 * Please be aware that bookmarks can only be used in the app. All APIs that relate to bookmarks will always throw an error when used in Siri or in a script run from the Share Sheet.
 	 * @param name - Name of bookmark to create path for.
+	 * @see https://docs.scriptable.app/filemanager/#-bookmarkedpath
 	 */
 	bookmarkedPath(name: string): string
 	
@@ -1883,6 +2133,7 @@ declare class FileManager {
 	 * 
 	 * Please be aware that bookmarks can only be used in the app. All APIs that relate to bookmarks will always throw an error when used in Siri or in a script run from the Share Sheet.
 	 * @param name - Name of bookmark.
+	 * @see https://docs.scriptable.app/filemanager/#-bookmarkexists
 	 */
 	bookmarkExists(name: string): boolean
 	
@@ -1891,14 +2142,16 @@ declare class FileManager {
 	 * 
 	 * Downloads the file from iCloud if it have not already been downloaded. If you pass in a path to a file that is not stored in iCloud, the returned will be resolved immediately making it safe to pass in any file path.
 	 * @param filePath - Path of file to download from iCloud.
+	 * @see https://docs.scriptable.app/filemanager/#-downloadfilefromicloud
 	 */
-	downloadFileFromiCloud(filePath: string): Promise<any>
+	downloadFileFromiCloud(filePath: string): Promise<void>
 	
 	/**
 	 * _Checks if a file is stored in iCloud._
 	 * 
 	 * Checks if a file is stored in iCloud or locally on the device. The function returns false if the file does not exist. Check if a file exists using `fileExists(filePath)`
 	 * @param filePath - Path of file.
+	 * @see https://docs.scriptable.app/filemanager/#-isfilestoredinicloud
 	 */
 	isFileStoredIniCloud(filePath: string): boolean
 	
@@ -1909,6 +2162,7 @@ declare class FileManager {
 	 * 
 	 * The function returns false if the file does not exist. Check if a file exists using `fileExists(filePath)`
 	 * @param filePath - Path of file.
+	 * @see https://docs.scriptable.app/filemanager/#-isfiledownloaded
 	 */
 	isFileDownloaded(filePath: string): boolean
 }
@@ -1917,10 +2171,12 @@ declare class FileManager {
 
 /**
  * _Manages image data._
+ * @see https://docs.scriptable.app/image
  */
 declare class Image {
 	/**
 	 * _Size of the image in pixels._
+	 * @see https://docs.scriptable.app/image/#size
 	 */
 	size: Size
 	
@@ -1929,6 +2185,7 @@ declare class Image {
 	 * 
 	 * Loads an image from the specified file path. If the image could not be read, the function will return null.
 	 * @param filePath - File path to read image from.
+	 * @see https://docs.scriptable.app/image/#fromfile
 	 */
 	static fromFile(filePath: string): Image
 	
@@ -1937,6 +2194,7 @@ declare class Image {
 	 * 
 	 * Loads an image from the raw data. If the image could not be read, the function will return null.
 	 * @param data - Data to read image from.
+	 * @see https://docs.scriptable.app/image/#fromdata
 	 */
 	static fromData(data: Data): Image
 }
@@ -1945,6 +2203,7 @@ declare class Image {
 
 /**
  * _Secure storage for credentials._
+ * @see https://docs.scriptable.app/keychain
  */
 declare class Keychain {
 	/**
@@ -1952,6 +2211,7 @@ declare class Keychain {
 	 * 
 	 * Checks if the keychain contains the specified key.
 	 * @param key - Key to look up in the keychain.
+	 * @see https://docs.scriptable.app/keychain/#contains
 	 */
 	static contains(key: string): boolean
 	
@@ -1963,6 +2223,7 @@ declare class Keychain {
 	 * Values are securely stored in an encrypted database.
 	 * @param key - Key which the value should be assigned to.
 	 * @param value - Value to assign to the specified key.
+	 * @see https://docs.scriptable.app/keychain/#set
 	 */
 	static set(key: string, value: string): void
 	
@@ -1971,12 +2232,14 @@ declare class Keychain {
 	 * 
 	 * Reads the value for the specified key. If the key doesn't exist the method will throw an error. Used the `contains` method to check if a key exists in the keychain.
 	 * @param key - Key to read value for.
+	 * @see https://docs.scriptable.app/keychain/#get
 	 */
 	static get(key: string): string
 	
 	/**
 	 * _Remove key from keychain._
 	 * @param key - Key to remove from the keychain.
+	 * @see https://docs.scriptable.app/keychain/#remove
 	 */
 	static remove(key: string): void
 }
@@ -1985,12 +2248,14 @@ declare class Keychain {
 
 /**
  * _Fetches your location._
+ * @see https://docs.scriptable.app/location
  */
 declare class Location {
 	/**
 	 * _Fetches your location._
 	 * 
 	 * Your location is fetched using GPS, WiFi and cellular hardware. The object carried by the promise includes the latitude, longitude and altitude as well as the horizontal and vertical accuracy measured in meters.
+	 * @see https://docs.scriptable.app/location/#current
 	 */
 	static current(): Promise<any>
 	
@@ -1998,26 +2263,31 @@ declare class Location {
 	 * _Uses best accuracy. This is default._
 	 * 
 	 * Set this when you want to achieve the best possible accuracy when retrieving your location. This is the default accuracy.
+	 * @see https://docs.scriptable.app/location/#setaccuracytobest
 	 */
 	static setAccuracyToBest(): void
 	
 	/**
 	 * _Sets accuracy to within ten meters._
+	 * @see https://docs.scriptable.app/location/#setaccuracytotenmeters
 	 */
 	static setAccuracyToTenMeters(): void
 	
 	/**
 	 * _Sets accuracy to within hundred meters._
+	 * @see https://docs.scriptable.app/location/#setaccuracytohundredmeters
 	 */
 	static setAccuracyToHundredMeters(): void
 	
 	/**
 	 * _Sets accuracy to within one kilometer._
+	 * @see https://docs.scriptable.app/location/#setaccuracytokilometer
 	 */
 	static setAccuracyToKilometer(): void
 	
 	/**
 	 * _Sets accuracy to within three kilometers._
+	 * @see https://docs.scriptable.app/location/#setaccuracytothreekilometers
 	 */
 	static setAccuracyToThreeKilometers(): void
 	
@@ -2028,6 +2298,7 @@ declare class Location {
 	 * @param latitude - Latitude of coordinate to fetch information about.
 	 * @param longitude - Longitude of coordinate to fetch information about.
 	 * @param locale - Optional. Preferred locale to fetch information in. Uses the default locale of the device if null.
+	 * @see https://docs.scriptable.app/location/#reversegeocode
 	 */
 	static reverseGeocode(latitude: number, longitude: number, locale: string): {[key: string]: any}[]
 }
@@ -2038,12 +2309,14 @@ declare class Location {
  * _Sends a mail._
  * 
  * Constructs a mail to be sent either as a text message or an iMessage.
+ * @see https://docs.scriptable.app/mail/#-new-mail
  */
 declare class Mail {
 	/**
 	 * _Recipients of the mail._
 	 * 
 	 * Array of recipients to send the mail to. Elements in the array should be e-mail addresses. You will have a chance to modify this before the mail is sent.
+	 * @see https://docs.scriptable.app/mail/#torecipients
 	 */
 	toRecipients: string[]
 	
@@ -2051,6 +2324,7 @@ declare class Mail {
 	 * _Recipients to set CC on the mail._
 	 * 
 	 * Array of recipients to set as CC on the mail. Elements in the array should be e-mail addresses. You will have a chance to modify this before the mail is sent.
+	 * @see https://docs.scriptable.app/mail/#ccrecipients
 	 */
 	ccRecipients: string[]
 	
@@ -2058,6 +2332,7 @@ declare class Mail {
 	 * _Recipients to set BCC on the mail._
 	 * 
 	 * Array of recipients to set as BCC on the mail. Elements in the array should be e-mail addresses. You will have a chance to modify this before the mail is sent.
+	 * @see https://docs.scriptable.app/mail/#bccrecipients
 	 */
 	bccRecipients: string[]
 	
@@ -2065,6 +2340,7 @@ declare class Mail {
 	 * _Subject of the mail._
 	 * 
 	 * Subject of the mail to send. You will have a chance to modify this before the mail is sent.
+	 * @see https://docs.scriptable.app/mail/#subject
 	 */
 	subject: string
 	
@@ -2072,6 +2348,7 @@ declare class Mail {
 	 * _Body of the mail._
 	 * 
 	 * Body of the mail to send. You will have a chance to modify this before the mail is sent.
+	 * @see https://docs.scriptable.app/mail/#body
 	 */
 	body: string
 	
@@ -2079,6 +2356,7 @@ declare class Mail {
 	 * _Whether body is HTML._
 	 * 
 	 * Set to true if the body of the mail is HTML. Defaults to false.
+	 * @see https://docs.scriptable.app/mail/#isbodyhtml
 	 */
 	isBodyHTML: boolean
 	
@@ -2086,6 +2364,7 @@ declare class Mail {
 	 * _Preferred email address to use in the from field._
 	 * 
 	 * Sets the preferred email addressed to use when sending the mail. If no account with the preferred email address is set up, the default email address is used.
+	 * @see https://docs.scriptable.app/mail/#preferredsendingemailaddress
 	 */
 	preferredSendingEmailAddress: string
 	
@@ -2093,6 +2372,7 @@ declare class Mail {
 	 * _Sends a mail._
 	 * 
 	 * Constructs a mail to be sent either as a text message or an iMessage.
+	 * @see https://docs.scriptable.app/mail/#-new-mail
 	 */
 	constructor()
 	
@@ -2100,18 +2380,21 @@ declare class Mail {
 	 * _Send the mail._
 	 * 
 	 * Presents a screen from which the mail can be sent. The mail will not be sent until you have confirmed it from the presented screen.
+	 * @see https://docs.scriptable.app/mail/#-send
 	 */
-	send(): Promise<any>
+	send(): Promise<void>
 	
 	/**
 	 * _Adds an image attachment to the mail._
 	 * @param image - Image to add to the mail.
+	 * @see https://docs.scriptable.app/mail/#-addimageattachment
 	 */
 	addImageAttachment(image: Image): void
 	
 	/**
 	 * _Adds a file attachment to the mail._
 	 * @param filePath - Path of file to add to the mail.
+	 * @see https://docs.scriptable.app/mail/#-addfileattachment
 	 */
 	addFileAttachment(filePath: string): void
 	
@@ -2122,6 +2405,7 @@ declare class Mail {
 	 * @param data - Data representation of file to add to the mail.
 	 * @param mimeType - MIME type of file represented by the data.
 	 * @param filename - Name of the file represented by the data.
+	 * @see https://docs.scriptable.app/mail/#-adddataattachment
 	 */
 	addDataAttachment(data: Data, mimeType: string, filename: string): void
 }
@@ -2132,12 +2416,14 @@ declare class Mail {
  * _Sends a message._
  * 
  * Constructs a message to be sent either as a text message or an iMessage.
+ * @see https://docs.scriptable.app/message/#-new-message
  */
 declare class Message {
 	/**
 	 * _Recipients of the message._
 	 * 
 	 * Array of recipients to send the message to. Elements in the array should be phone numbers. You will have a chance to modify this before the message is sent.
+	 * @see https://docs.scriptable.app/message/#recipients
 	 */
 	recipients: string[]
 	
@@ -2145,6 +2431,7 @@ declare class Message {
 	 * _Body of the message._
 	 * 
 	 * Body of the message to send. You will have a chance to modify this before the message is sent.
+	 * @see https://docs.scriptable.app/message/#body
 	 */
 	body: string
 	
@@ -2152,6 +2439,7 @@ declare class Message {
 	 * _Sends a message._
 	 * 
 	 * Constructs a message to be sent either as a text message or an iMessage.
+	 * @see https://docs.scriptable.app/message/#-new-message
 	 */
 	constructor()
 	
@@ -2159,18 +2447,21 @@ declare class Message {
 	 * _Send the message._
 	 * 
 	 * Presents a screen from which the message can be sent. The message will not be sent until you have confirmed it from the presented screen.
+	 * @see https://docs.scriptable.app/message/#-send
 	 */
-	send(): Promise<any>
+	send(): Promise<void>
 	
 	/**
 	 * _Adds an image attachment to the message._
 	 * @param image - Image to add to the message.
+	 * @see https://docs.scriptable.app/message/#-addimageattachment
 	 */
 	addImageAttachment(image: Image): void
 	
 	/**
 	 * _Adds a file attachment to the message._
 	 * @param filePath - Path of file to add to the message.
+	 * @see https://docs.scriptable.app/message/#-addfileattachment
 	 */
 	addFileAttachment(filePath: string): void
 	
@@ -2181,6 +2472,7 @@ declare class Message {
 	 * @param data - Data representation of file to add to the message.
 	 * @param uti - UTI of file represented by the data.
 	 * @param filename - Name of the file represented by the data.
+	 * @see https://docs.scriptable.app/message/#-adddataattachment
 	 */
 	addDataAttachment(data: Data, uti: string, filename: string): void
 }
@@ -2189,12 +2481,14 @@ declare class Message {
 
 /**
  * _The current module._
+ * @see https://docs.scriptable.app/module
  */
 declare var module: {
 	/**
 	 * _Path to file containing the module._
 	 * 
 	 * This is the absolute path to the file containing the module.
+	 * @see https://docs.scriptable.app/module/#filename
 	 */
 	filename: string
 	
@@ -2220,6 +2514,7 @@ declare var module: {
 	 *     }
 	 * 
 	 *     module.exports = "My string"
+	 * @see https://docs.scriptable.app/module/#exports
 	 */
 	exports: any
 }
@@ -2235,27 +2530,32 @@ declare namespace Notification {
 
 /**
  * _Schedules and manages notifications._
+ * @see https://docs.scriptable.app/notification/#-new-notification
  */
 declare class Notification {
 	/**
 	 * _Identifier of the notification._
 	 * 
 	 * To reschedule a notification, use the identifier of an existing notification.
+	 * @see https://docs.scriptable.app/notification/#identifier
 	 */
 	identifier: string
 	
 	/**
 	 * _Title of the notification._
+	 * @see https://docs.scriptable.app/notification/#title
 	 */
 	title: string
 	
 	/**
 	 * _Subtitle of the notification._
+	 * @see https://docs.scriptable.app/notification/#subtitle
 	 */
 	subtitle: string
 	
 	/**
 	 * _Body of the notification._
+	 * @see https://docs.scriptable.app/notification/#body
 	 */
 	body: string
 	
@@ -2263,6 +2563,7 @@ declare class Notification {
 	 * _Preferred height of the notification._
 	 * 
 	 * By default Scriptable attempts to determine an appropriate height for your notification. If you want to override the default behaviour, you can specify a preferred content height. The preferred content height is only used when running a script inside the notification, i.e. when `scriptName` is not null. iOS may limit the height of the notification in which case the preferred content height is not guaranteed to be respected.
+	 * @see https://docs.scriptable.app/notification/#preferredcontentheight
 	 */
 	preferredContentHeight: number
 	
@@ -2270,6 +2571,7 @@ declare class Notification {
 	 * _Number to display in the app icon's badge._
 	 * 
 	 * When the number is zero, no badge is displayed. When the number is greater than zero, the number is displayed in the app icon's badge. Setting the value to null, will leave the badge unchanged. The default value is null.
+	 * @see https://docs.scriptable.app/notification/#badge
 	 */
 	badge: number
 	
@@ -2277,6 +2579,7 @@ declare class Notification {
 	 * _Identifier for grouping the notification._
 	 * 
 	 * Notifications are grouped by the identifier on the Home screen and in the Notification Center.
+	 * @see https://docs.scriptable.app/notification/#threadidentifier
 	 */
 	threadIdentifier: string
 	
@@ -2284,6 +2587,7 @@ declare class Notification {
 	 * _Custom information._
 	 * 
 	 * Store any custom information for the information. This can be accessed from the `Notification.opened` property when a script is run from a notification.
+	 * @see https://docs.scriptable.app/notification/#userinfo
 	 */
 	userInfo: {[key: string]: any}
 	
@@ -2303,6 +2607,7 @@ declare class Notification {
 	 * *   popup
 	 * 
 	 * By default the notification is delivered with no sound.
+	 * @see https://docs.scriptable.app/notification/#sound
 	 */
 	sound: "default" | "accept" | "alert" | "complete" | "event" | "failure" | "piano_error" | "piano_success" | "popup"
 	
@@ -2310,6 +2615,7 @@ declare class Notification {
 	 * _URL to open when notification is tapped._
 	 * 
 	 * The Scriptable application will open the URL when the notification is tapped. This can be a URL that uses Scriptables URL scheme, the URL scheme of another application or a website URL.
+	 * @see https://docs.scriptable.app/notification/#openurl
 	 */
 	openURL: string
 	
@@ -2319,6 +2625,7 @@ declare class Notification {
 	 * If the notification have already been delivered, for example because it was fetched using `Notification.allDelivered()`, the deliveryDate will be populated. Otherwise it will be null.
 	 * 
 	 * The property cannot be set. In order to specify a future delivery date for a notification, see the `setTriggerDate` function. For recurring notifications, see the `setDailyTrigger` and `setWeeklyTrigger` functions.
+	 * @see https://docs.scriptable.app/notification/#deliverydate
 	 */
 	deliveryDate: Date
 	
@@ -2328,6 +2635,7 @@ declare class Notification {
 	 * The next trigger date is the point in time where the next notification will be delivered.
 	 * 
 	 * The property cannot be set. In order to specify a future delivery date for a notification, see the `setTriggerDate` function. For recurring notifications, see the `setDailyTrigger` and `setWeeklyTrigger` functions.
+	 * @see https://docs.scriptable.app/notification/#nexttriggerdate
 	 */
 	nextTriggerDate: Date
 	
@@ -2335,6 +2643,7 @@ declare class Notification {
 	 * _Name of script to run in rich notification._
 	 * 
 	 * When notification is force touched or long pressed, Scriptable can run a script inside the notification without opening the app. Set the `scriptName` to a name of an existing script to run it inside the notification.
+	 * @see https://docs.scriptable.app/notification/#scriptname
 	 */
 	scriptName: string
 	
@@ -2349,11 +2658,13 @@ declare class Notification {
 	 *     }
 	 * 
 	 * To add a notification, use `Notification.addAction`.
+	 * @see https://docs.scriptable.app/notification/#actions
 	 */
 	actions: Notification.Actions
 	
 	/**
 	 * _Schedules and manages notifications._
+	 * @see https://docs.scriptable.app/notification/#-new-notification
 	 */
 	constructor()
 	
@@ -2361,6 +2672,7 @@ declare class Notification {
 	 * _All pending notifications._
 	 * 
 	 * Fetches all notifications that have been scheduled from Scriptable and are waiting to be delivered.
+	 * @see https://docs.scriptable.app/notification/#allpending
 	 */
 	static allPending(): Promise<Notification[]>
 	
@@ -2368,6 +2680,7 @@ declare class Notification {
 	 * _Delivered notifications displayed in the Notification Center._
 	 * 
 	 * Fetches all notifications that have been scheduled from Scriptable and that are still displayed in the Notification Center of iOS.
+	 * @see https://docs.scriptable.app/notification/#alldelivered
 	 */
 	static allDelivered(): Promise<Notification[]>
 	
@@ -2377,29 +2690,33 @@ declare class Notification {
 	 * Removes all notifications that have been scheduled from Scriptable and are waiting to be delivered.
 	 * 
 	 * Use with caution. This removes all notifications scheduled across all of your scripts and the action cannot be undone.
+	 * @see https://docs.scriptable.app/notification/#removeallpending
 	 */
-	static removeAllPending(): Promise<any>
+	static removeAllPending(): Promise<void>
 	
 	/**
 	 * _Removes all delivered notifications._
 	 * 
 	 * Removes all notifications that have been scheduled from Scriptable and that are still displayed in the Notification Center of iOS.
+	 * @see https://docs.scriptable.app/notification/#removealldelivered
 	 */
-	static removeAllDelivered(): Promise<any>
+	static removeAllDelivered(): Promise<void>
 	
 	/**
 	 * _Removes pending notifications._
 	 * 
 	 * Removes notifications with the specified identifiers. The notifications are only removed if they are pending, that is they have been scheduled and are waiting to be delivered. To remove delivered notifications, see `Notification.removeDelivered()`.
+	 * @see https://docs.scriptable.app/notification/#removepending
 	 */
-	static removePending(identifiers: string[]): Promise<any>
+	static removePending(identifiers: string[]): Promise<void>
 	
 	/**
 	 * _Removes delivered notifications._
 	 * 
 	 * Removes notifications with the specified identifiers. The notifications are only removed if they have been delivered. To remove pending notifications, see `Notification.removePending()`.
+	 * @see https://docs.scriptable.app/notification/#removedelivered
 	 */
-	static removeDelivered(identifiers: string[]): Promise<any>
+	static removeDelivered(identifiers: string[]): Promise<void>
 	
 	/**
 	 * _Resets the current notification._
@@ -2407,6 +2724,7 @@ declare class Notification {
 	 * Effectively sets `args.notification` to null.
 	 * 
 	 * When a notification scheduled from Scriptable have been tapped to open the app or while the app was open, `args.notification` will have a value until Scriptable is quit. You can manually reset the value using `Notification.resetCurrent`.
+	 * @see https://docs.scriptable.app/notification/#resetcurrent
 	 */
 	static resetCurrent(): void
 	
@@ -2414,19 +2732,22 @@ declare class Notification {
 	 * _Schedules the notification._
 	 * 
 	 * When a new notification is constructed, it must be scheduled, otherwise it will not be delivered. If an existing notification is modified, it must also be scheduled again for the changes to take effect.
+	 * @see https://docs.scriptable.app/notification/#-schedule
 	 */
-	schedule(): Promise<any>
+	schedule(): Promise<void>
 	
 	/**
 	 * _Removes the notification._
 	 * 
 	 * Removes all future triggers of the notification.
+	 * @see https://docs.scriptable.app/notification/#-remove
 	 */
-	remove(): Promise<any>
+	remove(): Promise<void>
 	
 	/**
 	 * _Sets the notification to be triggered on a date and time._
 	 * @param date - Date and time to trigger the notification on.
+	 * @see https://docs.scriptable.app/notification/#-settriggerdate
 	 */
 	setTriggerDate(date: Date): void
 	
@@ -2437,6 +2758,7 @@ declare class Notification {
 	 * @param hour - Hour of the day to trigger the notification.
 	 * @param minute - Minute of the day to trigger the notification.
 	 * @param repeats - If true the notification will be sent daily on the specified time, otherwise it will only be sent once. Defaults to false.
+	 * @see https://docs.scriptable.app/notification/#-setdailytrigger
 	 */
 	setDailyTrigger(hour: number, minute: number, repeats: boolean): void
 	
@@ -2448,6 +2770,7 @@ declare class Notification {
 	 * @param hour - Hour of the day to trigger the notification.
 	 * @param minute - Minute of the day to trigger the notification.
 	 * @param repeats - If true the notification will be sent daily on the specified time, otherwise it will only be sent once. Defaults to false.
+	 * @see https://docs.scriptable.app/notification/#-setweeklytrigger
 	 */
 	setWeeklyTrigger(weekday: number, hour: number, minute: number, repeats: boolean): void
 	
@@ -2458,6 +2781,7 @@ declare class Notification {
 	 * @param title - Title of the action.
 	 * @param url - URL to open when choosing the action.
 	 * @param destructive - Optional. If set to true, the button is displayed with special highlighting to indicate that it performs a destructive task. Defaults to false.
+	 * @see https://docs.scriptable.app/notification/#-addaction
 	 */
 	addAction(title: string, url: string, destructive: boolean): void
 }
@@ -2466,38 +2790,45 @@ declare class Notification {
 
 /**
  * _Copy and paste strings or images._
+ * @see https://docs.scriptable.app/pasteboard
  */
 declare class Pasteboard {
 	/**
 	 * _Copies a string to the pasteboard._
 	 * @param string - The string to copy to the pasteboard.
+	 * @see https://docs.scriptable.app/pasteboard/#copy
 	 */
 	static copy(string: string): void
 	
 	/**
 	 * _Pastes a string from the pasteboard._
+	 * @see https://docs.scriptable.app/pasteboard/#paste
 	 */
 	static paste(): string
 	
 	/**
 	 * _Copies a string to the pasteboard._
 	 * @param string - The string to copy to the pasteboard.
+	 * @see https://docs.scriptable.app/pasteboard/#copystring
 	 */
 	static copyString(string: string): void
 	
 	/**
 	 * _Pastes a string from the pasteboard._
+	 * @see https://docs.scriptable.app/pasteboard/#pastestring
 	 */
 	static pasteString(): string
 	
 	/**
 	 * _Copies an image to the pasteboard._
 	 * @param image - The image to copy to the pasteboard.
+	 * @see https://docs.scriptable.app/pasteboard/#copyimage
 	 */
 	static copyImage(image: Image): void
 	
 	/**
 	 * _Pastes an image from the pasteboard._
+	 * @see https://docs.scriptable.app/pasteboard/#pasteimage
 	 */
 	static pasteImage(): Image
 }
@@ -2508,12 +2839,14 @@ declare class Pasteboard {
  * _A path describes a shape._
  * 
  * Use the methods on the path to create complex shapes.
+ * @see https://docs.scriptable.app/path/#-new-path
  */
 declare class Path {
 	/**
 	 * _A path describes a shape._
 	 * 
 	 * Use the methods on the path to create complex shapes.
+	 * @see https://docs.scriptable.app/path/#-new-path
 	 */
 	constructor()
 	
@@ -2522,6 +2855,7 @@ declare class Path {
 	 * 
 	 * Moves to a point without drawing a line between the current point and the new point.
 	 * @param point - Point to move to.
+	 * @see https://docs.scriptable.app/path/#-move
 	 */
 	move(point: Point): void
 	
@@ -2530,6 +2864,7 @@ declare class Path {
 	 * 
 	 * Add a line from the current point, e.g. set using the move method, and to the new point.
 	 * @param point - Point to add line to.
+	 * @see https://docs.scriptable.app/path/#-addline
 	 */
 	addLine(point: Point): void
 	
@@ -2538,6 +2873,7 @@ declare class Path {
 	 * 
 	 * This is a convenience function for adding a rectangle to the path starting from the lower left corner and drawing the lines counter-clockwise until the rectangle is closed.
 	 * @param rect - Rectangle to add.
+	 * @see https://docs.scriptable.app/path/#-addrect
 	 */
 	addRect(rect: Rect): void
 	
@@ -2546,6 +2882,7 @@ declare class Path {
 	 * 
 	 * Adds an ellipse incapsulated by the provided rectangle to the path.
 	 * @param rect - Rectangle incapsulating the ellipse.
+	 * @see https://docs.scriptable.app/path/#-addellipse
 	 */
 	addEllipse(rect: Rect): void
 	
@@ -2556,6 +2893,7 @@ declare class Path {
 	 * @param rect - Rectangle to add.
 	 * @param cornerWidth - Horizontal size of the rounded corner.
 	 * @param cornerHeight - Vertical size of the rounded corner.
+	 * @see https://docs.scriptable.app/path/#-addroundedrect
 	 */
 	addRoundedRect(rect: Rect, cornerWidth: number, cornerHeight: number): void
 	
@@ -2566,6 +2904,7 @@ declare class Path {
 	 * @param point - End point of the curve.
 	 * @param control1 - First control point of the curve.
 	 * @param control2 - Second control point of the curve.
+	 * @see https://docs.scriptable.app/path/#-addcurve
 	 */
 	addCurve(point: Point, control1: Point, control2: Point): void
 	
@@ -2575,6 +2914,7 @@ declare class Path {
 	 * Adds a quadratic Bézier curve to the specified end point with the specified control point.
 	 * @param point - End point of the curve.
 	 * @param control - Control point of the curve.
+	 * @see https://docs.scriptable.app/path/#-addquadcurve
 	 */
 	addQuadCurve(point: Point, control: Point): void
 	
@@ -2583,6 +2923,7 @@ declare class Path {
 	 * 
 	 * Adds straight lines between an array of points. Calling this method is equivalent to calling the move function with the first point in the array of points and then calling addLine on the subsequent points in the array.
 	 * @param points - Points to add lines between.
+	 * @see https://docs.scriptable.app/path/#-addlines
 	 */
 	addLines(points: Point[]): void
 	
@@ -2591,6 +2932,7 @@ declare class Path {
 	 * 
 	 * Calling this is equivalent to repeatedly calling addRect.
 	 * @param rects - Rectangles to add.
+	 * @see https://docs.scriptable.app/path/#-addrects
 	 */
 	addRects(rects: Rect[]): void
 	
@@ -2598,6 +2940,7 @@ declare class Path {
 	 * _Closes a sub path._
 	 * 
 	 * Adds a straight line from the current point to the start of the current subpath.
+	 * @see https://docs.scriptable.app/path/#-closesubpath
 	 */
 	closeSubpath(): void
 }
@@ -2606,12 +2949,14 @@ declare class Path {
 
 /**
  * _Provides access to your photo library._
+ * @see https://docs.scriptable.app/photos
  */
 declare class Photos {
 	/**
 	 * _Presents the photo library for picking an image._
 	 * 
 	 * Use this for picking an image from the photo library.
+	 * @see https://docs.scriptable.app/photos/#fromlibrary
 	 */
 	static fromLibrary(): Promise<Image>
 	
@@ -2619,6 +2964,7 @@ declare class Photos {
 	 * _Opens the camera for taking an image._
 	 * 
 	 * Use this for taking a new image using the camera.
+	 * @see https://docs.scriptable.app/photos/#fromcamera
 	 */
 	static fromCamera(): Promise<Image>
 	
@@ -2626,6 +2972,7 @@ declare class Photos {
 	 * _Get latest photo._
 	 * 
 	 * Reads the latest photo from your photo library. If no photo is available, the promise will be rejected.
+	 * @see https://docs.scriptable.app/photos/#latestphoto
 	 */
 	static latestPhoto(): Promise<Image>
 	
@@ -2634,6 +2981,7 @@ declare class Photos {
 	 * 
 	 * Reads the latests photos from your photo library. If no photo is available, the promise will be rejected.
 	 * @param count - Number of photos to fetch.
+	 * @see https://docs.scriptable.app/photos/#latestphotos
 	 */
 	static latestPhotos(count: number): Promise<Image[]>
 	
@@ -2641,6 +2989,7 @@ declare class Photos {
 	 * _Get latest screenshot._
 	 * 
 	 * Reads the latest screenshot from your photo library. If no screenshot is available, the promise will be rejected.
+	 * @see https://docs.scriptable.app/photos/#latestscreenshot
 	 */
 	static latestScreenshot(): Promise<Image>
 	
@@ -2649,6 +2998,7 @@ declare class Photos {
 	 * 
 	 * Reads the latests screenshots from your photo library. If no screenshot is available, the promise will be rejected.
 	 * @param count - Number of screenshots to fetch.
+	 * @see https://docs.scriptable.app/photos/#latestscreenshots
 	 */
 	static latestScreenshots(count: number): Promise<Image[]>
 	
@@ -2656,6 +3006,7 @@ declare class Photos {
 	 * _Removes latest photo._
 	 * 
 	 * Before removing the photo, an alert is shown prompting you to confirm the removal.
+	 * @see https://docs.scriptable.app/photos/#removelatestphoto
 	 */
 	static removeLatestPhoto(): void
 	
@@ -2664,6 +3015,7 @@ declare class Photos {
 	 * 
 	 * Before removing the photo, an alert is shown prompting you to confirm the removal.
 	 * @param count - Number of photos to remove.
+	 * @see https://docs.scriptable.app/photos/#removelatestphotos
 	 */
 	static removeLatestPhotos(count: number): void
 	
@@ -2671,6 +3023,7 @@ declare class Photos {
 	 * _Removes latest screenshot._
 	 * 
 	 * Before removing the screenshot, an alert is shown prompting you to confirm the removal.
+	 * @see https://docs.scriptable.app/photos/#removelatestscreenshot
 	 */
 	static removeLatestScreenshot(): void
 	
@@ -2679,6 +3032,7 @@ declare class Photos {
 	 * 
 	 * Before removing the screenshot, an alert is shown prompting you to confirm the removal.
 	 * @param count - Number of screenshots to remove.
+	 * @see https://docs.scriptable.app/photos/#removelatestscreenshots
 	 */
 	static removeLatestScreenshots(count: number): void
 }
@@ -2687,15 +3041,18 @@ declare class Photos {
 
 /**
  * _Structure representing a point._
+ * @see https://docs.scriptable.app/point/#-new-point
  */
 declare class Point {
 	/**
 	 * _X value._
+	 * @see https://docs.scriptable.app/point/#x
 	 */
 	x: number
 	
 	/**
 	 * _Y value._
+	 * @see https://docs.scriptable.app/point/#y
 	 */
 	y: number
 	
@@ -2703,6 +3060,7 @@ declare class Point {
 	 * _Structure representing a point._
 	 * @param x - X value.
 	 * @param y - Y value.
+	 * @see https://docs.scriptable.app/point/#-new-point
 	 */
 	constructor(x: number, y: number)
 }
@@ -2711,6 +3069,7 @@ declare class Point {
 
 /**
  * _Presents an item._
+ * @see https://docs.scriptable.app/quicklook
  */
 declare class QuickLook {
 	/**
@@ -2718,8 +3077,9 @@ declare class QuickLook {
 	 * 
 	 * Chooses the best suited presentation of the item and performs the presentation if possible.
 	 * @param item - Item to be present.
+	 * @see https://docs.scriptable.app/quicklook/#present
 	 */
-	static present(item: any): Promise<any>
+	static present(item: any): Promise<void>
 }
 
 
@@ -2728,12 +3088,14 @@ declare class QuickLook {
  * _Structure representing a rectangle._
  * 
  * Constructs a new rectangle placed in a two-dimensional coordinate system.
+ * @see https://docs.scriptable.app/rect/#-new-rect
  */
 declare class Rect {
 	/**
 	 * _Minimum X value._
 	 * 
 	 * The smallest x-coordinate in the rectangle.
+	 * @see https://docs.scriptable.app/rect/#minx
 	 */
 	minX: number
 	
@@ -2741,6 +3103,7 @@ declare class Rect {
 	 * _Minimum Y value._
 	 * 
 	 * The smallest y-coordinate in the rectangle.
+	 * @see https://docs.scriptable.app/rect/#miny
 	 */
 	minY: number
 	
@@ -2748,6 +3111,7 @@ declare class Rect {
 	 * _Maximum X value._
 	 * 
 	 * The greatest x-coordinate in the rectangle.
+	 * @see https://docs.scriptable.app/rect/#maxx
 	 */
 	maxX: number
 	
@@ -2755,6 +3119,7 @@ declare class Rect {
 	 * _Maximum Y value._
 	 * 
 	 * The greatest y-coordinate in the rectangle.
+	 * @see https://docs.scriptable.app/rect/#maxy
 	 */
 	maxY: number
 	
@@ -2762,6 +3127,7 @@ declare class Rect {
 	 * _X value._
 	 * 
 	 * The x-coordinate of the rectangle.
+	 * @see https://docs.scriptable.app/rect/#x
 	 */
 	x: number
 	
@@ -2769,6 +3135,7 @@ declare class Rect {
 	 * _Y value._
 	 * 
 	 * The y-coordinate of the rectangle.
+	 * @see https://docs.scriptable.app/rect/#y
 	 */
 	y: number
 	
@@ -2776,6 +3143,7 @@ declare class Rect {
 	 * _Width of rectangle._
 	 * 
 	 * The width of the rectangle.
+	 * @see https://docs.scriptable.app/rect/#width
 	 */
 	width: number
 	
@@ -2783,6 +3151,7 @@ declare class Rect {
 	 * _Height of rectangle._
 	 * 
 	 * The height of the rectangle.
+	 * @see https://docs.scriptable.app/rect/#height
 	 */
 	height: number
 	
@@ -2790,6 +3159,7 @@ declare class Rect {
 	 * _Point that specifies the rectangles origin._
 	 * 
 	 * The x- and y-coordinate that specifies the rectangles origin as a Point structure.
+	 * @see https://docs.scriptable.app/rect/#origin
 	 */
 	origin: Point
 	
@@ -2797,6 +3167,7 @@ declare class Rect {
 	 * _Size of the rectangle._
 	 * 
 	 * The width and height of the rectangle as a Size structure.
+	 * @see https://docs.scriptable.app/rect/#size
 	 */
 	size: Size
 	
@@ -2808,6 +3179,7 @@ declare class Rect {
 	 * @param y - Y coordinate.
 	 * @param width - Width of rectangle.
 	 * @param height - Height of rectangle.
+	 * @see https://docs.scriptable.app/rect/#-new-rect
 	 */
 	constructor(x: number, y: number, width: number, height: number)
 }
@@ -2816,6 +3188,7 @@ declare class Rect {
 
 /**
  * _Recurrence rule used with reminders and calendar events._
+ * @see https://docs.scriptable.app/recurrencerule
  */
 declare class RecurrenceRule {
 	/**
@@ -2823,6 +3196,7 @@ declare class RecurrenceRule {
 	 * 
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every day and a value of 3 specifies that the rule should repeat every third day.
 	 * @param interval - Interval at which to repeat the rule.
+	 * @see https://docs.scriptable.app/recurrencerule/#daily
 	 */
 	static daily(interval: number): RecurrenceRule
 	
@@ -2832,6 +3206,7 @@ declare class RecurrenceRule {
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every day and a value of 3 specifies that the rule should repeat every third day.
 	 * @param interval - Interval at which to repeat the rule.
 	 * @param endDate - Date at which the recurrence rule should end.
+	 * @see https://docs.scriptable.app/recurrencerule/#dailyenddate
 	 */
 	static dailyEndDate(interval: number, endDate: Date): RecurrenceRule
 	
@@ -2841,6 +3216,7 @@ declare class RecurrenceRule {
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every day and a value of 3 specifies that the rule should repeat every third day.
 	 * @param interval - Interval at which to repeat the rule.
 	 * @param occurrenceCount - Number of times the rule should repeat before it ends.
+	 * @see https://docs.scriptable.app/recurrencerule/#dailyoccurrencecount
 	 */
 	static dailyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule
 	
@@ -2849,6 +3225,7 @@ declare class RecurrenceRule {
 	 * 
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every week and a value of 3 specifies that the rule should repeat every third week.
 	 * @param interval - Interval at which to repeat the rule.
+	 * @see https://docs.scriptable.app/recurrencerule/#weekly
 	 */
 	static weekly(interval: number): RecurrenceRule
 	
@@ -2858,6 +3235,7 @@ declare class RecurrenceRule {
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every week and a value of 3 specifies that the rule should repeat every third week.
 	 * @param interval - Interval at which to repeat the rule.
 	 * @param endDate - Date at which the recurrence rule should end.
+	 * @see https://docs.scriptable.app/recurrencerule/#weeklyenddate
 	 */
 	static weeklyEndDate(interval: number, endDate: Date): RecurrenceRule
 	
@@ -2867,6 +3245,7 @@ declare class RecurrenceRule {
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every week and a value of 3 specifies that the rule should repeat every third week.
 	 * @param interval - Interval at which to repeat the rule.
 	 * @param occurrenceCount - Number of times the rule should repeat before it ends.
+	 * @see https://docs.scriptable.app/recurrencerule/#weeklyoccurrencecount
 	 */
 	static weeklyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule
 	
@@ -2875,6 +3254,7 @@ declare class RecurrenceRule {
 	 * 
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every month and a value of 3 specifies that the rule should repeat every third month.
 	 * @param interval - Interval at which to repeat the rule.
+	 * @see https://docs.scriptable.app/recurrencerule/#monthly
 	 */
 	static monthly(interval: number): RecurrenceRule
 	
@@ -2884,6 +3264,7 @@ declare class RecurrenceRule {
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every month and a value of 3 specifies that the rule should repeat every third month.
 	 * @param interval - Interval at which to repeat the rule.
 	 * @param endDate - Date at which the recurrence rule should end.
+	 * @see https://docs.scriptable.app/recurrencerule/#monthlyenddate
 	 */
 	static monthlyEndDate(interval: number, endDate: Date): RecurrenceRule
 	
@@ -2893,6 +3274,7 @@ declare class RecurrenceRule {
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every month and a value of 3 specifies that the rule should repeat every third month.
 	 * @param interval - Interval at which to repeat the rule.
 	 * @param occurrenceCount - Number of times the rule should repeat before it ends.
+	 * @see https://docs.scriptable.app/recurrencerule/#monthlyoccurrencecount
 	 */
 	static monthlyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule
 	
@@ -2901,6 +3283,7 @@ declare class RecurrenceRule {
 	 * 
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every year and a value of 3 specifies that the rule should repeat every third year.
 	 * @param interval - Interval at which to repeat the rule.
+	 * @see https://docs.scriptable.app/recurrencerule/#yearly
 	 */
 	static yearly(interval: number): RecurrenceRule
 	
@@ -2910,6 +3293,7 @@ declare class RecurrenceRule {
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every year and a value of 3 specifies that the rule should repeat every third year.
 	 * @param interval - Interval at which to repeat the rule.
 	 * @param endDate - Date at which the recurrence rule should end.
+	 * @see https://docs.scriptable.app/recurrencerule/#yearlyenddate
 	 */
 	static yearlyEndDate(interval: number, endDate: Date): RecurrenceRule
 	
@@ -2919,6 +3303,7 @@ declare class RecurrenceRule {
 	 * The interval should have a value greater than 0 and specifies how often the the pattern repeats. For example, an interval of 1 specifies that the rule should repeat every year and a value of 3 specifies that the rule should repeat every third year.
 	 * @param interval - Interval at which to repeat the rule.
 	 * @param occurrenceCount - Number of times the rule should repeat before it ends.
+	 * @see https://docs.scriptable.app/recurrencerule/#yearlyoccurrencecount
 	 */
 	static yearlyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule
 	
@@ -2931,6 +3316,7 @@ declare class RecurrenceRule {
 	 * @param interval - Interval at which to repeat the rule.
 	 * @param daysOfTheWeek - Days of the week to repeat the rule. Values range from 1 to 7, with Sunday being 1.
 	 * @param setPositions - Filters which recurrences to include in the rule's frequency.
+	 * @see https://docs.scriptable.app/recurrencerule/#complexweekly
 	 */
 	static complexWeekly(interval: number, daysOfTheWeek: number[], setPositions: number[]): RecurrenceRule
 	
@@ -2944,6 +3330,7 @@ declare class RecurrenceRule {
 	 * @param daysOfTheWeek - Days of the week to repeat the rule. Values range from 1 to 7, with Sunday being 1.
 	 * @param setPositions - Filters which recurrences to include in the rule's frequency.
 	 * @param endDate - Date at which the recurrence rule should end.
+	 * @see https://docs.scriptable.app/recurrencerule/#complexweeklyenddate
 	 */
 	static complexWeeklyEndDate(interval: number, daysOfTheWeek: number[], setPositions: number[], endDate: Date): RecurrenceRule
 	
@@ -2957,6 +3344,7 @@ declare class RecurrenceRule {
 	 * @param daysOfTheWeek - Days of the week to repeat the rule. Values range from 1 to 7, with Sunday being 1.
 	 * @param setPositions - Filters which recurrences to include in the rule's frequency.
 	 * @param occurrenceCount - Number of times the rule should repeat before it ends.
+	 * @see https://docs.scriptable.app/recurrencerule/#complexweeklyoccurrencecount
 	 */
 	static complexWeeklyOccurrenceCount(interval: number, daysOfTheWeek: number[], setPositions: number[], occurrenceCount: number): RecurrenceRule
 	
@@ -2970,6 +3358,7 @@ declare class RecurrenceRule {
 	 * @param daysOfTheWeek - Days of the week to repeat the rule. Values range from 1 to 7, with Sunday being 1.
 	 * @param daysOfTheMonth - Days of the month to repeat the rule. Values range from 1 to 31 and from -1 to -31.
 	 * @param setPositions - Filters which recurrences to include in the rule's frequency.
+	 * @see https://docs.scriptable.app/recurrencerule/#complexmonthly
 	 */
 	static complexMonthly(interval: number, daysOfTheWeek: number[], daysOfTheMonth: number[], setPositions: number[]): RecurrenceRule
 	
@@ -2984,6 +3373,7 @@ declare class RecurrenceRule {
 	 * @param daysOfTheMonth - Days of the month to repeat the rule. Values range from 1 to 31 and from -1 to -31.
 	 * @param setPositions - Filters which recurrences to include in the rule's frequency.
 	 * @param endDate - Date at which the recurrence rule should end.
+	 * @see https://docs.scriptable.app/recurrencerule/#complexmonthlyenddate
 	 */
 	static complexMonthlyEndDate(interval: number, daysOfTheWeek: number[], daysOfTheMonth: number[], setPositions: number[], endDate: Date): RecurrenceRule
 	
@@ -2998,6 +3388,7 @@ declare class RecurrenceRule {
 	 * @param daysOfTheMonth - Days of the month to repeat the rule. Values range from 1 to 31 and from -1 to -31.
 	 * @param setPositions - Filters which recurrences to include in the rule's frequency.
 	 * @param occurrenceCount - Number of times the rule should repeat before it ends.
+	 * @see https://docs.scriptable.app/recurrencerule/#complexmonthlyoccurrencecount
 	 */
 	static complexMonthlyOccurrenceCount(interval: number, daysOfTheWeek: number[], daysOfTheMonth: number[], setPositions: number[], occurrenceCount: number): RecurrenceRule
 	
@@ -3013,6 +3404,7 @@ declare class RecurrenceRule {
 	 * @param weeksOfTheYear - The weeks of the year to repeat the rule. Values range from 1 to 53 and -1 to -53.
 	 * @param daysOfTheYear - The days of the year to repeat the rule. Values range from 1 to 366 and -1 to -366.
 	 * @param setPositions - Filters which recurrences to include in the rule's frequency.
+	 * @see https://docs.scriptable.app/recurrencerule/#complexyearly
 	 */
 	static complexYearly(interval: number, daysOfTheWeek: number[], monthsOfTheYear: number[], weeksOfTheYear: number[], daysOfTheYear: number[], setPositions: number[]): RecurrenceRule
 	
@@ -3029,6 +3421,7 @@ declare class RecurrenceRule {
 	 * @param daysOfTheYear - The days of the year to repeat the rule. Values range from 1 to 366 and -1 to -366.
 	 * @param setPositions - Filters which recurrences to include in the rule's frequency.
 	 * @param endDate - Date at which the recurrence rule should end.
+	 * @see https://docs.scriptable.app/recurrencerule/#complexyearlyenddate
 	 */
 	static complexYearlyEndDate(interval: number, daysOfTheWeek: number[], monthsOfTheYear: number[], weeksOfTheYear: number[], daysOfTheYear: number[], setPositions: number[], endDate: Date): RecurrenceRule
 	
@@ -3045,6 +3438,7 @@ declare class RecurrenceRule {
 	 * @param daysOfTheYear - The days of the year to repeat the rule. Values range from 1 to 366 and -1 to -366.
 	 * @param setPositions - Filters which recurrences to include in the rule's frequency.
 	 * @param occurrenceCount - Number of times the rule should repeat before it ends.
+	 * @see https://docs.scriptable.app/recurrencerule/#complexyearlyoccurrencecount
 	 */
 	static complexYearlyOccurrenceCount(interval: number, daysOfTheWeek: number[], monthsOfTheYear: number[], weeksOfTheYear: number[], daysOfTheYear: number[], setPositions: number[], occurrenceCount: number): RecurrenceRule
 }
@@ -3055,25 +3449,30 @@ declare class RecurrenceRule {
  * _Manages reminders in calendars._
  * 
  * In order to add the reminder to your calendar, you must call the save() function.
+ * @see https://docs.scriptable.app/reminder/#-new-reminder
  */
 declare class Reminder {
 	/**
 	 * _Identifier of reminder._
+	 * @see https://docs.scriptable.app/reminder/#identifier
 	 */
 	identifier: string
 	
 	/**
 	 * _Title of reminder._
+	 * @see https://docs.scriptable.app/reminder/#title
 	 */
 	title: string
 	
 	/**
 	 * _Notes associated with reminder._
+	 * @see https://docs.scriptable.app/reminder/#notes
 	 */
 	notes: string
 	
 	/**
 	 * _Whether the reminder is completed_
+	 * @see https://docs.scriptable.app/reminder/#iscompleted
 	 */
 	isCompleted: boolean
 	
@@ -3081,26 +3480,31 @@ declare class Reminder {
 	 * _Priority of reminder._
 	 * 
 	 * Specifies the prirority of the reminder with 0 representing an undefined priority, 1 the highest priority, and 9 the lowest priority.
+	 * @see https://docs.scriptable.app/reminder/#priority
 	 */
 	priority: number
 	
 	/**
 	 * _Due date of reminder._
+	 * @see https://docs.scriptable.app/reminder/#duedate
 	 */
 	dueDate: Date
 	
 	/**
 	 * _Completion date of reminder._
+	 * @see https://docs.scriptable.app/reminder/#completiondate
 	 */
 	completionDate: Date
 	
 	/**
 	 * _Creation date of reminder._
+	 * @see https://docs.scriptable.app/reminder/#creationdate
 	 */
 	creationDate: Date
 	
 	/**
 	 * _Calendar the reminder is stored in._
+	 * @see https://docs.scriptable.app/reminder/#calendar
 	 */
 	calendar: Calendar
 	
@@ -3108,6 +3512,7 @@ declare class Reminder {
 	 * _Manages reminders in calendars._
 	 * 
 	 * In order to add the reminder to your calendar, you must call the save() function.
+	 * @see https://docs.scriptable.app/reminder/#-new-reminder
 	 */
 	constructor()
 	
@@ -3116,6 +3521,7 @@ declare class Reminder {
 	 * 
 	 * The fetched result contains reminders that are due today and reminders that are overdue. This is similar to the reminders shown in the Reminders apps "Scheduled" list. For performance reasons iOS limits fetched results to events within a four year timespan.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#scheduled
 	 */
 	static scheduled(calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3124,6 +3530,7 @@ declare class Reminder {
 	 * 
 	 * For performance reasons iOS limits fetched results to events within a four year timespan.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#all
 	 */
 	static all(calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3132,6 +3539,7 @@ declare class Reminder {
 	 * 
 	 * For performance reasons iOS limits fetched results to events within a four year timespan.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#allcompleted
 	 */
 	static allCompleted(calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3140,114 +3548,133 @@ declare class Reminder {
 	 * 
 	 * For performance reasons iOS limits fetched results to events within a four year timespan.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#allincomplete
 	 */
 	static allIncomplete(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches all reminders due today._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#allduetoday
 	 */
 	static allDueToday(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches completed reminders due today._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completedduetoday
 	 */
 	static completedDueToday(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches incomplete reminders due today._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#incompleteduetoday
 	 */
 	static incompleteDueToday(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches all reminders due tomorrow._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#allduetomorrow
 	 */
 	static allDueTomorrow(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches completed reminders due tomorrow._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completedduetomorrow
 	 */
 	static completedDueTomorrow(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches incomplete reminders due tomorrow._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#incompleteduetomorrow
 	 */
 	static incompleteDueTomorrow(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches all reminders due yesterday._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#alldueyesterday
 	 */
 	static allDueYesterday(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches completed reminders due yesterday._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completeddueyesterday
 	 */
 	static completedDueYesterday(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches incomplete reminders due yesterday._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#incompletedueyesterday
 	 */
 	static incompleteDueYesterday(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches all reminders due this week._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#allduethisweek
 	 */
 	static allDueThisWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches completed reminders due this week._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completedduethisweek
 	 */
 	static completedDueThisWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches incomplete reminders due this week._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#incompleteduethisweek
 	 */
 	static incompleteDueThisWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches all reminders due next week._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#allduenextweek
 	 */
 	static allDueNextWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches completed reminders due next week._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completedduenextweek
 	 */
 	static completedDueNextWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches incomplete reminders due next week._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#incompleteduenextweek
 	 */
 	static incompleteDueNextWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches all reminders due last week._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#allduelastweek
 	 */
 	static allDueLastWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches completed reminders due last week._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completedduelastweek
 	 */
 	static completedDueLastWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
 	/**
 	 * _Fetches incomplete reminders due last week._
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#incompleteduelastweek
 	 */
 	static incompleteDueLastWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3256,6 +3683,7 @@ declare class Reminder {
 	 * 
 	 * Note that this does not take the due date into account. This will return all reminders that you have completed today.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completedtoday
 	 */
 	static completedToday(calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3264,6 +3692,7 @@ declare class Reminder {
 	 * 
 	 * Note that this does not take the due date into account. This will return all reminders that you have completed this week.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completedthisweek
 	 */
 	static completedThisWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3272,6 +3701,7 @@ declare class Reminder {
 	 * 
 	 * Note that this does not take the due date into account. This will return all reminders that you have completed last week.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completedlastweek
 	 */
 	static completedLastWeek(calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3280,6 +3710,7 @@ declare class Reminder {
 	 * 
 	 * Fetches reminders that are due within the time interval constituted by the start and end dates.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#allduebetween
 	 */
 	static allDueBetween(startDate: Date, endDate: Date, calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3288,6 +3719,7 @@ declare class Reminder {
 	 * 
 	 * Fetches reminders that are completed and that were due within the time interval constituted by the start and end dates.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completedduebetween
 	 */
 	static completedDueBetween(startDate: Date, endDate: Date, calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3296,6 +3728,7 @@ declare class Reminder {
 	 * 
 	 * Fetches reminders that are incomplete and that were due within the time interval constituted by the start and end dates.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#incompleteduebetween
 	 */
 	static incompleteDueBetween(startDate: Date, endDate: Date, calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3304,6 +3737,7 @@ declare class Reminder {
 	 * 
 	 * Fetches reminders that were completed within the time interval constituted by the start and end dates.
 	 * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
+	 * @see https://docs.scriptable.app/reminder/#completedbetween
 	 */
 	static completedBetween(startDate: Date, endDate: Date, calendars: Calendar[]): Promise<Reminder[]>
 	
@@ -3312,11 +3746,13 @@ declare class Reminder {
 	 * 
 	 * Recurrence rules specify when the reminder should be repeated. See the documentation of RecurrenceRule for more information on creating rules.
 	 * @param recurrenceRule - Recurrence rule to add to the reminder.
+	 * @see https://docs.scriptable.app/reminder/#-addrecurrencerule
 	 */
 	addRecurrenceRule(recurrenceRule: RecurrenceRule): void
 	
 	/**
 	 * _Removes all recurrence rules._
+	 * @see https://docs.scriptable.app/reminder/#-removeallrecurrencerules
 	 */
 	removeAllRecurrenceRules(): void
 	
@@ -3324,11 +3760,13 @@ declare class Reminder {
 	 * _Saves reminder._
 	 * 
 	 * Saves changes to a reminder, inserting it into the calendar if it is newly created.
+	 * @see https://docs.scriptable.app/reminder/#-save
 	 */
 	save(): void
 	
 	/**
 	 * _Removes reminder from calendar._
+	 * @see https://docs.scriptable.app/reminder/#-remove
 	 */
 	remove(): void
 }
@@ -3339,10 +3777,12 @@ declare class Reminder {
  * _Performs HTTP requests._
  * 
  * Constructs a new request that will be sent to the provided URL. The request is not sent until an appropriate load method is called, e.g. loadImage for downloading and interpreting the response as an image.
+ * @see https://docs.scriptable.app/request/#-new-request
  */
 declare class Request {
 	/**
 	 * _URL to send request to._
+	 * @see https://docs.scriptable.app/request/#url
 	 */
 	url: string
 	
@@ -3350,6 +3790,7 @@ declare class Request {
 	 * _HTTP method used for the request._
 	 * 
 	 * Specifies the HTTP method to use when sending the request. The default is to send the request using the GET HTTP method.
+	 * @see https://docs.scriptable.app/request/#method
 	 */
 	method: string
 	
@@ -3357,6 +3798,7 @@ declare class Request {
 	 * _HTTP headers to send with the request._
 	 * 
 	 * Key value pairs where the key is the name of an HTTP header and the value will be sent as the value for the HTTP header.
+	 * @see https://docs.scriptable.app/request/#headers
 	 */
 	headers: {[key: string]: string}
 	
@@ -3366,6 +3808,7 @@ declare class Request {
 	 * The body will be send along the request. While this property can be any value, currently only strings and Data is supported.
 	 * 
 	 * Be aware that this property is ignored if you convert the request to a multipart request using `addParameterToMultipart`, `addFileToMultipart` or `addFileDataToMultipart`.
+	 * @see https://docs.scriptable.app/request/#body
 	 */
 	body: any
 	
@@ -3384,6 +3827,7 @@ declare class Request {
 	 *         "Content-Length": "17671"
 	 *       }
 	 *     }
+	 * @see https://docs.scriptable.app/request/#response
 	 */
 	response: {[key: string]: any}
 	
@@ -3392,6 +3836,7 @@ declare class Request {
 	 * 
 	 * Constructs a new request that will be sent to the provided URL. The request is not sent until an appropriate load method is called, e.g. loadImage for downloading and interpreting the response as an image.
 	 * @param url - URL to send request to.
+	 * @see https://docs.scriptable.app/request/#-new-request
 	 */
 	constructor(url: string)
 	
@@ -3399,6 +3844,7 @@ declare class Request {
 	 * _Sends request._
 	 * 
 	 * Call to send the configured request to the specified URL. The raw response is provided when the returned promise is fulfilled.
+	 * @see https://docs.scriptable.app/request/#-load
 	 */
 	load(): Promise<Data>
 	
@@ -3406,6 +3852,7 @@ declare class Request {
 	 * _Sends request and parses response as a string._
 	 * 
 	 * Call to send the configured request to the specified URL. The response is parsed to a string and provided when the returned promise is fulfilled.
+	 * @see https://docs.scriptable.app/request/#-loadstring
 	 */
 	loadString(): Promise<string>
 	
@@ -3413,6 +3860,7 @@ declare class Request {
 	 * _Sends request and parses response as JSON._
 	 * 
 	 * Call to send the configured request to the specified URL. The response is expected to be a valid JSON string and is parsed into an object.
+	 * @see https://docs.scriptable.app/request/#-loadjson
 	 */
 	loadJSON(): Promise<any>
 	
@@ -3420,6 +3868,7 @@ declare class Request {
 	 * _Sends request and parses response as an image._
 	 * 
 	 * Call to send the configured request to the specified URL. The response is expected to be an image.
+	 * @see https://docs.scriptable.app/request/#-loadimage
 	 */
 	loadImage(): Promise<Image>
 	
@@ -3431,6 +3880,7 @@ declare class Request {
 	 * Calling this function will make the request a multipart request. When the request is send, the content type will automatically be set to "multipart/form-data".
 	 * @param name - Name of the parameter.
 	 * @param value - Value of the parameter.
+	 * @see https://docs.scriptable.app/request/#-addparametertomultipart
 	 */
 	addParameterToMultipart(name: string, value: string): void
 	
@@ -3444,6 +3894,7 @@ declare class Request {
 	 * @param mimeType - MIME type of the file to add.
 	 * @param name - Name of the parameter which holds the file.
 	 * @param filename - Name of the file.
+	 * @see https://docs.scriptable.app/request/#-addfiledatatomultipart
 	 */
 	addFileDataToMultipart(data: Data, mimeType: string, name: string, filename: string): void
 	
@@ -3456,6 +3907,7 @@ declare class Request {
 	 * @param filePath - Path of the file to add.
 	 * @param name - Name of the parameter which holds the file.
 	 * @param filename - Optional name of the uploaded file.
+	 * @see https://docs.scriptable.app/request/#-addfiletomultipart
 	 */
 	addFileToMultipart(filePath: string, name: string, filename: string): void
 	
@@ -3468,6 +3920,7 @@ declare class Request {
 	 * @param image - Image to add.
 	 * @param name - Name of the parameter which holds the file.
 	 * @param filename - Optional name of the uploaded file.
+	 * @see https://docs.scriptable.app/request/#-addimagetomultipart
 	 */
 	addImageToMultipart(image: Image, name: string, filename: string): void
 	
@@ -3475,6 +3928,7 @@ declare class Request {
 	 * _Function called upon redirect._
 	 * 
 	 * The function determines how redirects should be handled. By default redirects are allowed. When invoked the function is supplied with the request that we're about to redirect to. The function can return the request to continue redirecting or it can return another request to redirect to. Returning null will stop the redirect. Note that onRedirect will only be invoked on the initial request. Consecutive redirects should be handled on the initial request.
+	 * @see https://docs.scriptable.app/request/#onredirect
 	 */
 	onRedirect: (Request) => Request
 }
@@ -3483,6 +3937,7 @@ declare class Request {
 
 /**
  * _Presents a website._
+ * @see https://docs.scriptable.app/safari
  */
 declare class Safari {
 	/**
@@ -3490,14 +3945,16 @@ declare class Safari {
 	 * 
 	 * Presents a website without leaving the app. To present a website and leave the app, take a look at the Application type.
 	 * @param url - URL of website to present.
+	 * @see https://docs.scriptable.app/safari/#openinapp
 	 */
-	static openInApp(url: string): Promise<any>
+	static openInApp(url: string): Promise<void>
 	
 	/**
 	 * _Presents a website._
 	 * 
 	 * Presents a website in the Safari app, thus leaving the current app.
 	 * @param url - URL of website to present.
+	 * @see https://docs.scriptable.app/safari/#open
 	 */
 	static open(url: string): void
 }
@@ -3506,10 +3963,12 @@ declare class Safari {
 
 /**
  * _Access information about the script._
+ * @see https://docs.scriptable.app/script
  */
 declare class Script {
 	/**
 	 * _Name of the script._
+	 * @see https://docs.scriptable.app/script/#name
 	 */
 	static name(): string
 	
@@ -3521,6 +3980,7 @@ declare class Script {
 	 * When a script is run inside Siri and the Shortcuts app, Scriptable use heuristics to determine if the script have completed. If you find that a script takes too long to complete, you can manually call the `complete` function to stop the execution. Note that this should be done as the very last action the script performs.
 	 * 
 	 * When the script is run from a share sheet, the `complete` function will complete execution and dismiss the presented view.
+	 * @see https://docs.scriptable.app/script/#complete
 	 */
 	static complete(): void
 }
@@ -3529,6 +3989,7 @@ declare class Script {
 
 /**
  * _Offers standard activities to perform on items._
+ * @see https://docs.scriptable.app/sharesheet
  */
 declare class ShareSheet {
 	/**
@@ -3536,6 +3997,7 @@ declare class ShareSheet {
 	 * 
 	 * Presents a share sheet with an array of items to share. The activities included in the presented sheet will vary based on the type of item.
 	 * @param activityItems - Items to perform activity on.
+	 * @see https://docs.scriptable.app/sharesheet/#present
 	 */
 	static present(activityItems: any[]): Promise<any>
 }
@@ -3544,15 +4006,18 @@ declare class ShareSheet {
 
 /**
  * _Structure representing a size._
+ * @see https://docs.scriptable.app/size/#-new-size
  */
 declare class Size {
 	/**
 	 * _Width value._
+	 * @see https://docs.scriptable.app/size/#width
 	 */
 	width: number
 	
 	/**
 	 * _Height value._
+	 * @see https://docs.scriptable.app/size/#height
 	 */
 	height: number
 	
@@ -3560,6 +4025,7 @@ declare class Size {
 	 * _Structure representing a size._
 	 * @param width - Width value.
 	 * @param height - Height value.
+	 * @see https://docs.scriptable.app/size/#-new-size
 	 */
 	constructor(width: number, height: number)
 }
@@ -3568,11 +4034,13 @@ declare class Size {
 
 /**
  * _Speaks a text._
+ * @see https://docs.scriptable.app/speech
  */
 declare class Speech {
 	/**
 	 * Speaks a text.
 	 * @param text - Text to speak.
+	 * @see https://docs.scriptable.app/speech/#speak
 	 */
 	static speak(text: string): void
 }
@@ -3583,12 +4051,14 @@ declare class Speech {
  * _Renders a table._
  * 
  * Use a table to present data in a structured manner.
+ * @see https://docs.scriptable.app/uitable/#-new-uitable
  */
 declare class UITable {
 	/**
 	 * _Whether to show separators._
 	 * 
 	 * Whether to show separators between rows. Defaults to false.
+	 * @see https://docs.scriptable.app/uitable/#showseparators
 	 */
 	showSeparators: boolean
 	
@@ -3596,6 +4066,7 @@ declare class UITable {
 	 * _Renders a table._
 	 * 
 	 * Use a table to present data in a structured manner.
+	 * @see https://docs.scriptable.app/uitable/#-new-uitable
 	 */
 	constructor()
 	
@@ -3604,6 +4075,7 @@ declare class UITable {
 	 * 
 	 * Adds a row to the table. Rows are shown vertically in the table view, i.e. from the top and down. Rows are rendered in the order they are added.
 	 * @param row - Row to add.
+	 * @see https://docs.scriptable.app/uitable/#-addrow
 	 */
 	addRow(row: UITableRow): void
 	
@@ -3612,6 +4084,7 @@ declare class UITable {
 	 * 
 	 * Removes a row from the table.
 	 * @param row - Row to remove.
+	 * @see https://docs.scriptable.app/uitable/#-removerow
 	 */
 	removeRow(row: UITableRow): void
 	
@@ -3619,6 +4092,7 @@ declare class UITable {
 	 * _Removes all rows._
 	 * 
 	 * Removes all rows from the table. If the table is presented, you must call the `reload` function in order for the changes to be reflected visually.
+	 * @see https://docs.scriptable.app/uitable/#-removeallrows
 	 */
 	removeAllRows(): void
 	
@@ -3626,19 +4100,22 @@ declare class UITable {
 	 * _Reloads the table._
 	 * 
 	 * If you add or remove rows while a table view is presented, you must reload the table in order for the changes to take effect.
+	 * @see https://docs.scriptable.app/uitable/#-reload
 	 */
 	reload(): void
 	
 	/**
 	 * _Presents the table._
+	 * @see https://docs.scriptable.app/uitable/#-present
 	 */
-	present(): Promise<any>
+	present(): Promise<void>
 }
 
 
 
 /**
  * _Cell in a UITableRow._
+ * @see https://docs.scriptable.app/uitablecell
  */
 declare class UITableCell {
 	/**
@@ -3649,6 +4126,7 @@ declare class UITableCell {
 	 * Cell A has a width weight of 50. Cell B has a width weight of 100. Cell C has a width wegiht of 150.
 	 * 
 	 * Assume that the row has an absolute width of 100. The width will be distributed among cells A, B and C. B will be double as wide as A but C will be fifty percent wider than B and three times as wide as A.
+	 * @see https://docs.scriptable.app/uitablecell/#widthweight
 	 */
 	widthWeight: number
 	
@@ -3656,6 +4134,7 @@ declare class UITableCell {
 	 * _Whether to dismiss the table when the button is tapped._
 	 * 
 	 * Defaults to false.
+	 * @see https://docs.scriptable.app/uitablecell/#dismissontap
 	 */
 	dismissOnTap: boolean
 	
@@ -3663,6 +4142,7 @@ declare class UITableCell {
 	 * _Color of the title._
 	 * 
 	 * This only have an effect on cells with a title. By default the color is null, in which case an appropriate color is automatically chosen based on the theme of the app and the context the script is running in.
+	 * @see https://docs.scriptable.app/uitablecell/#titlecolor
 	 */
 	titleColor: Color
 	
@@ -3670,6 +4150,7 @@ declare class UITableCell {
 	 * _Color of the subtitle._
 	 * 
 	 * This only have an effect on cells with a subtitle. By default the color is null, in which case an appropriate color is automatically chosen based on the theme of the app and the context the script is running in.
+	 * @see https://docs.scriptable.app/uitablecell/#subtitlecolor
 	 */
 	subtitleColor: Color
 	
@@ -3679,6 +4160,7 @@ declare class UITableCell {
 	 * Constructs a new cell containing a text.
 	 * @param title - Optional title to show in the cell.
 	 * @param subtitle - Optional subtitle shown below the title.
+	 * @see https://docs.scriptable.app/uitablecell/#text
 	 */
 	static text(title: string, subtitle: string): UITableCell
 	
@@ -3687,6 +4169,7 @@ declare class UITableCell {
 	 * 
 	 * Constructs a new cell containing an image.
 	 * @param image - Image to show in the cell.
+	 * @see https://docs.scriptable.app/uitablecell/#image
 	 */
 	static image(image: Image): UITableCell
 	
@@ -3695,6 +4178,7 @@ declare class UITableCell {
 	 * 
 	 * Constructs a new cell that loads the image at the specified URL.
 	 * @param url - URL to image.
+	 * @see https://docs.scriptable.app/uitablecell/#imageaturl
 	 */
 	static imageAtURL(url: string): UITableCell
 	
@@ -3703,6 +4187,7 @@ declare class UITableCell {
 	 * 
 	 * Constructs a new cell that contains a button. Set the `onTap` property to specify an action to performed when the button is tapped.
 	 * @param title - Title of the button.
+	 * @see https://docs.scriptable.app/uitablecell/#button
 	 */
 	static button(title: string): UITableCell
 	
@@ -3710,6 +4195,7 @@ declare class UITableCell {
 	 * _Left aligns content._
 	 * 
 	 * Specifies that content in the cell should be left aligned.
+	 * @see https://docs.scriptable.app/uitablecell/#-leftaligned
 	 */
 	leftAligned(): void
 	
@@ -3717,6 +4203,7 @@ declare class UITableCell {
 	 * _Center aligns content._
 	 * 
 	 * Specifies that content in the cell should be center aligned.
+	 * @see https://docs.scriptable.app/uitablecell/#-centeraligned
 	 */
 	centerAligned(): void
 	
@@ -3724,6 +4211,7 @@ declare class UITableCell {
 	 * _Right aligns content._
 	 * 
 	 * Specifies that content in the cell should be right aligned.
+	 * @see https://docs.scriptable.app/uitablecell/#-rightaligned
 	 */
 	rightAligned(): void
 	
@@ -3731,6 +4219,7 @@ declare class UITableCell {
 	 * _Called when the button is tapped._
 	 * 
 	 * Buttons cannot be tapped when the table is presented in Siri.
+	 * @see https://docs.scriptable.app/uitablecell/#ontap
 	 */
 	onTap: () => void
 }
@@ -3741,12 +4230,14 @@ declare class UITableCell {
  * _Row in a UITable._
  * 
  * Rows are shown vertically in a UITable. A row contains cells which are displayed horizontally.
+ * @see https://docs.scriptable.app/uitablerow/#-new-uitablerow
  */
 declare class UITableRow {
 	/**
 	 * _Spacing between cells._
 	 * 
 	 * Specifies the horizontal spacing between cells in the row.
+	 * @see https://docs.scriptable.app/uitablerow/#cellspacing
 	 */
 	cellSpacing: number
 	
@@ -3754,6 +4245,7 @@ declare class UITableRow {
 	 * _Height of the row._
 	 * 
 	 * The height of the row defaults to 44.
+	 * @see https://docs.scriptable.app/uitablerow/#height
 	 */
 	height: number
 	
@@ -3761,6 +4253,7 @@ declare class UITableRow {
 	 * _Whether the cell is a header._
 	 * 
 	 * Headers are highlighted cells that helps users understand context. Defaults to false.
+	 * @see https://docs.scriptable.app/uitablerow/#isheader
 	 */
 	isHeader: boolean
 	
@@ -3770,11 +4263,13 @@ declare class UITableRow {
 	 * This property will only have an effect if the row is selectable, i.e. `onSelect` has a value. Otherwise it is ignored.
 	 * 
 	 * Defaults to true.
+	 * @see https://docs.scriptable.app/uitablerow/#dismissonselect
 	 */
 	dismissOnSelect: boolean
 	
 	/**
 	 * _Background color._
+	 * @see https://docs.scriptable.app/uitablerow/#backgroundcolor
 	 */
 	backgroundColor: Color
 	
@@ -3782,6 +4277,7 @@ declare class UITableRow {
 	 * _Row in a UITable._
 	 * 
 	 * Rows are shown vertically in a UITable. A row contains cells which are displayed horizontally.
+	 * @see https://docs.scriptable.app/uitablerow/#-new-uitablerow
 	 */
 	constructor()
 	
@@ -3790,6 +4286,7 @@ declare class UITableRow {
 	 * 
 	 * Adds a cell to the row. Note that cells are shown in the order they are added to the row.
 	 * @param cell - Cell to add to the row.
+	 * @see https://docs.scriptable.app/uitablerow/#-addcell
 	 */
 	addCell(cell: UITableCell): void
 	
@@ -3799,6 +4296,7 @@ declare class UITableRow {
 	 * Constructs a new cell containing the specified string and adds it to the row.
 	 * @param title - Optional title to show in the cell.
 	 * @param subtitle - Optional subtitle shown below the title in the cell.
+	 * @see https://docs.scriptable.app/uitablerow/#-addtext
 	 */
 	addText(title: string, subtitle: string): UITableCell
 	
@@ -3807,6 +4305,7 @@ declare class UITableRow {
 	 * 
 	 * Constructs a new cell containing the specified image and adds it to the row.
 	 * @param image - Image to show in the cell.
+	 * @see https://docs.scriptable.app/uitablerow/#-addimage
 	 */
 	addImage(image: Image): UITableCell
 	
@@ -3815,6 +4314,7 @@ declare class UITableRow {
 	 * 
 	 * Constructs a new cell that loads the image at the specified url and adds the cell to the row.
 	 * @param url - URL to image.
+	 * @see https://docs.scriptable.app/uitablerow/#-addimageaturl
 	 */
 	addImageAtURL(url: string): UITableCell
 	
@@ -3823,6 +4323,7 @@ declare class UITableRow {
 	 * 
 	 * Constructs a new cell that contains a button. Set the `onTap` property to specify an action to performed when the button is tapped.
 	 * @param title - Title of the button.
+	 * @see https://docs.scriptable.app/uitablerow/#-addbutton
 	 */
 	addButton(title: string): UITableCell
 	
@@ -3832,6 +4333,7 @@ declare class UITableRow {
 	 * Called when the row is selected when the table is presented. If this has no value, the row cannot be selected. Defaults to null.
 	 * 
 	 * Rows cannot be tapped when the tables is presented in Siri.
+	 * @see https://docs.scriptable.app/uitablerow/#onselect
 	 */
 	onSelect: (number) => void
 }
@@ -3840,12 +4342,14 @@ declare class UITableRow {
 
 /**
  * _Manages URL schemes for Scriptable._
+ * @see https://docs.scriptable.app/urlscheme
  */
 declare class URLScheme {
 	/**
 	 * _URL for opening the script._
 	 * 
 	 * Gets the URL for opening the current script. When making a request to the returned URL from another app, e.g. Safari, the script will be opened.
+	 * @see https://docs.scriptable.app/urlscheme/#foropeningscript
 	 */
 	static forOpeningScript(): string
 	
@@ -3853,6 +4357,7 @@ declare class URLScheme {
 	 * _URL for opening script settings._
 	 * 
 	 * Gets the URL for opening the settings of the current script. When making a request to the returned URL from another app, e.g. Safari, the settings of the current script will be opened.
+	 * @see https://docs.scriptable.app/urlscheme/#foropeningscriptsettings
 	 */
 	static forOpeningScriptSettings(): string
 	
@@ -3862,6 +4367,7 @@ declare class URLScheme {
 	 * Gets the URL for running the current script. When making a request to the returned URL from another app, e.g. Safari, the current script will run.
 	 * 
 	 * Any query parameter in the URL will be available using the URLScheme bridge. Get the query paramters using the `allParameters()` and `parameter(name)` functions.
+	 * @see https://docs.scriptable.app/urlscheme/#forrunningscript
 	 */
 	static forRunningScript(): string
 }
@@ -3870,12 +4376,14 @@ declare class URLScheme {
 
 /**
  * _Unique identifier._
+ * @see https://docs.scriptable.app/uuid
  */
 declare class UUID {
 	/**
 	 * _Get string value._
 	 * 
 	 * Used for getting the string value of a UUID.
+	 * @see https://docs.scriptable.app/uuid/#string
 	 */
 	static string(): string
 }
@@ -3886,12 +4394,14 @@ declare class UUID {
  * _Presents websites and evaluates JavaScript on websites._
  * 
  * Constructs a new web view. Use a web view to evaluate JavaScript on websites.
+ * @see https://docs.scriptable.app/webview/#-new-webview
  */
 declare class WebView {
 	/**
 	 * _Presents websites and evaluates JavaScript on websites._
 	 * 
 	 * Constructs a new web view. Use a web view to evaluate JavaScript on websites.
+	 * @see https://docs.scriptable.app/webview/#-new-webview
 	 */
 	constructor()
 	
@@ -3900,8 +4410,9 @@ declare class WebView {
 	 * @param html - HTML to load and render.
 	 * @param baseURL - Optional. Base URL used to resolve relative URLs in the HTML.
 	 * @param preferredSize - Optional. Preferred size of the view. This size is not guaranteed to be respected.
+	 * @see https://docs.scriptable.app/webview/#loadhtml
 	 */
-	static loadHTML(html: string, baseURL: string, preferredSize: Size): Promise<any>
+	static loadHTML(html: string, baseURL: string, preferredSize: Size): Promise<void>
 	
 	/**
 	 * _Loads a file and renders it._
@@ -3915,8 +4426,9 @@ declare class WebView {
 	 * If you are displaying large images in a memory constrained envrionment, for example in a Siri Shortcut, you should use the WebView bridge instead of the QuickLook bridge. The technical reason for this is that a Siri Shortcut and other app extension processes have very limited memory and loading a very large image will cause the app extension to be terminated. However, the web view will run in a different process meaning that it is not affected by the same memory constraints.
 	 * @param fileURL - URL of the file to load and render.
 	 * @param preferredSize - Optional. Preferred size of the view. This size is not guaranteed to be respected.
+	 * @see https://docs.scriptable.app/webview/#loadfile
 	 */
-	static loadFile(fileURL: string, preferredSize: Size): Promise<any>
+	static loadFile(fileURL: string, preferredSize: Size): Promise<void>
 	
 	/**
 	 * _Loads URL in web view and presents the web view._
@@ -3924,24 +4436,27 @@ declare class WebView {
 	 * The optional `preferredSize` parameter is ignored unless the script is run in a Siri Shortcut.
 	 * @param url - URL to load into the web view.
 	 * @param preferredSize - Optional. Preferred size of the view. This size is not guaranteed to be respected.
+	 * @see https://docs.scriptable.app/webview/#loadurl
 	 */
-	static loadURL(url: string, preferredSize: Size): Promise<any>
+	static loadURL(url: string, preferredSize: Size): Promise<void>
 	
 	/**
 	 * _Loads URL in web view._
 	 * 
 	 * Loads the URL in the web view. The returned promise will complete once the web view have finished loading.
 	 * @param url - URL to load into the web view.
+	 * @see https://docs.scriptable.app/webview/#-loadurl
 	 */
-	loadURL(url: string): Promise<any>
+	loadURL(url: string): Promise<void>
 	
 	/**
 	 * _Loads request in web view._
 	 * 
 	 * When loading a request into the web view, the HTTP method, body and headers of the request will be respected. The onRedirect function on the request will not be invoked.
 	 * @param request - Request to load into the web view.
+	 * @see https://docs.scriptable.app/webview/#-loadrequest
 	 */
-	loadRequest(request: Request): Promise<any>
+	loadRequest(request: Request): Promise<void>
 	
 	/**
 	 * _Loads HTML in web view._
@@ -3949,8 +4464,9 @@ declare class WebView {
 	 * Loads the HTML into the web view. The returned promise will complete once the web view have finished loading.
 	 * @param html - HTML to load into the web view.
 	 * @param baseURL - Optional. Base URL used to resolve relative URLs in the HTML.
+	 * @see https://docs.scriptable.app/webview/#-loadhtml
 	 */
-	loadHTML(html: string, baseURL: string): Promise<any>
+	loadHTML(html: string, baseURL: string): Promise<void>
 	
 	/**
 	 * _Evaluates JavaScript in the web view._
@@ -3964,11 +4480,13 @@ declare class WebView {
 	 * The log is available from the evaluated JavaScript, i.e. messages passed to the globally available `log` and `logError` functions will be shown in the log.
 	 * @param javaScript - JavaScript to evaluate in the web view.
 	 * @param useCallback - Optional. If true the web view waits for the globally available completion function of the web view to be called before terminating. Defaults to false.
+	 * @see https://docs.scriptable.app/webview/#-evaluatejavascript
 	 */
 	evaluateJavaScript(javaScript: string, useCallback: boolean): Promise<any>
 	
 	/**
 	 * _Reads and returns HTML from the loaded website._
+	 * @see https://docs.scriptable.app/webview/#-gethtml
 	 */
 	getHTML(): Promise<any>
 	
@@ -3976,8 +4494,9 @@ declare class WebView {
 	 * _Presents the web view._
 	 * 
 	 * The web view is presented with the content that has been loaded into it.
+	 * @see https://docs.scriptable.app/webview/#-present
 	 */
-	present(): Promise<any>
+	present(): Promise<void>
 	
 	/**
 	 * _Waits for the web view to load._
@@ -3985,6 +4504,7 @@ declare class WebView {
 	 * The returned promise will be fulfilled when the web view finishes loading. If the load fails, the promise will be fulfilled with an error. Use this with caution. If the web view is not loading a new page or is not about to load a new page, the returned promise will never be fulfilled. This limitation exists because Scriptable cannot determine if a web view is about to load a page in cases where evaluating JavaScript in the web view causes a new page to load.
 	 * 
 	 * Generally this should only be used when loading causing a new page to load from `evaluateJavaScript`. In other cases, e.g. when loading a URL using `loadURL`, the returned promise will be fulfilled when the page have been loaded.
+	 * @see https://docs.scriptable.app/webview/#-waitforload
 	 */
 	waitForLoad(): Promise<any>
 	
@@ -3994,6 +4514,7 @@ declare class WebView {
 	 * When the web view performs a request to load a resource, the function can determine whether or not to allow the request. Disallowing request can speed up the time it takes to load the website.
 	 * 
 	 * By default all requests are allowed.
+	 * @see https://docs.scriptable.app/webview/#shouldallowrequest
 	 */
 	shouldAllowRequest: (Request) => boolean
 }
@@ -4004,10 +4525,12 @@ declare class WebView {
  * _Event driven XML parser._
  * 
  * Constructs an event driven XML parser. It does not itself do any parsing therfore the callback functions must be set before starting to parse.
+ * @see https://docs.scriptable.app/xmlparser/#-new-xmlparser
  */
 declare class XMLParser {
 	/**
 	 * _XML string to be parsed._
+	 * @see https://docs.scriptable.app/xmlparser/#string
 	 */
 	string: string
 	
@@ -4016,6 +4539,7 @@ declare class XMLParser {
 	 * 
 	 * Constructs an event driven XML parser. It does not itself do any parsing therfore the callback functions must be set before starting to parse.
 	 * @param string - XML string to be parsed.
+	 * @see https://docs.scriptable.app/xmlparser/#-new-xmlparser
 	 */
 	constructor(string: string)
 	
@@ -4023,11 +4547,13 @@ declare class XMLParser {
 	 * _Starts parsing._
 	 * 
 	 * Before calling this function you should ensure that the parser is correctly configured, i.e. the necessary callback functions should be set.
+	 * @see https://docs.scriptable.app/xmlparser/#-parse
 	 */
 	parse(): boolean
 	
 	/**
 	 * _Function called when the parser begins parsing a document._
+	 * @see https://docs.scriptable.app/xmlparser/#didstartdocument
 	 */
 	didStartDocument: () => void
 	
@@ -4035,6 +4561,7 @@ declare class XMLParser {
 	 * _Function called when the parser ends parsing a document._
 	 * 
 	 * The the parser calls the function, it has successfully completed parsing the document.
+	 * @see https://docs.scriptable.app/xmlparser/#didenddocument
 	 */
 	didEndDocument: () => void
 	
@@ -4042,6 +4569,7 @@ declare class XMLParser {
 	 * _Function called when starting to parse an element._
 	 * 
 	 * Called by the parser when it encounters a start tag for an element. The function takes the element name as a parameter. Use this function to update your state and prepare for receiving the characters of the element. After this function is called, the parser will call the foundCharacters callback function with all or parts of the characters of the element.
+	 * @see https://docs.scriptable.app/xmlparser/#didstartelement
 	 */
 	didStartElement: (string) => void
 	
@@ -4049,6 +4577,7 @@ declare class XMLParser {
 	 * _Function called when ended parsing an element._
 	 * 
 	 * Called by the parser when it encounters an end tag for an element. The function takes the element name as a parameter.
+	 * @see https://docs.scriptable.app/xmlparser/#didendelement
 	 */
 	didEndElement: (string) => void
 	
@@ -4056,6 +4585,7 @@ declare class XMLParser {
 	 * _Function called when the parser finds characters of an element._
 	 * 
 	 * The parser calls this function with a string whenever it finds characters for the current element. This function may be called several times for a single element.
+	 * @see https://docs.scriptable.app/xmlparser/#foundcharacters
 	 */
 	foundCharacters: (string) => void
 	
@@ -4063,6 +4593,7 @@ declare class XMLParser {
 	 * _Function called when the parser encounters an error._
 	 * 
 	 * The parser will call this function when it encounters a fatal error preventing it from continuing to parse. When the function is called the parsing is stopped.
+	 * @see https://docs.scriptable.app/xmlparser/#parseerroroccurred
 	 */
 	parseErrorOccurred: (string) => void
 }
@@ -4088,13 +4619,13 @@ declare function logError(message: any): void
 
 
 /**
- * _Converts ascii string to base 64._
+ * _Converts base6 4 string to ascii._
  */
 declare function atob(str: string): string
 
 
 /**
- * _Converts base 64 string to ascii._
+ * _Converts ascii string to base 64._
  */
 declare function btoa(str: string): string
 
@@ -4133,5 +4664,6 @@ declare function btoa(str: string): string
  * The `circle.js` module exports the functions `area` and `circumference`.
  * 
  * For more information about modules, refer to the documentation on the `module` variable.
+ * @see https://docs.scriptable.app/importmodule
  */
 declare function importModule(path: string): any

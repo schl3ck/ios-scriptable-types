@@ -311,6 +311,9 @@ function processDescription(obj, options) {
 	if (obj.returns && obj.returns.type) {
 		descr += `\n@returns {${obj.returns.type}} ${obj.returns.doc}`;
 	}
+	if (obj.url) {
+		descr += `\n@see ${obj.url}`;
+	}
 
 	descr = descr.replace(/^/gm, " * ");
 
