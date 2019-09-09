@@ -14,7 +14,10 @@ const axios = require("axios");
 const turndown = require("turndown");
 const cc = require("console-control-strings");
 
-const outputFilename = "dist/scriptable.d.ts";
+const outputFilenames = {
+	typings: "dist/scriptable.d.ts",
+	eslintGlobals: "dist/globals.eslint.json"
+};
 const templateFile = "template.d.ts";
 
 let turndownService = new turndown({
@@ -186,11 +189,27 @@ ${interfaces.map((i) => `declare interface ${i}`).join("\n").replace(/^/gm, "\t"
 
 		let contents = template + "\n" + definitions.join("\n\n\n");
 
-		if (outputFilename.includes("/")) {
-			fs.mkdirSync(path.dirname(outputFilename), { recursive: true });
+		if (outputFilenames.typings.includes("/")) {
+			fs.mkdirSync(path.dirname(outputFilenames.typings), { recursive: true });
 		}
 
-		fs.writeFileSync(outputFilename, contents);
+		fs.writeFileSync(outputFilenames.typings, contents);
+
+		// eslint globals ======================================
+
+		let eslintGlobals = {};
+		for (let symbol of Object.keys(topLevelSymbols)) {
+			eslintGlobals[symbol] = "readonly";
+		}
+		eslintGlobals.await = "readonly";
+		contents = JSON.stringify(eslintGlobals, null, 4);
+
+		if (outputFilenames.eslintGlobals.includes("/")) {
+			fs.mkdirSync(path.dirname(outputFilenames.eslintGlobals), { recursive: true });
+		}
+
+		fs.writeFileSync(outputFilenames.eslintGlobals, contents);
+
 		logStatus("\nDONE\n\n", true);
 	});
 

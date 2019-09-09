@@ -15,3 +15,5 @@ To disable the DOM types, simply add a file called `jsconfig.json` with:
 	}
 }
 ```
+
+There is also a `globals.eslint.json` in the `dist` directory which contains all globals defined by Scriptable plus `await` as ESLint doesn't accept it in the top level scope. Just copy and paste them in your `.eslintrc` in the `globals` object.
