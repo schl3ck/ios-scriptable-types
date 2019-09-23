@@ -1,6 +1,6 @@
 {
   "name": "ios-scriptable-types",
-  "version": "0.0.1",
+  "version": "1.3",
   "description": "Type definitions for the iOS app Scriptable",
   "main": "index.js",
   "scripts": {
