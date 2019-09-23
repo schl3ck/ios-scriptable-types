@@ -229,15 +229,21 @@ function processType(type, name, options = {}) {
 	if (options.mayBeCtor && new RegExp(" -> \\+" + name).test(type)) funcRepl = "constructor(";
 	// type = type
 	return type
-		.replace(/\+/g, "")									// remove + infront of +Alert which means it is an instance
-		.replace(/^(?!fn\().+$/i, `${name}: $&`)			// add name for simple properties
-		.replace(/^fn\(.*\)(?! -> )/, "$& -> void")			// add void return type for functions that don't return anything
-		.replace(/^fn\(/, funcRepl)							// replace function
-		.replace(/^(constructor\(.*\)) -> .+$/, "$1")		// remove return type from constructor
-		.replace(" -> ", ": ")								// replace Tern function return type with TypeScript's
-		.replace(/(?<!Promise)\[([^\]]+)\]/g, "$1[]")		// replace array definition
-		.replace(/Promise\[:t=(.+)\]/g, "Promise<$1>")		// replace Promise type
-		.replace(/Promise(?!<)/g, "Promise<void>")			// add void type to promise to generate valid TypeScript, but state that it doesn't carry a value
+		.replace(/\+/g, "")										// remove + infront of +Alert which means it is an instance
+		.replace(/^(?!fn\().+$/i, `${name}: $&`)				// add name for simple properties
+		.replace(/^fn\((?:[^-]|-[^>])*\)(?! -> )$/, "$& -> void")	// add void return type for functions that don't return anything
+		.replace(/(?<=^fn\().+(?=\) -> .+$)/, function (match) {
+			let argCount = 0;
+			return match
+				.replace(/(?<=^|, )(?:\w+|\[\w+\]|\{string: (?:string|any)\})(?=,|$)/g, (match) => `arg${argCount++}: ${match}`)	// add function argument names to arguments that don't have a name
+				.replace(/fn\((.*?)\)/g, "($1) => void");	// replace callbacks inside functions (maybe recursive?)
+		})
+		.replace(/^fn\(/, funcRepl)								// replace function
+		.replace(/^(constructor\(.*\)) -> .+$/, "$1")			// remove return type from constructor
+		.replace(" -> ", ": ")									// replace Tern function return type with TypeScript's
+		.replace(/(?<!Promise)\[([^\]]+)\]/g, "$1[]")			// replace array definition
+		.replace(/Promise\[:t=(.+)\]/g, "Promise<$1>")			// replace Promise type
+		.replace(/Promise(?!<)/g, "Promise<void>")				// add void type to promise to generate valid TypeScript, but state that it doesn't carry a value
 		.replace(/^((?:atob|btoa)\(.*\): )void$/, "$1string")	// set return type of atob() and btoa() to string if they are set to void because of the missing return type replacement earlier
 		.replace(/\bbool\b/g, "boolean");
 }
@@ -301,12 +307,15 @@ function processDescription(obj, options) {
 
 	// convert unordered lists
 	if (/(\n\s*-\s+[^\n]+)+/.test(descr)) {
-		let list = descr.match(/(\n\s*-\s+\w+)+/);
-		list = list && list[0].trim();
-		const items = list.replace(/(^|\n)-\s+/g, "$1").split("\n").map((s) => s.trim());
-		descr = descr.replace(list, `<ul>${items.map((s) => `<li>${s}</li>`).join("\n")}</ul>`);
-		if (/: string/.test(obj.definition) && !items.some((s) => s.includes(" "))) {
-			obj.definition = obj.definition.replace(/: string/, ": " + items.map((s) => `"${s}"`).join(" | "));
+		let lists = descr.match(/(\n\s*-\s+[^\n]+)+/g);
+		let firstList = null;
+		for (const [i, list] of lists.entries()) {
+			const items = list.trim().replace(/(^|\n)-\s+/g, "$1").split("\n").map((s) => s.trim());
+			descr = descr.replace(list, `<ul>${items.map((s) => `<li>${s}</li>`).join("\n")}</ul>`);
+			if (i === 0) firstList = items;
+		}
+		if (/: string/.test(obj.definition) && lists.length === 1) {
+			obj.definition = obj.definition.replace(/: string/, ": " + firstList.map((s) => `"${s}"`).join(" | "));
 		}
 	}
 	// convert ordered lists
@@ -322,10 +331,10 @@ function processDescription(obj, options) {
 		.replace(/<pre><code>(?:[^<]|<[^/]|<\/[^c]|<\/c[^o]|<\/co[^d]|<\/cod[^e]|<\/code[^>]|<\/code>[^<]|<\/code><[^/]|<\/code><\/[^p]|<\/code><\/p[^r]|<\/code><\/pr[^e]|<\/code><\/pre[^>])*(?:<br>(?:[^<]|<[^/]|<\/[^c]|<\/c[^o]|<\/co[^d]|<\/cod[^e]|<\/code[^>]|<\/code>[^<]|<\/code><[^/]|<\/code><\/[^p]|<\/code><\/p[^r]|<\/code><\/pr[^e]|<\/code><\/pre[^>])*)+<\/code><\/pre>/g, function(match) {
 			return match.replace(/<br>/g, "\n\n");
 		});
-	descr = turndownService.turndown(descr);
+	descr = turndownService.turndown(descr).replace(/\\\\n/g, "");
 
 	if (options.emitParameters && obj.parameters && obj.parameters.length) {
-		descr += "\n" + obj.parameters.map((i) => `@param ${i.name} - ${i.doc}`).join("\n");
+		descr += "\n" + obj.parameters.map((i) => `@param ${i.name} - ${turndownService.turndown(i.doc)}`).join("\n");
 	}
 	if (obj.returns && obj.returns.type) {
 		descr += `\n@returns {${obj.returns.type}} ${obj.returns.doc}`;

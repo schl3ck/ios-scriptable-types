@@ -8,13 +8,13 @@
  */
 declare class Alert {
 	/**
-	 * Title displayed in the alert. Usually a short string.
+	 * _Title displayed in the alert. Usually a short string._
 	 * @see https://docs.scriptable.app/alert/#title
 	 */
 	title: string
 	
 	/**
-	 * Detailed message displayed in the alert.
+	 * _Detailed message displayed in the alert._
 	 * @see https://docs.scriptable.app/alert/#message
 	 */
 	message: string
@@ -112,9 +112,9 @@ declare class Alert {
  */
 declare var args: {
 	/**
-	 * _Plain text arguments supplied by a share sheet._
+	 * _Plain texts supplied by a share sheet or a shortcut action._
 	 * 
-	 * All plain texts passed to the script from a share sheet.
+	 * All plain texts passed to the script from a share sheet or a shortcut action.
 	 * 
 	 * If you have enabled "Text" as a share sheet input from the script settings, the script can be run from any share sheet throughout the system that shares plain text.
 	 * @see https://docs.scriptable.app/args/#plaintexts
@@ -122,9 +122,9 @@ declare var args: {
 	plainTexts: string[]
 	
 	/**
-	 * _URL arguments supplied by a share sheet._
+	 * _URLs supplied by a share sheet or a shortcut action.._
 	 * 
-	 * All URLs passed to the script from a share sheet.
+	 * All URLs passed to the script from a share sheet or a shortcut action.
 	 * 
 	 * If you have enabled "URLs" as a share sheet input from the script settings, the script can be run from any share sheet throughout the system that shares URLs.
 	 * @see https://docs.scriptable.app/args/#urls
@@ -132,21 +132,25 @@ declare var args: {
 	urls: string[]
 	
 	/**
-	 * _File URL arguments supplied by a share sheet._
+	 * _File URLs supplied by a share sheet or a shortcut action._
 	 * 
-	 * All file URLs passed to the script from a share sheet.
+	 * All file URLs passed to the script from a share sheet or a shortcut action.
 	 * 
 	 * If you have enabled "File URLs" as a share sheet input from the script settings, the script can be run from any share sheet throughout the system that shares URLs pointing to a file.
+	 * 
+	 * When large files are passed from a share sheet or a shortcut action, the system may terminate the process due to memory constraints. In that case, you should enable "Run in App" in the script settings or in the shortcut.
 	 * @see https://docs.scriptable.app/args/#fileurls
 	 */
 	fileURLs: string[]
 	
 	/**
-	 * _Image arguments._
+	 * _Images supplied by a share sheet or a shortcut action._
 	 * 
-	 * All images passed to the script from a share sheet.
+	 * All images passed to the script from a share sheet or a shortcut action.
 	 * 
 	 * If you have enabled "Images" as a share sheet input from the script settings, the script can be run from any share sheet throughout the system that shares images.
+	 * 
+	 * When large images are passed from a share sheet or a shortcut action, the system may terminate the process due to memory constraints. In that case, you should enable "Run in App" in the script settings or in the shortcut.
 	 * @see https://docs.scriptable.app/args/#images
 	 */
 	images: Image[]
@@ -160,14 +164,14 @@ declare var args: {
 	queryParameters: {[key: string]: string}
 	
 	/**
-	 * _Arguments passed from a Siri Shortcut._
+	 * _Parameter passed to a Shortcut._
 	 * 
-	 * When creating a Siri Shortcut in Scriptable, you can define arguments that are passed to the script when the shortcut is run. This lets you differentiate the behaviour of a script based on some predefiend arguments.
+	 * When creating a shortcut using the Shortcuts app, you can pass an input parameter that is passed to your script and that can be read using `args.shortcutParameter`.
 	 * 
-	 * For example, a script that checks the wather may expect an argument with the key "city". When creating a Siri Shortcut for the script, the argument should be passed with the value containing the name of the city to to check the weather for.
-	 * @see https://docs.scriptable.app/args/#sirishortcutarguments
+	 * This parameter can be any text, list, dictionary or file and will be exposed in your script using the appropriate type. When passing a file, the "Run Script" action will attempt to read the file as JSON or a plain text. If the file cannot be read as JSON or a plain text, a path to the file will be passed as the input parameter.
+	 * @see https://docs.scriptable.app/args/#shortcutparameter
 	 */
-	siriShortcutArguments: {[key: string]: string}
+	shortcutParameter: any
 	
 	/**
 	 * _Notification being handled by the script._
@@ -248,6 +252,22 @@ declare class Calendar {
 	static forEventsByTitle(title: string): Promise<Calendar>
 	
 	/**
+	 * _Create a new calendar that holds reminders._
+	 * 
+	 * This will create a new list for reminders in the Reminders app. The list is automatically saved so there is no need to call `save()` after creating the list.
+	 * @see https://docs.scriptable.app/calendar/#createforreminders
+	 */
+	static createForReminders(title: string): Promise<Calendar>
+	
+	/**
+	 * _Find or create a new calendar that holds reminders._
+	 * 
+	 * This will attempt to find a calendar for reminders with the specified name. If no calendar is found, a new calendar is created and the calendar will appear as a reminder list in the Reminders app. If multiple calendars are found for the specified name, the first one will be returned. The list is automatically saved so there is no need to call `save()` in the case the list was created.
+	 * @see https://docs.scriptable.app/calendar/#findorcreateforreminders
+	 */
+	static findOrCreateForReminders(title: string): Promise<Calendar>
+	
+	/**
 	 * _Default calendar for reminders._
 	 * 
 	 * A calendar can only hold either reminders or events. Call this function to get the default calendar that can hold reminders.
@@ -293,6 +313,14 @@ declare class Calendar {
 	 * @see https://docs.scriptable.app/calendar/#-save
 	 */
 	save(): void
+	
+	/**
+	 * _Removes calendar._
+	 * 
+	 * The calendar is removed immediately. This cannot be undone.
+	 * @see https://docs.scriptable.app/calendar/#-remove
+	 */
+	remove(): void
 }
 
 
@@ -558,7 +586,7 @@ declare class CallbackURL {
 /**
  * _Stores color data including opacity._
  * 
- * Constructs a new color with a hex value and optionally an alpha value. The hex value may specify the alpha value but this will be ignored if the alpha value parameter is provided. Examples of valid hex values: #ff0000, #00ff0080 #00f and #ff. The hashtag sign is optional.
+ * Constructs a new color with a hex value and optionally an alpha value. The hex value may specify the alpha value but this will be ignored if the alpha value parameter is provided. Examples of valid hex values: #ff0000, #00ff0080 #00f and #ff. The hashtag is optional.
  * @see https://docs.scriptable.app/color/#-new-color
  */
 declare class Color {
@@ -595,7 +623,7 @@ declare class Color {
 	/**
 	 * _Stores color data including opacity._
 	 * 
-	 * Constructs a new color with a hex value and optionally an alpha value. The hex value may specify the alpha value but this will be ignored if the alpha value parameter is provided. Examples of valid hex values: #ff0000, #00ff0080 #00f and #ff. The hashtag sign is optional.
+	 * Constructs a new color with a hex value and optionally an alpha value. The hex value may specify the alpha value but this will be ignored if the alpha value parameter is provided. Examples of valid hex values: #ff0000, #00ff0080 #00f and #ff. The hashtag is optional.
 	 * @param hex - Hex value.
 	 * @param alpha - Alpha value.
 	 * @see https://docs.scriptable.app/color/#-new-color
@@ -954,9 +982,19 @@ declare class Contact {
 	
 	/**
 	 * _URL addresses._
+	 * 
+	 * When updating this property, you must set the entire array of URL addresses that you would like to store on the contact. The "identifier" key is optional.
 	 * @see https://docs.scriptable.app/contact/#urladdresses
 	 */
-	urlAddresses: string
+	urlAddresses: {[key: string]: string}[]
+	
+	/**
+	 * _Dates._
+	 * 
+	 * When updating this property, you must set the entire array of dates that you would like to store on the contact. The "identifier" key is optional.
+	 * @see https://docs.scriptable.app/contact/#dates
+	 */
+	dates: {[key: string]: any}[]
 	
 	/**
 	 * _Name of the organization associated with the contact._
@@ -975,6 +1013,142 @@ declare class Contact {
 	 * @see https://docs.scriptable.app/contact/#jobtitle
 	 */
 	jobTitle: string
+	
+	/**
+	 * _Whether or not name prefix is available._
+	 * 
+	 * The `namePrefix` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isnameprefixavailable
+	 */
+	isNamePrefixAvailable: boolean
+	
+	/**
+	 * _Whether or not given name is available._
+	 * 
+	 * The `givenName` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isgivenameavailable
+	 */
+	isGiveNameAvailable: boolean
+	
+	/**
+	 * _Whether or not middle name is available._
+	 * 
+	 * The `middleName` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#ismiddlenameavailable
+	 */
+	isMiddleNameAvailable: boolean
+	
+	/**
+	 * _Whether or not family name is available._
+	 * 
+	 * The `familyName` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isfamilynameavailable
+	 */
+	isFamilyNameAvailable: boolean
+	
+	/**
+	 * _Whether or not nickname is available._
+	 * 
+	 * The `nickname` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isnicknameavailable
+	 */
+	isNicknameAvailable: boolean
+	
+	/**
+	 * _Whether or not birthday is available._
+	 * 
+	 * The `birthday` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isbirthdayavailable
+	 */
+	isBirthdayAvailable: boolean
+	
+	/**
+	 * _Whether or not email addresses are available._
+	 * 
+	 * The `emailAddresses` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isemailaddressesavailable
+	 */
+	isEmailAddressesAvailable: boolean
+	
+	/**
+	 * _Whether or not phone numbers are available._
+	 * 
+	 * The `phoneNumbers` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isphonenumbersavailable
+	 */
+	isPhoneNumbersAvailable: boolean
+	
+	/**
+	 * _Whether or not postal addresses are available._
+	 * 
+	 * The `postalAddresses` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#ispostaladdressesavailable
+	 */
+	isPostalAddressesAvailable: boolean
+	
+	/**
+	 * _Whether or not social profiles are available._
+	 * 
+	 * The `socialProfiles` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#issocialprofilesavailable
+	 */
+	isSocialProfilesAvailable: boolean
+	
+	/**
+	 * _Whether or not image is available._
+	 * 
+	 * The `image` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isimageavailable
+	 */
+	isImageAvailable: boolean
+	
+	/**
+	 * _Whether or not note is available._
+	 * 
+	 * The `note` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isnoteavailable
+	 */
+	isNoteAvailable: boolean
+	
+	/**
+	 * _Whether or not URL addresses are available._
+	 * 
+	 * The `urlAddresses` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isurladdressesavailable
+	 */
+	isURLAddressesAvailable: boolean
+	
+	/**
+	 * _Whether or not organization name is available._
+	 * 
+	 * The `organizationName` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isorganizationnameavailable
+	 */
+	isOrganizationNameAvailable: boolean
+	
+	/**
+	 * _Whether or not department name is available._
+	 * 
+	 * The `departmentName` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isdepartmentnameavailable
+	 */
+	isDepartmentNameAvailable: boolean
+	
+	/**
+	 * _Whether or not job title is available._
+	 * 
+	 * The `jobTitle` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isjobtitleavailable
+	 */
+	isJobTitleAvailable: boolean
+	
+	/**
+	 * _Whether or not dates are available._
+	 * 
+	 * The `date` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
+	 * @see https://docs.scriptable.app/contact/#isdatesavailable
+	 */
+	isDatesAvailable: boolean
 	
 	/**
 	 * _Contact in the address book._
@@ -1251,6 +1425,195 @@ declare class Data {
 
 
 /**
+ * _Converts between texts and strings._
+ * 
+ * To convert between dates and their textual representation, use the `string()` and `date()` functions.
+ * @see https://docs.scriptable.app/dateformatter/#-new-dateformatter
+ */
+declare class DateFormatter {
+	/**
+	 * _Date format to be used by the formatter._
+	 * 
+	 * Sets a fixed format to be used by the formatter. For example the date "2019-08-26 16:47" can be represented using the format "yyyy-MM-dd HH:mm".
+	 * 
+	 * When converting dates to strings, it's advised to use some of the predefined formats for dates and times that can be applied using functions on the formatter, e.g. `useMediumDateStyle()` and `useMediumTimeStyle()`.
+	 * 
+	 * Year:
+	 * 
+	 * *   `y`: Year with no padding. Example: "2019"
+	 * *   `yy`: Year with two zeros. Adds padding if necessary. Example: "19"
+	 * *   `yyyy`: Year with a minimum of four digits. Adds padding if necessary. Example: "2019"
+	 * 
+	 * Quarter:
+	 * 
+	 * *   `Q`: Quarter of the year. Example: "4"
+	 * *   `QQQQ`: Quarter spelled out. Example: "4th quarter"
+	 * 
+	 * Month:
+	 * 
+	 * *   `M`: Numeric month of the year. Example: "1"
+	 * *   `MM`: Numeric month of the year. Adds padding if necessary. Example: "01"
+	 * *   `MMM`: Shorthand name of the month. Example: "Jan"
+	 * *   `MMMM`: Full name of the month. Example: "January"
+	 * *   `MMMMM`: Narrow name of the month. Example: "J"
+	 * 
+	 * Day:
+	 * 
+	 * *   `d`: Day of the month. Example: "9"
+	 * *   `dd`: Day of the month. Adds padding if necessary. Example: "09"
+	 * *   `F`: Day of the week. Example: "3rd Friday in August"
+	 * *   `E`: Day of the week. Example: "Fri"
+	 * *   `EEEE`: Full name of the day. Example: "Friday"
+	 * *   `EEEEE`: Narrow day of the week. Example: "F"
+	 * 
+	 * Hour:
+	 * 
+	 * *   `h`: Hour on a 12-hour clock. Example: "9"
+	 * *   `hh`: Hour on a 12-hour clock. Adds padding if necessary. Example: "09"
+	 * *   `H`: Hour on a 24-hour clock. Example: "21"
+	 * *   `HH`: Hour on a 24-hour clock. Adds padding if necessary. Example: "21"
+	 * *   `a`: AM/PM for times on a 12-hour clock. Example: "PM"
+	 * 
+	 * Minute:
+	 * 
+	 * *   `m`: Minute. Example: "7"
+	 * *   `mm`: Minute. Adds padding if necessary. Example: "07"
+	 * 
+	 * Second:
+	 * 
+	 * *   `s`: Seconds. Example: "4"
+	 * *   `ss`: Seconds. Adds padding if necessary. Example: "04"
+	 * *   `SSS`: Milliseconds. Example: "384"
+	 * 
+	 * Time zone:
+	 * 
+	 * *   `zzz`: Three letter name of the time zone. Falls back to GMT-08:00 if the name is unknown. Example: "CST"
+	 * *   `zzzz`: Full name of the time zone. Falls back to GMT-08:00 if the name is unknown. Example: "Central Standard Time"
+	 * *   `Z`: Time zone in RFC 822 GMT format. Also matches a literal Z for Zulu (UTC) time. Example: "-0600"
+	 * *   `ZZZZ`: Time zone with abbreviation and offset. Example: "CST-06:00"
+	 * *   `ZZZZZ`: Time zone in ISO 8601 format. Example: "-06:00"
+	 * 
+	 * A great resource for experimenting with date formats is nsdateformatter.com developed by Ben Scheirman.
+	 * @see https://docs.scriptable.app/dateformatter/#dateformat
+	 */
+	dateFormat: string
+	
+	/**
+	 * _Locale to use when formatting._
+	 * 
+	 * The locale should be specified using a string identifier, e.g. "en", "it" or "da". When no locale is set, the formatter will use the current locale of the device.
+	 * @see https://docs.scriptable.app/dateformatter/#locale
+	 */
+	locale: string
+	
+	/**
+	 * _Converts between texts and strings._
+	 * 
+	 * To convert between dates and their textual representation, use the `string()` and `date()` functions.
+	 * @see https://docs.scriptable.app/dateformatter/#-new-dateformatter
+	 */
+	constructor()
+	
+	/**
+	 * _Creates a string from a date._
+	 * @param date - The date to convert to a string.
+	 * @see https://docs.scriptable.app/dateformatter/#-string
+	 */
+	string(date: Date): string
+	
+	/**
+	 * _Creates a date from a string._
+	 * 
+	 * Uses the date formatters configuration to parse the string into a date. If the string cannot be parsed with the date foramtters configuration, the function will return null.
+	 * @param str - The string to parse into a date.
+	 * @see https://docs.scriptable.app/dateformatter/#-date
+	 */
+	date(str: string): string
+	
+	/**
+	 * _Use no style for the date._
+	 * 
+	 * This will remove the date from the formatted string.
+	 * @see https://docs.scriptable.app/dateformatter/#-usenodatestyle
+	 */
+	useNoDateStyle(): void
+	
+	/**
+	 * _Use a short style for the date._
+	 * 
+	 * Dates with a short style are typically numeric only e.g. "08/23/19".
+	 * @see https://docs.scriptable.app/dateformatter/#-useshortdatestyle
+	 */
+	useShortDateStyle(): void
+	
+	/**
+	 * _Use a medium style for the date._
+	 * 
+	 * Dates with a medium style usually includes abbreviations, e.g. "Aug 23, 2019" or "7:16:42 PM".
+	 * @see https://docs.scriptable.app/dateformatter/#-usemediumdatestyle
+	 */
+	useMediumDateStyle(): void
+	
+	/**
+	 * _Use a long style for the date._
+	 * 
+	 * Dates with a long style usually includes a full text, e.g. "August 23, 2019".
+	 * @see https://docs.scriptable.app/dateformatter/#-uselongdatestyle
+	 */
+	useLongDateStyle(): void
+	
+	/**
+	 * _Use a full style for the date._
+	 * 
+	 * Dates with a full style includes all details, e.g. "Friday, August 23, 2019 AD".
+	 * @see https://docs.scriptable.app/dateformatter/#-usefulldatestyle
+	 */
+	useFullDateStyle(): void
+	
+	/**
+	 * _Use no style for the time._
+	 * 
+	 * This will remove the time from the formatted string.
+	 * @see https://docs.scriptable.app/dateformatter/#-usenotimestyle
+	 */
+	useNoTimeStyle(): void
+	
+	/**
+	 * _Use a short style for the time._
+	 * 
+	 * Times with a short style are typically numeric only but also includes the period for 12-hour clocks, e.g. "7:17 PM".
+	 * @see https://docs.scriptable.app/dateformatter/#-useshorttimestyle
+	 */
+	useShortTimeStyle(): void
+	
+	/**
+	 * _Use a short style for the time._
+	 * 
+	 * Times with a medium style usually includes abbreviations, e.g. "7:16:42 PM".
+	 * @see https://docs.scriptable.app/dateformatter/#-usemediumtimestyle
+	 */
+	useMediumTimeStyle(): void
+	
+	/**
+	 * _Use a long style for the time._
+	 * 
+	 * Times with a long style usually includes a full text, e.g. "7:16:42 PM PST".
+	 * @see https://docs.scriptable.app/dateformatter/#-uselongtimestyle
+	 */
+	useLongTimeStyle(): void
+	
+	/**
+	 * _Use a full style for the time._
+	 * 
+	 * Times with a full style includes all details, e.g. "7:16:42 PM Pacific Standard Time".
+	 * @see https://docs.scriptable.app/dateformatter/#-usefulltimestyle
+	 */
+	useFullTimeStyle(): void
+}
+
+
+
+/**
  * _Presents a date picker._
  * 
  * Use the date picker to present a view for selecting a date.
@@ -1382,7 +1745,7 @@ declare class Device {
 	/**
 	 * _Whether the device is a phone._
 	 * 
-	 * You can use this property to choose behaviour of a script depending on whether its running on a phone or a pad.
+	 * You can use this property to choose behavior of a script depending on whether its running on a phone or a pad.
 	 * @see https://docs.scriptable.app/device/#isphone
 	 */
 	static isPhone(): boolean
@@ -1390,7 +1753,7 @@ declare class Device {
 	/**
 	 * _Whether the device is a pad._
 	 * 
-	 * You can use this property to choose behaviour of a script depending on whether its running on a phone or a pad.
+	 * You can use this property to choose behavior of a script depending on whether its running on a phone or a pad.
 	 * @see https://docs.scriptable.app/device/#ispad
 	 */
 	static isPad(): boolean
@@ -1510,6 +1873,12 @@ declare class Device {
 	static language(): string
 	
 	/**
+	 * _Whether the device is using dark appearance._
+	 * @see https://docs.scriptable.app/device/#isusingdarkappearance
+	 */
+	static isUsingDarkAppearance(): boolean
+	
+	/**
 	 * _Sets the brightness of the screen._
 	 * 
 	 * The value range from 0 to 1. To set the screen brightness, refer to `setScreenBrightness()`
@@ -1546,11 +1915,33 @@ declare class DocumentPicker {
 	/**
 	 * _Opens a document._
 	 * 
-	 * Presents a picker that promps for opening a document from the Files app. When fulfilled the returned promise will provide the paths for the selected documents. Use an instance of FileManager to read the contents of the files.
+	 * Presents a document picker for opening a document from the Files app. It is up to the user to specify which types of files can be opened. Types are specified as UTIs, e.g. "public.plain-text" or "public.image". If you want to open a file of any file type, see the `openFile` function and if you want to open a folder, see the `openFolder` function.
+	 * 
+	 * When fulfilled the returned promise will provide the paths for the selected documents. Use an instance of FileManager to read the contents of the files.
 	 * @param types - Types of files to select. Specified using UTIs. Defaults to all files.
 	 * @see https://docs.scriptable.app/documentpicker/#open
 	 */
 	static open(types: string[]): Promise<string[]>
+	
+	/**
+	 * _Opens a file of any file type._
+	 * 
+	 * Presents a document picker for opening a file from the Files app. The document picker will allow the selection of any file.
+	 * 
+	 * When fulfilled the returned promise will provide the paths for the selected files.
+	 * @see https://docs.scriptable.app/documentpicker/#openfile
+	 */
+	static openFile(): Promise<string>
+	
+	/**
+	 * _Opens a folder._
+	 * 
+	 * Presents a document picker for opening a folder from the Files app.
+	 * 
+	 * When fulfilled the returned promise will provide the paths for the selected files.
+	 * @see https://docs.scriptable.app/documentpicker/#openfolder
+	 */
+	static openFolder(): Promise<string>
 	
 	/**
 	 * _Exports a file to a document._
@@ -1587,7 +1978,7 @@ declare class DocumentPicker {
 /**
  * _Context for drawing images._
  * 
- * Constructs a new canvas to draw images, shapes and texts on. Before drawing to the context, beginDrawing() should be called.
+ * Constructs a new canvas to draw images, shapes and texts on.
  * @see https://docs.scriptable.app/drawcontext/#-new-drawcontext
  */
 declare class DrawContext {
@@ -1618,7 +2009,7 @@ declare class DrawContext {
 	/**
 	 * _Context for drawing images._
 	 * 
-	 * Constructs a new canvas to draw images, shapes and texts on. Before drawing to the context, beginDrawing() should be called.
+	 * Constructs a new canvas to draw images, shapes and texts on.
 	 * @see https://docs.scriptable.app/drawcontext/#-new-drawcontext
 	 */
 	constructor()
@@ -2116,9 +2507,9 @@ declare class FileManager {
 	 * 
 	 * You can edit your file bookmarks from Scriptables settings.
 	 * 
-	 * The function will throw an error if no bookmark exists.
+	 * The function will throw an error if the bookmark doesn't exist.
 	 * 
-	 * Please be aware that bookmarks can only be used in the app. All APIs that relate to bookmarks will always throw an error when used in Siri or in a script run from the Share Sheet.
+	 * Please beware that bookmarks created from Scriptables settings only can be used when running a script in the app and not from the Share Sheet, Siri and Shortcuts. If you wish to use a bookmark from Siri or the Shortcuts app, the bookmark must be created using Scriptables "Create File Bookmark" shortcut action using the Shortcuts app.
 	 * @param name - Name of bookmark to create path for.
 	 * @see https://docs.scriptable.app/filemanager/#-bookmarkedpath
 	 */
@@ -2131,7 +2522,7 @@ declare class FileManager {
 	 * 
 	 * You can edit your file bookmarks from Scriptables settings.
 	 * 
-	 * Please be aware that bookmarks can only be used in the app. All APIs that relate to bookmarks will always throw an error when used in Siri or in a script run from the Share Sheet.
+	 * Please beware that bookmarks created from Scriptables settings only can be used when running a script in the app and not from the Share Sheet, Siri and Shortcuts. If you wish to use a bookmark from Siri or the Shortcuts app, the bookmark must be created using Scriptables "Create File Bookmark" shortcut action using the Shortcuts app.
 	 * @param name - Name of bookmark.
 	 * @see https://docs.scriptable.app/filemanager/#-bookmarkexists
 	 */
@@ -2165,6 +2556,50 @@ declare class FileManager {
 	 * @see https://docs.scriptable.app/filemanager/#-isfiledownloaded
 	 */
 	isFileDownloaded(filePath: string): boolean
+	
+	/**
+	 * _Reads the creation date of a file._
+	 * 
+	 * The returned value will be null if the creation date cannot be read.
+	 * @param filePath - Path of file.
+	 * @see https://docs.scriptable.app/filemanager/#-creationdate
+	 */
+	creationDate(filePath: string): Date
+	
+	/**
+	 * _Reads the modification date of a file._
+	 * 
+	 * The returned value will be null if the modification date cannot be read.
+	 * @param filePath - Path of file.
+	 * @see https://docs.scriptable.app/filemanager/#-modificationdate
+	 */
+	modificationDate(filePath: string): Date
+	
+	/**
+	 * _Size of the file in kilobytes._
+	 * 
+	 * The returned value will be null if the file size cannot b read.
+	 * @param filePath - Path of file.
+	 * @see https://docs.scriptable.app/filemanager/#-filesize
+	 */
+	fileSize(filePath: string): number
+	
+	/**
+	 * _Reads all file bookmarks created in settings._
+	 * 
+	 * File bookmarks are used to bookmark a file or a folder and read or write to it later. File bookmarks are created from Scriptables settings.
+	 * 
+	 * This function returns all file bookmarks as an array of objects that take the following form.
+	 * 
+	 *     {
+	 *       "name": "My Bookmark",
+	 *       "source": "host"
+	 *     }
+	 * 
+	 * The source can either be `host` for file bookmarks that can be used in the app or `siri_shortcuts` for file bookmarks that can be used in Siri and Shortcuts.
+	 * @see https://docs.scriptable.app/filemanager/#-allfilebookmarks
+	 */
+	allFileBookmarks(): {[key: string]: string}[]
 }
 
 
@@ -2562,7 +2997,7 @@ declare class Notification {
 	/**
 	 * _Preferred height of the notification._
 	 * 
-	 * By default Scriptable attempts to determine an appropriate height for your notification. If you want to override the default behaviour, you can specify a preferred content height. The preferred content height is only used when running a script inside the notification, i.e. when `scriptName` is not null. iOS may limit the height of the notification in which case the preferred content height is not guaranteed to be respected.
+	 * By default Scriptable attempts to determine an appropriate height for your notification. If you want to override the default behavior, you can specify a preferred content height. The preferred content height is only used when running a script inside the notification, i.e. when `scriptName` is not null. iOS may limit the height of the notification in which case the preferred content height is not guaranteed to be respected.
 	 * @see https://docs.scriptable.app/notification/#preferredcontentheight
 	 */
 	preferredContentHeight: number
@@ -3035,6 +3470,15 @@ declare class Photos {
 	 * @see https://docs.scriptable.app/photos/#removelatestscreenshots
 	 */
 	static removeLatestScreenshots(count: number): void
+	
+	/**
+	 * _Save an image._
+	 * 
+	 * Saves the image to the photo library.
+	 * @param image - The image to save.
+	 * @see https://docs.scriptable.app/photos/#save
+	 */
+	static save(image: Image): void
 }
 
 
@@ -3441,6 +3885,60 @@ declare class RecurrenceRule {
 	 * @see https://docs.scriptable.app/recurrencerule/#complexyearlyoccurrencecount
 	 */
 	static complexYearlyOccurrenceCount(interval: number, daysOfTheWeek: number[], monthsOfTheYear: number[], weeksOfTheYear: number[], daysOfTheYear: number[], setPositions: number[], occurrenceCount: number): RecurrenceRule
+}
+
+
+
+/**
+ * _Creates a textual representation of the amount of time between two dates._
+ * 
+ * The formatter creates a textual representation of the time between two points in time.
+ * @see https://docs.scriptable.app/relativedatetimeformatter/#-new-relativedatetimeformatter
+ */
+declare class RelativeDateTimeFormatter {
+	/**
+	 * _Locale to use when formatting._
+	 * 
+	 * The locale should be specified using a string identifier, e.g. "en", "it" or "da". When no locale is set, the formatter will use the current locale of the device.
+	 * @see https://docs.scriptable.app/relativedatetimeformatter/#locale
+	 */
+	locale: string
+	
+	/**
+	 * _Creates a textual representation of the amount of time between two dates._
+	 * 
+	 * The formatter creates a textual representation of the time between two points in time.
+	 * @see https://docs.scriptable.app/relativedatetimeformatter/#-new-relativedatetimeformatter
+	 */
+	constructor()
+	
+	/**
+	 * _Creates a localized string communicating the amount of time between two dates._
+	 * 
+	 * Creates a localized textual representation of the amount of time between to dates. If the two dates are the same, the function will return "now". If the reference date is yesterday, the function will return "yesterday". Other examples include "in 10 seconds", "2 hours ago", "last week" and "next year".
+	 * @param date - The date to create a relative date and time for.
+	 * @param referenceDate - The reference date that `date` is relative to.
+	 * @see https://docs.scriptable.app/relativedatetimeformatter/#-string
+	 */
+	string(date: Date, referenceDate: Date): string
+	
+	/**
+	 * _Prefers named dates and times._
+	 * 
+	 * When using the named style, the formatter tries to find a suitable textual representation over a numeric value for the relative time, e.g. "now" instead of "in 0 seconds" and "yesterday" instead of "1 day ago".
+	 * 
+	 * When no named representation is found the formatter will fallback to using the numeric style.
+	 * @see https://docs.scriptable.app/relativedatetimeformatter/#-usenameddatetimestyle
+	 */
+	useNamedDateTimeStyle(): void
+	
+	/**
+	 * _Prefers numeric dates and times._
+	 * 
+	 * When using the numeric style, the formatter will always prefer numeric representations over named representations. E.g. it will return "in 0 seconds" instead of "now" and "1 day ago" instead of "yesteday".
+	 * @see https://docs.scriptable.app/relativedatetimeformatter/#-usenumericdatetimestyle
+	 */
+	useNumericDateTimeStyle(): void
 }
 
 
@@ -3930,7 +4428,7 @@ declare class Request {
 	 * The function determines how redirects should be handled. By default redirects are allowed. When invoked the function is supplied with the request that we're about to redirect to. The function can return the request to continue redirecting or it can return another request to redirect to. Returning null will stop the redirect. Note that onRedirect will only be invoked on the initial request. Consecutive redirects should be handled on the initial request.
 	 * @see https://docs.scriptable.app/request/#onredirect
 	 */
-	onRedirect: (Request) => Request
+	onRedirect: (arg0: Request) => Request
 }
 
 
@@ -3983,6 +4481,15 @@ declare class Script {
 	 * @see https://docs.scriptable.app/script/#complete
 	 */
 	static complete(): void
+	
+	/**
+	 * _Sets output when running the script as a shortcut action._
+	 * 
+	 * Use this function to pass values to other actions in the Shortcuts app. The output can be a text, a number, a boolean, a dictionary or a fileURL pointing to a file stored in iCloud.
+	 * @param value - Value to provide as output.
+	 * @see https://docs.scriptable.app/script/#setshortcutoutput
+	 */
+	static setShortcutOutput(value: any): void
 }
 
 
@@ -4043,6 +4550,68 @@ declare class Speech {
 	 * @see https://docs.scriptable.app/speech/#speak
 	 */
 	static speak(text: string): void
+}
+
+
+
+/**
+ * _A timer that fires after a time interval have elapsed._
+ * 
+ * Constructs a timer that fires after a specified time interval.
+ * @see https://docs.scriptable.app/timer/#-new-timer
+ */
+declare class Timer {
+	/**
+	 * _The frequency at which the timer fires, in milliseconds._
+	 * 
+	 * Be aware that the time interval is specified in setting. Defaults to 0, causing the timer to fire instantly.
+	 * @see https://docs.scriptable.app/timer/#timeinterval
+	 */
+	timeInterval: number
+	
+	/**
+	 * _Whether the timer should repeat._
+	 * 
+	 * A repeating timer will keep firing until it is invalidated. In contrast to non-repeating timers, repeating timers are not automatically invalidated. Defaults to false.
+	 * @see https://docs.scriptable.app/timer/#repeats
+	 */
+	repeats: boolean
+	
+	/**
+	 * _A timer that fires after a time interval have elapsed._
+	 * 
+	 * Constructs a timer that fires after a specified time interval.
+	 * @see https://docs.scriptable.app/timer/#-new-timer
+	 */
+	constructor()
+	
+	/**
+	 * _Schedules a timer._
+	 * 
+	 * This is a convenience function for creating a new timer. The created timer is instantly scheduled and will fire after the specified time interval.
+	 * @param timeInterval - The time interval to fire the timer at.
+	 * @param repeats - Whether the timer should repeat or not.
+	 * @param callback - The callback to called when the timer fires.
+	 * @see https://docs.scriptable.app/timer/#schedule
+	 */
+	static schedule(timeInterval: number, repeats: boolean, callback: () => void): Timer
+	
+	/**
+	 * _Schedules the timer._
+	 * 
+	 * Schedules the timer using its configuration. The supplied function is called when the timer fires. To stop the timer from firing, call the `invalidate()` function.
+	 * @param callback - The callback to called when the timer fires.
+	 * @see https://docs.scriptable.app/timer/#-schedule
+	 */
+	schedule(callback: () => void): void
+	
+	/**
+	 * _Stops the timer from firing._
+	 * 
+	 * Stops the timer from firing ever again. Non-repeating timers are automatically invalidated after they have fired once. Repeating timers must be manually invalidated.
+	 * @see https://docs.scriptable.app/timer/#-invalidate
+	 */
+	invalidate(): void
 }
 
 
@@ -4335,7 +4904,7 @@ declare class UITableRow {
 	 * Rows cannot be tapped when the tables is presented in Siri.
 	 * @see https://docs.scriptable.app/uitablerow/#onselect
 	 */
-	onSelect: (number) => void
+	onSelect: (arg0: number) => void
 }
 
 
@@ -4516,7 +5085,7 @@ declare class WebView {
 	 * By default all requests are allowed.
 	 * @see https://docs.scriptable.app/webview/#shouldallowrequest
 	 */
-	shouldAllowRequest: (Request) => boolean
+	shouldAllowRequest: (arg0: Request) => boolean
 }
 
 
@@ -4568,10 +5137,12 @@ declare class XMLParser {
 	/**
 	 * _Function called when starting to parse an element._
 	 * 
-	 * Called by the parser when it encounters a start tag for an element. The function takes the element name as a parameter. Use this function to update your state and prepare for receiving the characters of the element. After this function is called, the parser will call the foundCharacters callback function with all or parts of the characters of the element.
+	 * Called by the parser when it encounters a start tag for an element. The function takes the element name as a parameter as well as a key value pair containing all the attributes associated with the element.
+	 * 
+	 * Use this function to update your state and prepare for receiving the characters of the element. After this function is called, the parser will call the foundCharacters callback function with all or parts of the characters of the element.
 	 * @see https://docs.scriptable.app/xmlparser/#didstartelement
 	 */
-	didStartElement: (string) => void
+	didStartElement: (arg0: string, arg1: {[key: string]: string}) => void
 	
 	/**
 	 * _Function called when ended parsing an element._
@@ -4579,7 +5150,7 @@ declare class XMLParser {
 	 * Called by the parser when it encounters an end tag for an element. The function takes the element name as a parameter.
 	 * @see https://docs.scriptable.app/xmlparser/#didendelement
 	 */
-	didEndElement: (string) => void
+	didEndElement: (arg0: string) => void
 	
 	/**
 	 * _Function called when the parser finds characters of an element._
@@ -4587,7 +5158,7 @@ declare class XMLParser {
 	 * The parser calls this function with a string whenever it finds characters for the current element. This function may be called several times for a single element.
 	 * @see https://docs.scriptable.app/xmlparser/#foundcharacters
 	 */
-	foundCharacters: (string) => void
+	foundCharacters: (arg0: string) => void
 	
 	/**
 	 * _Function called when the parser encounters an error._
@@ -4595,7 +5166,7 @@ declare class XMLParser {
 	 * The parser will call this function when it encounters a fatal error preventing it from continuing to parse. When the function is called the parsing is stopped.
 	 * @see https://docs.scriptable.app/xmlparser/#parseerroroccurred
 	 */
-	parseErrorOccurred: (string) => void
+	parseErrorOccurred: (arg0: string) => void
 }
 
 
