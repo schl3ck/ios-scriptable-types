@@ -976,6 +976,8 @@ declare class Contact {
 	
 	/**
 	 * _Note for the contact._
+	 * 
+	 * For security reasons, a contact's notes cannot be accessed in Siri, the Shortcuts app and in a notification.
 	 * @see https://docs.scriptable.app/contact/#note
 	 */
 	note: string
@@ -1785,7 +1787,7 @@ declare class Device {
 	/**
 	 * _Brightness of the screen in percentage._
 	 * 
-	 * The value range from 0 to 1. To set the screen brightness, refer to `setScreenBrightness()`
+	 * The value range from 0 to 1. To set the screen brightness, refer to the `setScreenBrightness()` function.
 	 * @see https://docs.scriptable.app/device/#screenbrightness
 	 */
 	static screenBrightness(): number
@@ -1879,9 +1881,17 @@ declare class Device {
 	static isUsingDarkAppearance(): boolean
 	
 	/**
+	 * _The device volume._
+	 * 
+	 * The value range from 0 to 1.
+	 * @see https://docs.scriptable.app/device/#volume
+	 */
+	static volume(): number
+	
+	/**
 	 * _Sets the brightness of the screen._
 	 * 
-	 * The value range from 0 to 1. To set the screen brightness, refer to `setScreenBrightness()`
+	 * The value range from 0 to 1. To get the screen brightness, refer to the `screenBrightness()` function.
 	 * @param percentage - Percentage to set the screen brightness to. Value between 0 and 1.
 	 * @see https://docs.scriptable.app/device/#setscreenbrightness
 	 */
@@ -4330,6 +4340,18 @@ declare class Request {
 	response: {[key: string]: any}
 	
 	/**
+	 * _Allow the request even if it is deemed insecure._
+	 * 
+	 * By default Scriptable will attempt to reject requests that are deemed insecure.
+	 * 
+	 * As an example, Scriptable will reject communicating with a server that has an invalid certificate. Such servers might be malicious and may put confidentional information at risk. By enabling this setting, those requests will be allowed.
+	 * 
+	 * Enable this setting at your own risk.
+	 * @see https://docs.scriptable.app/request/#allowinsecurerequest
+	 */
+	allowInsecureRequest: boolean
+	
+	/**
 	 * _Performs HTTP requests._
 	 * 
 	 * Constructs a new request that will be sent to the provided URL. The request is not sent until an appropriate load method is called, e.g. loadImage for downloading and interpreting the response as an image.
@@ -4485,7 +4507,9 @@ declare class Script {
 	/**
 	 * _Sets output when running the script as a shortcut action._
 	 * 
-	 * Use this function to pass values to other actions in the Shortcuts app. The output can be a text, a number, a boolean, a dictionary or a fileURL pointing to a file stored in iCloud.
+	 * Use this function to pass values to other actions in the Shortcuts app. The output can be a text, a number, a boolean, a dictionary or a file path pointing to a file stored in iCloud.
+	 * 
+	 * You can also use JavaScript's `return` keyword to to output a value to a shortcut.
 	 * @param value - Value to provide as output.
 	 * @see https://docs.scriptable.app/script/#setshortcutoutput
 	 */
