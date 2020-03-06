@@ -56,6 +56,7 @@ request.get("/scriptable.json")
 		process.exit(1);
 	})
 	.then((response) => {
+		console.log("Building definition file...");
 		response = response.data;
 
 		let symbols = Object.entries(response).filter((k) => !k[0].startsWith("!"));
@@ -197,12 +198,23 @@ ${interfaces.map((i) => `declare interface ${i}`).join("\n").replace(/^/gm, "\t"
 
 		// eslint globals ======================================
 
-		let eslintGlobals = {};
-		for (let symbol of Object.keys(topLevelSymbols)) {
-			eslintGlobals[symbol] = "readonly";
+		let eslintConfig = {
+			"env": {
+				"es6": true
+			},
+			"parserOptions": {
+				"globalReturn": true,
+				"impliedStrict": true
+			},
+			"globals": {}
+		};
+		let eslintSymbols = Object.keys(topLevelSymbols);
+		eslintSymbols.push("await");
+		eslintSymbols.sort();
+		for (let symbol of eslintSymbols) {
+			eslintConfig.globals[symbol] = "readonly";
 		}
-		eslintGlobals.await = "readonly";
-		contents = JSON.stringify(eslintGlobals, null, 4);
+		contents = JSON.stringify(eslintConfig, null, 4);
 
 		if (outputFilenames.eslintGlobals.includes("/")) {
 			fs.mkdirSync(path.dirname(outputFilenames.eslintGlobals), { recursive: true });
@@ -232,7 +244,7 @@ function processType(type, name, options = {}) {
 		.replace(/\+/g, "")										// remove + infront of +Alert which means it is an instance
 		.replace(/^(?!fn\().+$/i, `${name}: $&`)				// add name for simple properties
 		.replace(/^fn\((?:[^-]|-[^>])*\)(?! -> )$/, "$& -> void")	// add void return type for functions that don't return anything
-		.replace(/(?<=^fn\().+(?=\) -> .+$)/, function (match) {
+		.replace(/(?<=^fn\().+(?=\) -> .+$)/, function(match) {
 			let argCount = 0;
 			return match
 				.replace(/(?<=^|, )(?:\w+|\[\w+\]|\{string: (?:string|any)\})(?=,|$)/g, (match) => `arg${argCount++}: ${match}`)	// add function argument names to arguments that don't have a name
