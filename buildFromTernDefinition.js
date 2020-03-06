@@ -16,7 +16,7 @@ const cc = require("console-control-strings");
 
 const outputFilenames = {
 	typings: "dist/scriptable.d.ts",
-	eslintGlobals: "dist/globals.eslint.json"
+	eslintGlobals: "dist/eslintrc.json"
 };
 const templateFile = "template.d.ts";
 
