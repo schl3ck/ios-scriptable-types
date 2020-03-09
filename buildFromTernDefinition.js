@@ -90,7 +90,7 @@ request.get("/scriptable.json")
 		for (const [symbol, symbolData] of symbols) {
 			let struct = topLevelSymbols[symbol] = {
 				/**
-				 * @type {"class" | "var" | "fucntion"}
+				 * @type {"class" | "var" | "function"}
 				 */
 				type: symbol[0] == symbol[0].toUpperCase() ? "class" : "var",
 				shortDoc: symbolData["!doc"],
@@ -159,23 +159,24 @@ request.get("/scriptable.json")
 			// if it is not a class, it has to be a global variable with a custom object as type
 			str += `declare ${symbol.type}`;
 			if (symbol.type === "function") {
-				str += ` ${symbol.definition}`;
+				str += ` ${symbol.definition};\n`;
 			} else {
 				str += ` ${symbol.name}${symbol.type === "var" ? ":" : ""} {\n`;
 				const props = [...Object.values(symbol.properties), symbol.definition.length ? symbol : {}, ...Object.values(symbol.functions)].filter((prop) => Object.getOwnPropertyNames(prop).length);
 				str += props.map((prop) => {
 					let str = processDescription(prop, { checkForInterface: true, parent: symbol.name });
 					if (prop.interface) interfaces.push(prop.interface);
-					return `${str}\n${prop.definition}`;
+					return `${str}\n${prop.definition};`;
 				})
 					.join("\n\n")
 					.replace(/^/gm, "\t");
-				str += "\n}\n";
+				// add } and if it is a var, also a ;
+				str += `\n}${symbol.type === "var" ? ";" : ""}\n`;
 			}
 
 			if (interfaces.length) {
 				let ints = `declare namespace ${symbol.name} {
-${interfaces.map((i) => `declare interface ${i}`).join("\n").replace(/^/gm, "\t")}
+${interfaces.map((i) => `interface ${i}`).join("\n").replace(/^/gm, "\t")}
 }
 
 `;
@@ -188,7 +189,7 @@ ${interfaces.map((i) => `declare interface ${i}`).join("\n").replace(/^/gm, "\t"
 		// load template file
 		let template = fs.readFileSync(templateFile);
 
-		let contents = template + "\n" + definitions.join("\n\n\n");
+		let contents = template + "\n" + definitions.join("\n");
 
 		if (outputFilenames.typings.includes("/")) {
 			fs.mkdirSync(path.dirname(outputFilenames.typings), { recursive: true });
@@ -380,7 +381,7 @@ function processDescription(obj, options) {
 			let t = typeof (v == null ? "" : v);
 			!types.includes(t) && types.push(t);
 			return t;
-		}, "\t").replace(/(:\s*)"([a-zA-Z]+)"/g, "$1$2");
+		}, "\t").replace(/"(\w+)"(:\s*)"([a-zA-Z]+)",?/g, "$1$2$3;");
 		interfaceName = obj.name[0].toUpperCase() + obj.name.substring(1);
 		interfaceAnyType = types.length > 1;
 		obj.interface = interfaceName + " " + interf;
@@ -390,8 +391,8 @@ function processDescription(obj, options) {
 		obj.definition = obj.definition.replace(interfaceAnyType ? /\bany\b/ : /\{string: \b.*?\b\}/, (options.parent ? options.parent + "." : "") + interfaceName);
 	} else {
 		// replace "{string: string}" with correct typescript definition
-		obj.definition = obj.definition.replace(/\{string: (.+)\}/, "{[key: string]: $1}");
-		descr = descr.replace(/\{string: (.+)\}/, "{[key: string]: $1}");
+		obj.definition = obj.definition.replace(/\{string: (.+)\}/, "{ [key: string]: $1 }");
+		descr = descr.replace(/\{string: (.+)\}/, "{ [key: string]: $1 }");
 	}
 
 	return `/**\n${descr}\n */`;
