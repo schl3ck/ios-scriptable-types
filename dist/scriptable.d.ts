@@ -2243,6 +2243,13 @@ declare class DrawContext {
     setTextAlignedRight(): void;
 }
 
+declare namespace FileManager {
+    interface AllFileBookmarks {
+        name: string;
+        source: string;
+    }
+}
+
 /**
  * _Read and write files on disk._
  * @see https://docs.scriptable.app/filemanager
@@ -2651,7 +2658,7 @@ declare class FileManager {
      * The source can either be `host` for file bookmarks that can be used in the app or `siri_shortcuts` for file bookmarks that can be used in Siri and Shortcuts.
      * @see https://docs.scriptable.app/filemanager/#-allfilebookmarks
      */
-    allFileBookmarks(): { [key: string]: string }[];
+    allFileBookmarks(): FileManager.AllFileBookmarks[];
 }
 
 /**

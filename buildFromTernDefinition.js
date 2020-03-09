@@ -393,10 +393,10 @@ function processDescription(obj, options) {
 	let interfaceName = "";
 	let interfaceAnyType = false;
 
-	if (options.checkForInterface && obj.longDoc.includes("on the following form:")) {
+	if (options.checkForInterface && obj.longDoc.includes("the following form")) {
 		let example = obj.longDoc.match(/<code>\s*(\{.*?\})\s*<\/code>/s);
 		if (!example) {
-			const str = "Description included \"on the following form:\", but the RegEx couldn't find a code example. Symbol: " +
+			const str = "Description included \"the following form\", but the RegEx couldn't find a code example. Symbol: " +
 				(options.parent ? options.parent + "." : "") + obj.name + "\nDescription:\n" + obj.longDoc;
 			console.error(str);
 			throw new Error(str);
