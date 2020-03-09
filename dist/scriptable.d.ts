@@ -63,7 +63,7 @@ declare class Alert {
      * @param text - Optional default value for the text field.
      * @see https://docs.scriptable.app/alert/#-addtextfield
      */
-    addTextField(placeholder: string, text: string): void;
+    addTextField(placeholder?: string, text?: string): void;
 
     /**
      * _Adds a secure text field prompting for user input._
@@ -73,7 +73,7 @@ declare class Alert {
      * @param text - Optional default value for the text field.
      * @see https://docs.scriptable.app/alert/#-addsecuretextfield
      */
-    addSecureTextField(placeholder: string, text: string): void;
+    addSecureTextField(placeholder?: string, text?: string): void;
 
     /**
      * _Retrieves value of a text field._
@@ -285,7 +285,7 @@ declare class Calendar {
      * @param allowMultiple - Whether to allow picking multiple calenders. Defaults to false.
      * @see https://docs.scriptable.app/calendar/#presentpicker
      */
-    static presentPicker(allowMultiple: boolean): Promise<Calendar[]>;
+    static presentPicker(allowMultiple?: boolean): Promise<Calendar[]>;
 
     /**
      * _Checks if the calendar supports availability._
@@ -447,42 +447,42 @@ declare class CalendarEvent {
      * @param calendars - Calendars to fetch events for. Defaults to all calendars.
      * @see https://docs.scriptable.app/calendarevent/#today
      */
-    static today(calendars: Calendar[]): Promise<CalendarEvent[]>;
+    static today(calendars?: Calendar[]): Promise<CalendarEvent[]>;
 
     /**
      * _Events occurring tomorrow._
      * @param calendars - Calendars to fetch events for. Defaults to all calendars.
      * @see https://docs.scriptable.app/calendarevent/#tomorrow
      */
-    static tomorrow(calendars: Calendar[]): Promise<CalendarEvent[]>;
+    static tomorrow(calendars?: Calendar[]): Promise<CalendarEvent[]>;
 
     /**
      * _Events that occurred yesterday._
      * @param calendars - Calendars to fetch events for. Defaults to all calendars.
      * @see https://docs.scriptable.app/calendarevent/#yesterday
      */
-    static yesterday(calendars: Calendar[]): Promise<CalendarEvent[]>;
+    static yesterday(calendars?: Calendar[]): Promise<CalendarEvent[]>;
 
     /**
      * _Events that occur this week._
      * @param calendars - Calendars to fetch events for. Defaults to all calendars.
      * @see https://docs.scriptable.app/calendarevent/#thisweek
      */
-    static thisWeek(calendars: Calendar[]): Promise<CalendarEvent[]>;
+    static thisWeek(calendars?: Calendar[]): Promise<CalendarEvent[]>;
 
     /**
      * _Events that occur next week._
      * @param calendars - Calendars to fetch events for. Defaults to all calendars.
      * @see https://docs.scriptable.app/calendarevent/#nextweek
      */
-    static nextWeek(calendars: Calendar[]): Promise<CalendarEvent[]>;
+    static nextWeek(calendars?: Calendar[]): Promise<CalendarEvent[]>;
 
     /**
      * _Events that occurred last week._
      * @param calendars - Calendars to fetch events for. Defaults to all calendars.
      * @see https://docs.scriptable.app/calendarevent/#lastweek
      */
-    static lastWeek(calendars: Calendar[]): Promise<CalendarEvent[]>;
+    static lastWeek(calendars?: Calendar[]): Promise<CalendarEvent[]>;
 
     /**
      * _Events that occurs between two dates._
@@ -491,7 +491,7 @@ declare class CalendarEvent {
      * @param calendars - Calendars to fetch events for. Defaults to all calendars.
      * @see https://docs.scriptable.app/calendarevent/#between
      */
-    static between(startDate: Date, endDate: Date, calendars: Calendar[]): Promise<CalendarEvent[]>;
+    static between(startDate: Date, endDate: Date, calendars?: Calendar[]): Promise<CalendarEvent[]>;
 
     /**
      * _Adds a recurrence rule._
@@ -789,19 +789,19 @@ declare var console: {
 
 declare namespace Contact {
     interface EmailAddresses {
-        identifier: string;
-        label: string;
-        localizedLabel: string;
+        identifier?: string;
+        label?: string;
+        localizedLabel?: string;
         value: string;
     }
     interface PhoneNumbers {
-        identifier: string;
-        label: string;
-        localizedLabel: string;
+        identifier?: string;
+        label?: string;
+        localizedLabel?: string;
         value: string;
     }
     interface PostalAddresses {
-        identifier: string;
+        identifier?: string;
         label: string;
         localizedLabel: string;
         street: string;
@@ -811,7 +811,7 @@ declare namespace Contact {
         country: string;
     }
     interface SocialProfiles {
-        identifier: string;
+        identifier?: string;
         label: string;
         localizedLabel: string;
         service: string;
@@ -1173,7 +1173,7 @@ declare class Contact {
      * @param containerIdentifier - Optional. Identifier of container to add the contact to. If null is specified, the contact will be added to the default container.
      * @see https://docs.scriptable.app/contact/#add
      */
-    static add(contact: Contact, containerIdentifier: string): void;
+    static add(contact: Contact, containerIdentifier?: string): void;
 
     /**
      * _Queues an update to a contact._
@@ -1291,7 +1291,7 @@ declare class ContactsGroup {
      * @param containerIdentifier - Optional. Identifier of container to add the contacts group to. If null is specified, the group will be added to the default container.
      * @see https://docs.scriptable.app/contactsgroup/#add
      */
-    static add(group: ContactsGroup, containerIdentifier: string): void;
+    static add(group: ContactsGroup, containerIdentifier?: string): void;
 
     /**
      * _Queues an update to a contacts group._
@@ -1883,7 +1883,7 @@ declare class Dictation {
      * @param locale - Optional string identifier that specifies the language to dictate in. E.g. "en" for English, "it" for Italian and "da" for Danish. Defaults to the locale of the device.
      * @see https://docs.scriptable.app/dictation/#start
      */
-    static start(locale: string): Promise<string>;
+    static start(locale?: string): Promise<string>;
 }
 
 /**
@@ -1900,7 +1900,7 @@ declare class DocumentPicker {
      * @param types - Types of files to select. Specified using UTIs. Defaults to all files.
      * @see https://docs.scriptable.app/documentpicker/#open
      */
-    static open(types: string[]): Promise<string[]>;
+    static open(types?: string[]): Promise<string[]>;
 
     /**
      * _Opens a file of any file type._
@@ -1939,7 +1939,7 @@ declare class DocumentPicker {
      * @param name - Optional name of the document to export.
      * @see https://docs.scriptable.app/documentpicker/#exportstring
      */
-    static exportString(content: string, name: string): Promise<string[]>;
+    static exportString(content: string, name?: string): Promise<string[]>;
 
     /**
      * _Exports an image._
@@ -1949,7 +1949,7 @@ declare class DocumentPicker {
      * @param name - Optional name of the image to export.
      * @see https://docs.scriptable.app/documentpicker/#exportimage
      */
-    static exportImage(image: Image, name: string): Promise<string[]>;
+    static exportImage(image: Image, name?: string): Promise<string[]>;
 }
 
 /**
@@ -2321,7 +2321,7 @@ declare class FileManager {
      * @param intermediateDirectories - Whether to create all intermediate directories. Defaults to false.
      * @see https://docs.scriptable.app/filemanager/#-createdirectory
      */
-    createDirectory(path: string, intermediateDirectories: boolean): void;
+    createDirectory(path: string, intermediateDirectories?: boolean): void;
 
     /**
      * _Path of temporary directory._
@@ -2464,7 +2464,7 @@ declare class FileManager {
      * @param includeFileExtension - Whether or not the file extension should be included. Defaults to false.
      * @see https://docs.scriptable.app/filemanager/#-filename
      */
-    fileName(filePath: string, includeFileExtension: boolean): string;
+    fileName(filePath: string, includeFileExtension?: boolean): string;
 
     /**
      * _Get extension of a file._
@@ -2704,7 +2704,7 @@ declare class Location {
      * @param locale - Optional. Preferred locale to fetch information in. Uses the default locale of the device if null.
      * @see https://docs.scriptable.app/location/#reversegeocode
      */
-    static reverseGeocode(latitude: number, longitude: number, locale: string): { [key: string]: any }[];
+    static reverseGeocode(latitude: number, longitude: number, locale?: string): { [key: string]: any }[];
 }
 
 /**
@@ -3165,7 +3165,7 @@ declare class Notification {
      * @param repeats - If true the notification will be sent daily on the specified time, otherwise it will only be sent once. Defaults to false.
      * @see https://docs.scriptable.app/notification/#-setdailytrigger
      */
-    setDailyTrigger(hour: number, minute: number, repeats: boolean): void;
+    setDailyTrigger(hour: number, minute: number, repeats?: boolean): void;
 
     /**
      * _Sets the notification to be triggered weekly._
@@ -3177,7 +3177,7 @@ declare class Notification {
      * @param repeats - If true the notification will be sent daily on the specified time, otherwise it will only be sent once. Defaults to false.
      * @see https://docs.scriptable.app/notification/#-setweeklytrigger
      */
-    setWeeklyTrigger(weekday: number, hour: number, minute: number, repeats: boolean): void;
+    setWeeklyTrigger(weekday: number, hour: number, minute: number, repeats?: boolean): void;
 
     /**
      * _Adds an action button._
@@ -3188,7 +3188,7 @@ declare class Notification {
      * @param destructive - Optional. If set to true, the button is displayed with special highlighting to indicate that it performs a destructive task. Defaults to false.
      * @see https://docs.scriptable.app/notification/#-addaction
      */
-    addAction(title: string, url: string, destructive: boolean): void;
+    addAction(title: string, url: string, destructive?: boolean): void;
 }
 
 /**
@@ -3484,7 +3484,7 @@ declare class QuickLook {
      * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/quicklook/#present
      */
-    static present(item: any, fullscreen: boolean): Promise<void>;
+    static present(item: any, fullscreen?: boolean): Promise<void>;
 }
 
 /**
@@ -4032,7 +4032,7 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#scheduled
      */
-    static scheduled(calendars: Calendar[]): Promise<Reminder[]>;
+    static scheduled(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches all reminders._
@@ -4041,7 +4041,7 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#all
      */
-    static all(calendars: Calendar[]): Promise<Reminder[]>;
+    static all(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches all completed reminders._
@@ -4050,7 +4050,7 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#allcompleted
      */
-    static allCompleted(calendars: Calendar[]): Promise<Reminder[]>;
+    static allCompleted(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches all incomplete reminders._
@@ -4059,133 +4059,133 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#allincomplete
      */
-    static allIncomplete(calendars: Calendar[]): Promise<Reminder[]>;
+    static allIncomplete(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches all reminders due today._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#allduetoday
      */
-    static allDueToday(calendars: Calendar[]): Promise<Reminder[]>;
+    static allDueToday(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches completed reminders due today._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completedduetoday
      */
-    static completedDueToday(calendars: Calendar[]): Promise<Reminder[]>;
+    static completedDueToday(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches incomplete reminders due today._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#incompleteduetoday
      */
-    static incompleteDueToday(calendars: Calendar[]): Promise<Reminder[]>;
+    static incompleteDueToday(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches all reminders due tomorrow._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#allduetomorrow
      */
-    static allDueTomorrow(calendars: Calendar[]): Promise<Reminder[]>;
+    static allDueTomorrow(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches completed reminders due tomorrow._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completedduetomorrow
      */
-    static completedDueTomorrow(calendars: Calendar[]): Promise<Reminder[]>;
+    static completedDueTomorrow(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches incomplete reminders due tomorrow._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#incompleteduetomorrow
      */
-    static incompleteDueTomorrow(calendars: Calendar[]): Promise<Reminder[]>;
+    static incompleteDueTomorrow(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches all reminders due yesterday._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#alldueyesterday
      */
-    static allDueYesterday(calendars: Calendar[]): Promise<Reminder[]>;
+    static allDueYesterday(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches completed reminders due yesterday._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completeddueyesterday
      */
-    static completedDueYesterday(calendars: Calendar[]): Promise<Reminder[]>;
+    static completedDueYesterday(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches incomplete reminders due yesterday._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#incompletedueyesterday
      */
-    static incompleteDueYesterday(calendars: Calendar[]): Promise<Reminder[]>;
+    static incompleteDueYesterday(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches all reminders due this week._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#allduethisweek
      */
-    static allDueThisWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static allDueThisWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches completed reminders due this week._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completedduethisweek
      */
-    static completedDueThisWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static completedDueThisWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches incomplete reminders due this week._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#incompleteduethisweek
      */
-    static incompleteDueThisWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static incompleteDueThisWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches all reminders due next week._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#allduenextweek
      */
-    static allDueNextWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static allDueNextWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches completed reminders due next week._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completedduenextweek
      */
-    static completedDueNextWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static completedDueNextWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches incomplete reminders due next week._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#incompleteduenextweek
      */
-    static incompleteDueNextWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static incompleteDueNextWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches all reminders due last week._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#allduelastweek
      */
-    static allDueLastWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static allDueLastWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches completed reminders due last week._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completedduelastweek
      */
-    static completedDueLastWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static completedDueLastWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches incomplete reminders due last week._
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#incompleteduelastweek
      */
-    static incompleteDueLastWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static incompleteDueLastWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches reminders completed today._
@@ -4194,7 +4194,7 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completedtoday
      */
-    static completedToday(calendars: Calendar[]): Promise<Reminder[]>;
+    static completedToday(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches reminders completed this week._
@@ -4203,7 +4203,7 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completedthisweek
      */
-    static completedThisWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static completedThisWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches reminders completed last week._
@@ -4212,7 +4212,7 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completedlastweek
      */
-    static completedLastWeek(calendars: Calendar[]): Promise<Reminder[]>;
+    static completedLastWeek(calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches due reminders._
@@ -4221,7 +4221,7 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#allduebetween
      */
-    static allDueBetween(startDate: Date, endDate: Date, calendars: Calendar[]): Promise<Reminder[]>;
+    static allDueBetween(startDate: Date, endDate: Date, calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches completed reminders._
@@ -4230,7 +4230,7 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completedduebetween
      */
-    static completedDueBetween(startDate: Date, endDate: Date, calendars: Calendar[]): Promise<Reminder[]>;
+    static completedDueBetween(startDate: Date, endDate: Date, calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches incomplete reminders._
@@ -4239,7 +4239,7 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#incompleteduebetween
      */
-    static incompleteDueBetween(startDate: Date, endDate: Date, calendars: Calendar[]): Promise<Reminder[]>;
+    static incompleteDueBetween(startDate: Date, endDate: Date, calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Fetches completed reminders._
@@ -4248,7 +4248,7 @@ declare class Reminder {
      * @param calendars - Calendars to fetch reminders for. Defaults to all calendars.
      * @see https://docs.scriptable.app/reminder/#completedbetween
      */
-    static completedBetween(startDate: Date, endDate: Date, calendars: Calendar[]): Promise<Reminder[]>;
+    static completedBetween(startDate: Date, endDate: Date, calendars?: Calendar[]): Promise<Reminder[]>;
 
     /**
      * _Adds a recurrence rule._
@@ -4428,7 +4428,7 @@ declare class Request {
      * @param filename - Optional name of the uploaded file.
      * @see https://docs.scriptable.app/request/#-addfiletomultipart
      */
-    addFileToMultipart(filePath: string, name: string, filename: string): void;
+    addFileToMultipart(filePath: string, name: string, filename?: string): void;
 
     /**
      * _Adds an image to a multipart request._
@@ -4441,7 +4441,7 @@ declare class Request {
      * @param filename - Optional name of the uploaded file.
      * @see https://docs.scriptable.app/request/#-addimagetomultipart
      */
-    addImageToMultipart(image: Image, name: string, filename: string): void;
+    addImageToMultipart(image: Image, name: string, filename?: string): void;
 
     /**
      * _Function called upon redirect._
@@ -4465,7 +4465,7 @@ declare class Safari {
      * @param fullscreen - Optional. Set to true to display the web view in fullsceen. This only has an effect when used within the app. Defaults to true.
      * @see https://docs.scriptable.app/safari/#openinapp
      */
-    static openInApp(url: string, fullscreen: boolean): Promise<void>;
+    static openInApp(url: string, fullscreen?: boolean): Promise<void>;
 
     /**
      * _Presents a website._
@@ -4688,7 +4688,7 @@ declare class UITable {
      * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/uitable/#-present
      */
-    present(fullscreen: boolean): Promise<void>;
+    present(fullscreen?: boolean): Promise<void>;
 }
 
 /**
@@ -4740,7 +4740,7 @@ declare class UITableCell {
      * @param subtitle - Optional subtitle shown below the title.
      * @see https://docs.scriptable.app/uitablecell/#text
      */
-    static text(title: string, subtitle: string): UITableCell;
+    static text(title?: string, subtitle?: string): UITableCell;
 
     /**
      * _Constructs an image cell._
@@ -4874,7 +4874,7 @@ declare class UITableRow {
      * @param subtitle - Optional subtitle shown below the title in the cell.
      * @see https://docs.scriptable.app/uitablerow/#-addtext
      */
-    addText(title: string, subtitle: string): UITableCell;
+    addText(title?: string, subtitle?: string): UITableCell;
 
     /**
      * _Adds an image cell._
@@ -4983,7 +4983,7 @@ declare class WebView {
      * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/webview/#loadhtml
      */
-    static loadHTML(html: string, baseURL: string, preferredSize: Size, fullscreen: boolean): Promise<void>;
+    static loadHTML(html: string, baseURL?: string, preferredSize?: Size, fullscreen?: boolean): Promise<void>;
 
     /**
      * _Loads a file and renders it._
@@ -5000,7 +5000,7 @@ declare class WebView {
      * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/webview/#loadfile
      */
-    static loadFile(fileURL: string, preferredSize: Size, fullscreen: boolean): Promise<void>;
+    static loadFile(fileURL: string, preferredSize?: Size, fullscreen?: boolean): Promise<void>;
 
     /**
      * _Loads URL in web view and presents the web view._
@@ -5011,7 +5011,7 @@ declare class WebView {
      * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/webview/#loadurl
      */
-    static loadURL(url: string, preferredSize: Size, fullscreen: boolean): Promise<void>;
+    static loadURL(url: string, preferredSize?: Size, fullscreen?: boolean): Promise<void>;
 
     /**
      * _Loads URL in web view._
@@ -5039,7 +5039,7 @@ declare class WebView {
      * @param baseURL - Optional. Base URL used to resolve relative URLs in the HTML.
      * @see https://docs.scriptable.app/webview/#-loadhtml
      */
-    loadHTML(html: string, baseURL: string): Promise<void>;
+    loadHTML(html: string, baseURL?: string): Promise<void>;
 
     /**
      * _Loads file in the web view._
@@ -5066,7 +5066,7 @@ declare class WebView {
      * @param useCallback - Optional. If true the web view waits for the globally available completion function of the web view to be called before terminating. Defaults to false.
      * @see https://docs.scriptable.app/webview/#-evaluatejavascript
      */
-    evaluateJavaScript(javaScript: string, useCallback: boolean): Promise<any>;
+    evaluateJavaScript(javaScript: string, useCallback?: boolean): Promise<any>;
 
     /**
      * _Reads and returns HTML from the loaded website._

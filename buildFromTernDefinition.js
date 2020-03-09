@@ -271,6 +271,9 @@ function processType(type, name, options = {}) {
  * @param {string} obj.url 
  * @param {string} obj.name 
  * @param {string} obj.interface This will contain the type definition of the interface if one was found
+ * @param {object[]} obj.parameters 
+ * @param {string} obj.parameters[].name 
+ * @param {string} obj.parameters[].doc 
  * @param {object} [options] Some options
  * @param {boolean} [options.checkForInterface] If the code blocks in the description should be checked for a possible interface
  * @param {string} [options.parent] Name of parent if there is one
@@ -348,6 +351,13 @@ function processDescription(obj, options) {
 
 	if (options.emitParameters && obj.parameters && obj.parameters.length) {
 		descr += "\n" + obj.parameters.map((i) => `@param ${i.name} - ${turndownService.turndown(i.doc)}`).join("\n");
+		// check for optional parameters
+		obj.parameters.map((p) => {
+			let defaults = /defaults to \S+/i.test(p.doc);
+			if (p.doc.startsWith("Optional") || defaults) {
+				obj.definition = obj.definition.replace(new RegExp(String.raw`\b${p.name}:`), p.name + "?:");
+			}
+		});
 	}
 	if (obj.returns && obj.returns.type) {
 		descr += `\n@returns {${obj.returns.type}} ${obj.returns.doc}`;
@@ -374,6 +384,19 @@ function processDescription(obj, options) {
 			throw new Error(str);
 		}
 		example = example[1];
+		let optionalOrRequiredKeys = [];
+		let keysAreRequired = null;
+		let keyMatch = obj.longDoc.match(/\bEach value in the array must have the "([^"]+)" key. The other keys are optional\b/);
+		if (keyMatch) {
+			optionalOrRequiredKeys.push(keyMatch[1]);
+			keysAreRequired = true;
+		} else {
+			keyMatch = obj.longDoc.match(/\bThe "([^"]+)" key is optional\b/);
+			if (keyMatch) {
+				optionalOrRequiredKeys.push(keyMatch[1]);
+				keysAreRequired = false;
+			}
+		}
 		let types = [];
 		let interf = JSON.stringify(JSON.parse(example), (k, v) => {
 			if (!k)
@@ -381,7 +404,15 @@ function processDescription(obj, options) {
 			let t = typeof (v == null ? "" : v);
 			!types.includes(t) && types.push(t);
 			return t;
-		}, "\t").replace(/"(\w+)"(:\s*)"([a-zA-Z]+)",?/g, "$1$2$3;");
+		}, "\t").replace(/"(\w+)"(:\s*)"([a-zA-Z]+)",?/g, (match, p1, p2, p3) => {
+			let optional =
+				keysAreRequired === true ?
+					!optionalOrRequiredKeys.includes(p1) :
+					keysAreRequired === false ?
+						optionalOrRequiredKeys.includes(p1) :
+						false;
+			return p1 + (optional ? "?" : "") + p2 + p3 + ";";
+		});
 		interfaceName = obj.name[0].toUpperCase() + obj.name.substring(1);
 		interfaceAnyType = types.length > 1;
 		obj.interface = interfaceName + " " + interf;
