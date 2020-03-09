@@ -780,7 +780,7 @@ declare var console: {
      * @param message - Message to log to the console.
      * @see https://docs.scriptable.app/console/#log
      */
-    static log(message: any): void;
+    log(message: any): void;
 
     /**
      * _Logs a warning message to the console._
@@ -791,7 +791,7 @@ declare var console: {
      * @param message - Message to log to the console.
      * @see https://docs.scriptable.app/console/#warn
      */
-    static warn(message: any): void;
+    warn(message: any): void;
 
     /**
      * _Logs an error message to the console._
@@ -802,7 +802,7 @@ declare var console: {
      * @param message - Message to log to the console.
      * @see https://docs.scriptable.app/console/#error
      */
-    static error(message: any): void;
+    error(message: any): void;
 };
 
 declare namespace Contact {
@@ -995,7 +995,7 @@ declare class Contact {
      * When updating this property, you must set the entire array of URL addresses that you would like to store on the contact. The "identifier" key is optional.
      * @see https://docs.scriptable.app/contact/#urladdresses
      */
-    urlAddresses: { [key: string]: string }[];
+    urlAddresses: Array<{ [key: string]: string }>;
 
     /**
      * _Dates._
@@ -1003,7 +1003,7 @@ declare class Contact {
      * When updating this property, you must set the entire array of dates that you would like to store on the contact. The "identifier" key is optional.
      * @see https://docs.scriptable.app/contact/#dates
      */
-    dates: { [key: string]: any }[];
+    dates: Array<{ [key: string]: any }>;
 
     /**
      * _Name of the organization associated with the contact._
@@ -1734,32 +1734,32 @@ declare class DatePicker {
  * _Provides information about the device._
  * @see https://docs.scriptable.app/device
  */
-declare class Device {
+declare var Device: {
     /**
      * _Name identifying the device._
      *
      * You can find and edit the name of your device in the system settings.
      * @see https://docs.scriptable.app/device/#name
      */
-    static name(): string;
+    name(): string;
 
     /**
      * _Name of the operating system:_
      * @see https://docs.scriptable.app/device/#systemname
      */
-    static systemName(): string;
+    systemName(): string;
 
     /**
      * _Version of the operating system._
      * @see https://docs.scriptable.app/device/#systemversion
      */
-    static systemVersion(): string;
+    systemVersion(): string;
 
     /**
      * _Model of the device, e.g. "iPhone"._
      * @see https://docs.scriptable.app/device/#model
      */
-    static model(): string;
+    model(): string;
 
     /**
      * _Whether the device is a phone._
@@ -1767,7 +1767,7 @@ declare class Device {
      * You can use this property to choose behavior of a script depending on whether its running on a phone or a pad.
      * @see https://docs.scriptable.app/device/#isphone
      */
-    static isPhone(): boolean;
+    isPhone(): boolean;
 
     /**
      * _Whether the device is a pad._
@@ -1775,7 +1775,7 @@ declare class Device {
      * You can use this property to choose behavior of a script depending on whether its running on a phone or a pad.
      * @see https://docs.scriptable.app/device/#ispad
      */
-    static isPad(): boolean;
+    isPad(): boolean;
 
     /**
      * _Size of the screen._
@@ -1784,7 +1784,7 @@ declare class Device {
      * rotation into account, so the value will vary between portrait and landscape.
      * @see https://docs.scriptable.app/device/#screensize
      */
-    static screenSize(): Size;
+    screenSize(): Size;
 
     /**
      * _Resolution of the screen._
@@ -1792,7 +1792,7 @@ declare class Device {
      * The value is measured in pixels. The value does not take the rotation of the deviec into account.
      * @see https://docs.scriptable.app/device/#screenresolution
      */
-    static screenResolution(): Size;
+    screenResolution(): Size;
 
     /**
      * _Scale of the screen._
@@ -1801,7 +1801,7 @@ declare class Device {
      * screen is four or nine pixels, respectively.
      * @see https://docs.scriptable.app/device/#screenscale
      */
-    static screenScale(): number;
+    screenScale(): number;
 
     /**
      * _Brightness of the screen in percentage._
@@ -1809,43 +1809,43 @@ declare class Device {
      * The value range from 0 to 1. To set the screen brightness, refer to the `setScreenBrightness()` function.
      * @see https://docs.scriptable.app/device/#screenbrightness
      */
-    static screenBrightness(): number;
+    screenBrightness(): number;
 
     /**
      * _Whether the device is in portrait with the home button or home indicator at the bottom._
      * @see https://docs.scriptable.app/device/#isinportrait
      */
-    static isInPortrait(): boolean;
+    isInPortrait(): boolean;
 
     /**
      * _Whether the device is in portrait but upside down with the home button or home indicator at the top._
      * @see https://docs.scriptable.app/device/#isinportraitupsidedown
      */
-    static isInPortraitUpsideDown(): boolean;
+    isInPortraitUpsideDown(): boolean;
 
     /**
      * _Whether the device is in landscape with the home button or home indicator on the right side._
      * @see https://docs.scriptable.app/device/#isinlandscapeleft
      */
-    static isInLandscapeLeft(): boolean;
+    isInLandscapeLeft(): boolean;
 
     /**
      * _Whether the device is in landscape with the home button or home indicator on the left side._
      * @see https://docs.scriptable.app/device/#isinlandscaperight
      */
-    static isInLandscapeRight(): boolean;
+    isInLandscapeRight(): boolean;
 
     /**
      * _Whether the device is lying parallel to the ground with the screen facing upwards._
      * @see https://docs.scriptable.app/device/#isfaceup
      */
-    static isFaceUp(): boolean;
+    isFaceUp(): boolean;
 
     /**
      * _Whether the device is lying parallel to the ground with the screen facing downwards._
      * @see https://docs.scriptable.app/device/#isfacedown
      */
-    static isFaceDown(): boolean;
+    isFaceDown(): boolean;
 
     /**
      * _Current battery level._
@@ -1853,25 +1853,25 @@ declare class Device {
      * The value is in percentage ranging between 0 and 1.
      * @see https://docs.scriptable.app/device/#batterylevel
      */
-    static batteryLevel(): number;
+    batteryLevel(): number;
 
     /**
      * _Whether the device is being not plugged into power and thus discharging._
      * @see https://docs.scriptable.app/device/#isdischarging
      */
-    static isDischarging(): boolean;
+    isDischarging(): boolean;
 
     /**
      * _Whether the device is being charged._
      * @see https://docs.scriptable.app/device/#ischarging
      */
-    static isCharging(): boolean;
+    isCharging(): boolean;
 
     /**
      * _Whether the device is fully charged._
      * @see https://docs.scriptable.app/device/#isfullycharged
      */
-    static isFullyCharged(): boolean;
+    isFullyCharged(): boolean;
 
     /**
      * _The preferred langauges._
@@ -1879,25 +1879,25 @@ declare class Device {
      * The list is ordered according to the language preferences specified in the system settings.
      * @see https://docs.scriptable.app/device/#preferredlanguages
      */
-    static preferredLanguages(): string[];
+    preferredLanguages(): string[];
 
     /**
      * _Identifier for the device locale._
      * @see https://docs.scriptable.app/device/#locale
      */
-    static locale(): string;
+    locale(): string;
 
     /**
      * _Identifier for the device language._
      * @see https://docs.scriptable.app/device/#language
      */
-    static language(): string;
+    language(): string;
 
     /**
      * _Whether the device is using dark appearance._
      * @see https://docs.scriptable.app/device/#isusingdarkappearance
      */
-    static isUsingDarkAppearance(): boolean;
+    isUsingDarkAppearance(): boolean;
 
     /**
      * _The device volume._
@@ -1905,7 +1905,7 @@ declare class Device {
      * The value range from 0 to 1.
      * @see https://docs.scriptable.app/device/#volume
      */
-    static volume(): number;
+    volume(): number;
 
     /**
      * _Sets the brightness of the screen._
@@ -1914,14 +1914,14 @@ declare class Device {
      * @param percentage - Percentage to set the screen brightness to. Value between 0 and 1.
      * @see https://docs.scriptable.app/device/#setscreenbrightness
      */
-    static setScreenBrightness(percentage: number): void;
-}
+    setScreenBrightness(percentage: number): void;
+};
 
 /**
  * _Presents an interface for dictation._
  * @see https://docs.scriptable.app/dictation
  */
-declare class Dictation {
+declare var Dictation: {
     /**
      * _Starts dictation._
      *
@@ -1930,14 +1930,14 @@ declare class Dictation {
      * device.
      * @see https://docs.scriptable.app/dictation/#start
      */
-    static start(locale?: string): Promise<string>;
-}
+    start(locale?: string): Promise<string>;
+};
 
 /**
  * _Presents a document picker._
  * @see https://docs.scriptable.app/documentpicker
  */
-declare class DocumentPicker {
+declare var DocumentPicker: {
     /**
      * _Opens a document._
      *
@@ -1948,7 +1948,7 @@ declare class DocumentPicker {
      * @param types - Types of files to select. Specified using UTIs. Defaults to all files.
      * @see https://docs.scriptable.app/documentpicker/#open
      */
-    static open(types?: string[]): Promise<string[]>;
+    open(types?: string[]): Promise<string[]>;
 
     /**
      * _Opens a file of any file type._
@@ -1958,7 +1958,7 @@ declare class DocumentPicker {
      * When fulfilled the returned promise will provide the paths for the selected files.
      * @see https://docs.scriptable.app/documentpicker/#openfile
      */
-    static openFile(): Promise<string>;
+    openFile(): Promise<string>;
 
     /**
      * _Opens a folder._
@@ -1968,7 +1968,7 @@ declare class DocumentPicker {
      * When fulfilled the returned promise will provide the paths for the selected files.
      * @see https://docs.scriptable.app/documentpicker/#openfolder
      */
-    static openFolder(): Promise<string>;
+    openFolder(): Promise<string>;
 
     /**
      * _Exports a file to a document._
@@ -1977,7 +1977,7 @@ declare class DocumentPicker {
      * @param path - Path of the file to export.
      * @see https://docs.scriptable.app/documentpicker/#export
      */
-    static export(path: string): Promise<string[]>;
+    export(path: string): Promise<string[]>;
 
     /**
      * _Exports a string to a document._
@@ -1987,7 +1987,7 @@ declare class DocumentPicker {
      * @param name - Optional name of the document to export.
      * @see https://docs.scriptable.app/documentpicker/#exportstring
      */
-    static exportString(content: string, name?: string): Promise<string[]>;
+    exportString(content: string, name?: string): Promise<string[]>;
 
     /**
      * _Exports an image._
@@ -1997,8 +1997,8 @@ declare class DocumentPicker {
      * @param name - Optional name of the image to export.
      * @see https://docs.scriptable.app/documentpicker/#exportimage
      */
-    static exportImage(image: Image, name?: string): Promise<string[]>;
-}
+    exportImage(image: Image, name?: string): Promise<string[]>;
+};
 
 /**
  * _Context for drawing images._
@@ -2695,7 +2695,7 @@ declare class Image {
  * _Secure storage for credentials._
  * @see https://docs.scriptable.app/keychain
  */
-declare class Keychain {
+declare var Keychain: {
     /**
      * _Check if keychain contains a key._
      *
@@ -2703,7 +2703,7 @@ declare class Keychain {
      * @param key - Key to look up in the keychain.
      * @see https://docs.scriptable.app/keychain/#contains
      */
-    static contains(key: string): boolean;
+    contains(key: string): boolean;
 
     /**
      * _Add value for a specified key to keychain._
@@ -2715,7 +2715,7 @@ declare class Keychain {
      * @param value - Value to assign to the specified key.
      * @see https://docs.scriptable.app/keychain/#set
      */
-    static set(key: string, value: string): void;
+    set(key: string, value: string): void;
 
     /**
      * _Reads a value from the keychain._
@@ -2724,21 +2724,21 @@ declare class Keychain {
      * @param key - Key to read value for.
      * @see https://docs.scriptable.app/keychain/#get
      */
-    static get(key: string): string;
+    get(key: string): string;
 
     /**
      * _Remove key from keychain._
      * @param key - Key to remove from the keychain.
      * @see https://docs.scriptable.app/keychain/#remove
      */
-    static remove(key: string): void;
-}
+    remove(key: string): void;
+};
 
 /**
  * _Fetches your location._
  * @see https://docs.scriptable.app/location
  */
-declare class Location {
+declare var Location: {
     /**
      * _Fetches your location._
      *
@@ -2746,7 +2746,7 @@ declare class Location {
      * vertical accuracy measured in meters.
      * @see https://docs.scriptable.app/location/#current
      */
-    static current(): Promise<any>;
+    current(): Promise<any>;
 
     /**
      * _Uses best accuracy. This is default._
@@ -2754,31 +2754,31 @@ declare class Location {
      * Set this when you want to achieve the best possible accuracy when retrieving your location. This is the default accuracy.
      * @see https://docs.scriptable.app/location/#setaccuracytobest
      */
-    static setAccuracyToBest(): void;
+    setAccuracyToBest(): void;
 
     /**
      * _Sets accuracy to within ten meters._
      * @see https://docs.scriptable.app/location/#setaccuracytotenmeters
      */
-    static setAccuracyToTenMeters(): void;
+    setAccuracyToTenMeters(): void;
 
     /**
      * _Sets accuracy to within hundred meters._
      * @see https://docs.scriptable.app/location/#setaccuracytohundredmeters
      */
-    static setAccuracyToHundredMeters(): void;
+    setAccuracyToHundredMeters(): void;
 
     /**
      * _Sets accuracy to within one kilometer._
      * @see https://docs.scriptable.app/location/#setaccuracytokilometer
      */
-    static setAccuracyToKilometer(): void;
+    setAccuracyToKilometer(): void;
 
     /**
      * _Sets accuracy to within three kilometers._
      * @see https://docs.scriptable.app/location/#setaccuracytothreekilometers
      */
-    static setAccuracyToThreeKilometers(): void;
+    setAccuracyToThreeKilometers(): void;
 
     /**
      * _Performs reverse-geocoding for a location._
@@ -2789,8 +2789,8 @@ declare class Location {
      * @param locale - Optional. Preferred locale to fetch information in. Uses the default locale of the device if null.
      * @see https://docs.scriptable.app/location/#reversegeocode
      */
-    static reverseGeocode(latitude: number, longitude: number, locale?: string): { [key: string]: any }[];
-}
+    reverseGeocode(latitude: number, longitude: number, locale?: string): Array<{ [key: string]: any }>;
+};
 
 /**
  * _Sends a mail._
@@ -3296,46 +3296,46 @@ declare class Notification {
  * _Copy and paste strings or images._
  * @see https://docs.scriptable.app/pasteboard
  */
-declare class Pasteboard {
+declare var Pasteboard: {
     /**
      * _Copies a string to the pasteboard._
      * @param string - The string to copy to the pasteboard.
      * @see https://docs.scriptable.app/pasteboard/#copy
      */
-    static copy(string: string): void;
+    copy(string: string): void;
 
     /**
      * _Pastes a string from the pasteboard._
      * @see https://docs.scriptable.app/pasteboard/#paste
      */
-    static paste(): string;
+    paste(): string;
 
     /**
      * _Copies a string to the pasteboard._
      * @param string - The string to copy to the pasteboard.
      * @see https://docs.scriptable.app/pasteboard/#copystring
      */
-    static copyString(string: string): void;
+    copyString(string: string): void;
 
     /**
      * _Pastes a string from the pasteboard._
      * @see https://docs.scriptable.app/pasteboard/#pastestring
      */
-    static pasteString(): string;
+    pasteString(): string;
 
     /**
      * _Copies an image to the pasteboard._
      * @param image - The image to copy to the pasteboard.
      * @see https://docs.scriptable.app/pasteboard/#copyimage
      */
-    static copyImage(image: Image): void;
+    copyImage(image: Image): void;
 
     /**
      * _Pastes an image from the pasteboard._
      * @see https://docs.scriptable.app/pasteboard/#pasteimage
      */
-    static pasteImage(): Image;
-}
+    pasteImage(): Image;
+};
 
 /**
  * _A path describes a shape._
@@ -3452,14 +3452,14 @@ declare class Path {
  * _Provides access to your photo library._
  * @see https://docs.scriptable.app/photos
  */
-declare class Photos {
+declare var Photos: {
     /**
      * _Presents the photo library for picking an image._
      *
      * Use this for picking an image from the photo library.
      * @see https://docs.scriptable.app/photos/#fromlibrary
      */
-    static fromLibrary(): Promise<Image>;
+    fromLibrary(): Promise<Image>;
 
     /**
      * _Opens the camera for taking an image._
@@ -3467,7 +3467,7 @@ declare class Photos {
      * Use this for taking a new image using the camera.
      * @see https://docs.scriptable.app/photos/#fromcamera
      */
-    static fromCamera(): Promise<Image>;
+    fromCamera(): Promise<Image>;
 
     /**
      * _Get latest photo._
@@ -3475,7 +3475,7 @@ declare class Photos {
      * Reads the latest photo from your photo library. If no photo is available, the promise will be rejected.
      * @see https://docs.scriptable.app/photos/#latestphoto
      */
-    static latestPhoto(): Promise<Image>;
+    latestPhoto(): Promise<Image>;
 
     /**
      * _Get latest photos._
@@ -3484,7 +3484,7 @@ declare class Photos {
      * @param count - Number of photos to fetch.
      * @see https://docs.scriptable.app/photos/#latestphotos
      */
-    static latestPhotos(count: number): Promise<Image[]>;
+    latestPhotos(count: number): Promise<Image[]>;
 
     /**
      * _Get latest screenshot._
@@ -3492,7 +3492,7 @@ declare class Photos {
      * Reads the latest screenshot from your photo library. If no screenshot is available, the promise will be rejected.
      * @see https://docs.scriptable.app/photos/#latestscreenshot
      */
-    static latestScreenshot(): Promise<Image>;
+    latestScreenshot(): Promise<Image>;
 
     /**
      * _Get latest screenshots._
@@ -3501,7 +3501,7 @@ declare class Photos {
      * @param count - Number of screenshots to fetch.
      * @see https://docs.scriptable.app/photos/#latestscreenshots
      */
-    static latestScreenshots(count: number): Promise<Image[]>;
+    latestScreenshots(count: number): Promise<Image[]>;
 
     /**
      * _Removes latest photo._
@@ -3509,7 +3509,7 @@ declare class Photos {
      * Before removing the photo, an alert is shown prompting you to confirm the removal.
      * @see https://docs.scriptable.app/photos/#removelatestphoto
      */
-    static removeLatestPhoto(): void;
+    removeLatestPhoto(): void;
 
     /**
      * _Removes latest photos._
@@ -3518,7 +3518,7 @@ declare class Photos {
      * @param count - Number of photos to remove.
      * @see https://docs.scriptable.app/photos/#removelatestphotos
      */
-    static removeLatestPhotos(count: number): void;
+    removeLatestPhotos(count: number): void;
 
     /**
      * _Removes latest screenshot._
@@ -3526,7 +3526,7 @@ declare class Photos {
      * Before removing the screenshot, an alert is shown prompting you to confirm the removal.
      * @see https://docs.scriptable.app/photos/#removelatestscreenshot
      */
-    static removeLatestScreenshot(): void;
+    removeLatestScreenshot(): void;
 
     /**
      * _Removes latest screenshots._
@@ -3535,7 +3535,7 @@ declare class Photos {
      * @param count - Number of screenshots to remove.
      * @see https://docs.scriptable.app/photos/#removelatestscreenshots
      */
-    static removeLatestScreenshots(count: number): void;
+    removeLatestScreenshots(count: number): void;
 
     /**
      * _Save an image._
@@ -3544,8 +3544,8 @@ declare class Photos {
      * @param image - The image to save.
      * @see https://docs.scriptable.app/photos/#save
      */
-    static save(image: Image): void;
-}
+    save(image: Image): void;
+};
 
 /**
  * _Structure representing a point._
@@ -3577,7 +3577,7 @@ declare class Point {
  * _Presents an item._
  * @see https://docs.scriptable.app/quicklook
  */
-declare class QuickLook {
+declare var QuickLook: {
     /**
      * _Presents the item._
      *
@@ -3586,8 +3586,8 @@ declare class QuickLook {
      * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/quicklook/#present
      */
-    static present(item: any, fullscreen?: boolean): Promise<void>;
-}
+    present(item: any, fullscreen?: boolean): Promise<void>;
+};
 
 /**
  * _Structure representing a rectangle._
@@ -3693,7 +3693,9 @@ declare class Rect {
  * _Recurrence rule used with reminders and calendar events._
  * @see https://docs.scriptable.app/recurrencerule
  */
-declare class RecurrenceRule {
+declare class RecurrenceRule {}
+
+declare namespace RecurrenceRule {
     /**
      * _Constructs a daily recurrence rule._
      *
@@ -3702,7 +3704,7 @@ declare class RecurrenceRule {
      * @param interval - Interval at which to repeat the rule.
      * @see https://docs.scriptable.app/recurrencerule/#daily
      */
-    static daily(interval: number): RecurrenceRule;
+    function daily(interval: number): RecurrenceRule;
 
     /**
      * _Constructs a daily recurrence rule with an end date._
@@ -3713,7 +3715,7 @@ declare class RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#dailyenddate
      */
-    static dailyEndDate(interval: number, endDate: Date): RecurrenceRule;
+    function dailyEndDate(interval: number, endDate: Date): RecurrenceRule;
 
     /**
      * _Constructs a daily recurrence rule with an occurrence count._
@@ -3724,7 +3726,7 @@ declare class RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#dailyoccurrencecount
      */
-    static dailyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
+    function dailyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
 
     /**
      * _Constructs a weekly recurrence rule._
@@ -3734,7 +3736,7 @@ declare class RecurrenceRule {
      * @param interval - Interval at which to repeat the rule.
      * @see https://docs.scriptable.app/recurrencerule/#weekly
      */
-    static weekly(interval: number): RecurrenceRule;
+    function weekly(interval: number): RecurrenceRule;
 
     /**
      * _Constructs a weekly recurrence rule with an end date._
@@ -3745,7 +3747,7 @@ declare class RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#weeklyenddate
      */
-    static weeklyEndDate(interval: number, endDate: Date): RecurrenceRule;
+    function weeklyEndDate(interval: number, endDate: Date): RecurrenceRule;
 
     /**
      * _Constructs a weekly recurrence rule with an occurrence count._
@@ -3756,7 +3758,7 @@ declare class RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#weeklyoccurrencecount
      */
-    static weeklyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
+    function weeklyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
 
     /**
      * _Constructs a monthly recurrence rule._
@@ -3766,7 +3768,7 @@ declare class RecurrenceRule {
      * @param interval - Interval at which to repeat the rule.
      * @see https://docs.scriptable.app/recurrencerule/#monthly
      */
-    static monthly(interval: number): RecurrenceRule;
+    function monthly(interval: number): RecurrenceRule;
 
     /**
      * _Constructs a monthly recurrence rule with an end date._
@@ -3777,7 +3779,7 @@ declare class RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#monthlyenddate
      */
-    static monthlyEndDate(interval: number, endDate: Date): RecurrenceRule;
+    function monthlyEndDate(interval: number, endDate: Date): RecurrenceRule;
 
     /**
      * _Constructs a monthly recurrence rule with an occurrence count._
@@ -3788,7 +3790,7 @@ declare class RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#monthlyoccurrencecount
      */
-    static monthlyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
+    function monthlyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
 
     /**
      * _Constructs a yearly recurrence rule._
@@ -3798,7 +3800,7 @@ declare class RecurrenceRule {
      * @param interval - Interval at which to repeat the rule.
      * @see https://docs.scriptable.app/recurrencerule/#yearly
      */
-    static yearly(interval: number): RecurrenceRule;
+    function yearly(interval: number): RecurrenceRule;
 
     /**
      * _Constructs a yearly recurrence rule with an end date._
@@ -3809,7 +3811,7 @@ declare class RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#yearlyenddate
      */
-    static yearlyEndDate(interval: number, endDate: Date): RecurrenceRule;
+    function yearlyEndDate(interval: number, endDate: Date): RecurrenceRule;
 
     /**
      * _Constructs a yearly recurrence rule with an occurrence count._
@@ -3820,7 +3822,7 @@ declare class RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#yearlyoccurrencecount
      */
-    static yearlyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
+    function yearlyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
 
     /**
      * _Constructs a complex weekly recurrence rule._
@@ -3835,7 +3837,7 @@ declare class RecurrenceRule {
      * @param setPositions - Filters which recurrences to include in the rule's frequency.
      * @see https://docs.scriptable.app/recurrencerule/#complexweekly
      */
-    static complexWeekly(interval: number, daysOfTheWeek: number[], setPositions: number[]): RecurrenceRule;
+    function complexWeekly(interval: number, daysOfTheWeek: number[], setPositions: number[]): RecurrenceRule;
 
     /**
      * _Constructs a complex weekly recurrence rule with an end date._
@@ -3851,7 +3853,7 @@ declare class RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#complexweeklyenddate
      */
-    static complexWeeklyEndDate(
+    function complexWeeklyEndDate(
         interval: number,
         daysOfTheWeek: number[],
         setPositions: number[],
@@ -3872,7 +3874,7 @@ declare class RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#complexweeklyoccurrencecount
      */
-    static complexWeeklyOccurrenceCount(
+    function complexWeeklyOccurrenceCount(
         interval: number,
         daysOfTheWeek: number[],
         setPositions: number[],
@@ -3893,7 +3895,7 @@ declare class RecurrenceRule {
      * @param setPositions - Filters which recurrences to include in the rule's frequency.
      * @see https://docs.scriptable.app/recurrencerule/#complexmonthly
      */
-    static complexMonthly(
+    function complexMonthly(
         interval: number,
         daysOfTheWeek: number[],
         daysOfTheMonth: number[],
@@ -3915,7 +3917,7 @@ declare class RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#complexmonthlyenddate
      */
-    static complexMonthlyEndDate(
+    function complexMonthlyEndDate(
         interval: number,
         daysOfTheWeek: number[],
         daysOfTheMonth: number[],
@@ -3938,7 +3940,7 @@ declare class RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#complexmonthlyoccurrencecount
      */
-    static complexMonthlyOccurrenceCount(
+    function complexMonthlyOccurrenceCount(
         interval: number,
         daysOfTheWeek: number[],
         daysOfTheMonth: number[],
@@ -3962,7 +3964,7 @@ declare class RecurrenceRule {
      * @param setPositions - Filters which recurrences to include in the rule's frequency.
      * @see https://docs.scriptable.app/recurrencerule/#complexyearly
      */
-    static complexYearly(
+    function complexYearly(
         interval: number,
         daysOfTheWeek: number[],
         monthsOfTheYear: number[],
@@ -3988,7 +3990,7 @@ declare class RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#complexyearlyenddate
      */
-    static complexYearlyEndDate(
+    function complexYearlyEndDate(
         interval: number,
         daysOfTheWeek: number[],
         monthsOfTheYear: number[],
@@ -4015,7 +4017,7 @@ declare class RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#complexyearlyoccurrencecount
      */
-    static complexYearlyOccurrenceCount(
+    function complexYearlyOccurrenceCount(
         interval: number,
         daysOfTheWeek: number[],
         monthsOfTheYear: number[],
@@ -4601,7 +4603,7 @@ declare class Request {
  * _Presents a website._
  * @see https://docs.scriptable.app/safari
  */
-declare class Safari {
+declare var Safari: {
     /**
      * _Presents a website in-app._
      *
@@ -4610,7 +4612,7 @@ declare class Safari {
      * @param fullscreen - Optional. Set to true to display the web view in fullsceen. This only has an effect when used within the app. Defaults to true.
      * @see https://docs.scriptable.app/safari/#openinapp
      */
-    static openInApp(url: string, fullscreen?: boolean): Promise<void>;
+    openInApp(url: string, fullscreen?: boolean): Promise<void>;
 
     /**
      * _Presents a website._
@@ -4619,19 +4621,19 @@ declare class Safari {
      * @param url - URL of website to present.
      * @see https://docs.scriptable.app/safari/#open
      */
-    static open(url: string): void;
-}
+    open(url: string): void;
+};
 
 /**
  * _Access information about the script._
  * @see https://docs.scriptable.app/script
  */
-declare class Script {
+declare var Script: {
     /**
      * _Name of the script._
      * @see https://docs.scriptable.app/script/#name
      */
-    static name(): string;
+    name(): string;
 
     /**
      * _Informs the system about script completion._
@@ -4644,7 +4646,7 @@ declare class Script {
      * When the script is run from a share sheet, the `complete` function will complete execution and dismiss the presented view.
      * @see https://docs.scriptable.app/script/#complete
      */
-    static complete(): void;
+    complete(): void;
 
     /**
      * _Sets output when running the script as a shortcut action._
@@ -4656,14 +4658,14 @@ declare class Script {
      * @param value - Value to provide as output.
      * @see https://docs.scriptable.app/script/#setshortcutoutput
      */
-    static setShortcutOutput(value: any): void;
-}
+    setShortcutOutput(value: any): void;
+};
 
 /**
  * _Offers standard activities to perform on items._
  * @see https://docs.scriptable.app/sharesheet
  */
-declare class ShareSheet {
+declare var ShareSheet: {
     /**
      * _Presents the activity picker._
      *
@@ -4671,8 +4673,8 @@ declare class ShareSheet {
      * @param activityItems - Items to perform activity on.
      * @see https://docs.scriptable.app/sharesheet/#present
      */
-    static present(activityItems: any[]): Promise<any>;
-}
+    present(activityItems: any[]): Promise<any>;
+};
 
 /**
  * _Structure representing a size._
@@ -4704,14 +4706,14 @@ declare class Size {
  * _Speaks a text._
  * @see https://docs.scriptable.app/speech
  */
-declare class Speech {
+declare var Speech: {
     /**
      * Speaks a text.
      * @param text - Text to speak.
      * @see https://docs.scriptable.app/speech/#speak
      */
-    static speak(text: string): void;
-}
+    speak(text: string): void;
+};
 
 /**
  * _A timer that fires after a time interval have elapsed._
@@ -5068,14 +5070,14 @@ declare class UITableRow {
  * _Manages URL schemes for Scriptable._
  * @see https://docs.scriptable.app/urlscheme
  */
-declare class URLScheme {
+declare var URLScheme: {
     /**
      * _URL for opening the script._
      *
      * Gets the URL for opening the current script. When making a request to the returned URL from another app, e.g. Safari, the script will be opened.
      * @see https://docs.scriptable.app/urlscheme/#foropeningscript
      */
-    static forOpeningScript(): string;
+    forOpeningScript(): string;
 
     /**
      * _URL for opening script settings._
@@ -5084,7 +5086,7 @@ declare class URLScheme {
      * opened.
      * @see https://docs.scriptable.app/urlscheme/#foropeningscriptsettings
      */
-    static forOpeningScriptSettings(): string;
+    forOpeningScriptSettings(): string;
 
     /**
      * _URL for running script._
@@ -5094,22 +5096,22 @@ declare class URLScheme {
      * Any query parameter in the URL will be available using the URLScheme bridge. Get the query paramters using the `allParameters()` and `parameter(name)` functions.
      * @see https://docs.scriptable.app/urlscheme/#forrunningscript
      */
-    static forRunningScript(): string;
-}
+    forRunningScript(): string;
+};
 
 /**
  * _Unique identifier._
  * @see https://docs.scriptable.app/uuid
  */
-declare class UUID {
+declare var UUID: {
     /**
      * _Get string value._
      *
      * Used for getting the string value of a UUID.
      * @see https://docs.scriptable.app/uuid/#string
      */
-    static string(): string;
-}
+    string(): string;
+};
 
 /**
  * _Presents websites and evaluates JavaScript on websites._

@@ -71,10 +71,11 @@ request.get("/scriptable.json")
 		 * @property {object[]} parameters 
 		 * @property {string} parameters[].name 
 		 * @property {string} parameters[].doc 
+		 * @property {string} [interface] 
 		 */
 		/**
 		 * @typedef {object} TopLevelSymbolExtension
-		 * @property {"class" | "var" | "function"} type 
+		 * @property {"class" | "var" | "function" | "namespace"} type 
 		 * @property {{[key: string]: NestedSymbol}} properties 
 		 * @property {{[key: string]: NestedSymbol}} functions
 		 */
@@ -152,22 +153,46 @@ request.get("/scriptable.json")
 		// (function() {})();
 
 		for (const symbol of Object.values(topLevelSymbols)) {
-			let interfaces = [];
 			let str = "";
+			let interfaces = [];
 			str += processDescription(symbol, { checkForInterface: true, emitParameters: false }) + "\n";
 			if (symbol.interface) interfaces.push(symbol.interface);
-			// if it is not a class, it has to be a global variable with a custom object as type
+
+			const props = [...Object.values(symbol.properties), symbol.definition.length ? symbol : {}, ...Object.values(symbol.functions)].filter((prop) => Object.getOwnPropertyNames(prop).length);
+			// check if it only contains static methods/properties
+			if (symbol.type === "class" &&
+				props.every(/** @param {NestedSymbol} p */(p) => p.definition.startsWith("static "))
+			) {
+				if (props.every(/** @param {NestedSymbol} p */(p) => new RegExp(String.raw`\b${symbol.name}\b`, "g").test(p.definition))) {
+					// special treatment, as this is class has only static methods, but is used also as type
+					str += `declare class ${symbol.name} {}\n\n`;
+					symbol.type = "namespace";
+					// TODO: test this
+				} else {
+					symbol.type = "var";
+				}
+			}
+
 			str += `declare ${symbol.type}`;
 			if (symbol.type === "function") {
 				str += ` ${symbol.definition};\n`;
 			} else {
 				str += ` ${symbol.name}${symbol.type === "var" ? ":" : ""} {\n`;
-				const props = [...Object.values(symbol.properties), symbol.definition.length ? symbol : {}, ...Object.values(symbol.functions)].filter((prop) => Object.getOwnPropertyNames(prop).length);
-				str += props.map((prop) => {
-					let str = processDescription(prop, { checkForInterface: true, parent: symbol.name });
-					if (prop.interface) interfaces.push(prop.interface);
-					return `${str}\n${prop.definition};`;
-				})
+				str += props.map(
+					/**
+					 * @param {NestedSymbol} prop 
+					 */
+					(prop) => {
+						let str = processDescription(prop, { checkForInterface: true, parent: symbol.name });
+						if (prop.interface) interfaces.push(prop.interface);
+						if (prop.definition.startsWith("static ")) {
+							if (symbol.type === "var")
+								prop.definition = prop.definition.replace(/^static /i, "");
+							else if (symbol.type === "namespace")
+								prop.definition = prop.definition.replace(/^static(?= )/i, /^static \w+\(.*?\): /.test(prop.definition) ? "function" : "var");
+						}
+						return `${str}\n${prop.definition};`;
+					})
 					.join("\n\n")
 					.replace(/^/gm, "\t");
 				// add } and if it is a var, also a ;
@@ -440,7 +465,13 @@ function processDescription(obj, options) {
 		obj.definition = obj.definition.replace(interfaceAnyType ? /\bany\b/ : /\{string: \b.*?\b\}/, (options.parent ? options.parent + "." : "") + interfaceName);
 	} else {
 		// replace "{string: string}" with correct typescript definition
-		obj.definition = obj.definition.replace(/\{string: (.+)\}/, "{ [key: string]: $1 }");
+		obj.definition = obj.definition.replace(/\{string: (.+)\}(\[\])?/, (match, p1, p2) => {
+			let res = `{ [key: string]: ${p1} }`;
+			if (p2) {
+				res = `Array<${res}>`;
+			}
+			return res;
+		});
 		descr = descr.replace(/\{string: (.+)\}/, "{ [key: string]: $1 }");
 	}
 
