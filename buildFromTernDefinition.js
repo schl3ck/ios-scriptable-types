@@ -366,6 +366,24 @@ function processDescription(obj, options) {
 		descr += `\n@see ${obj.url}`;
 	}
 
+	descr = descr.replace(/^[^\n]{180,}/gm, (match) => {
+		let res = "";
+		while (match.length > 180) {
+			let indexWs = 180;
+			for (; indexWs > 0; indexWs--) {
+				if (match[indexWs] === " " || match[indexWs] === "\t") break;
+			}
+			if (indexWs === 0) {
+				// there was no whitespace => break at 180 characters
+				indexWs = 179;
+			}
+			// break after the whitespace
+			indexWs++;
+			res += match.substring(0, indexWs) + "\n";
+			match = match.substring(indexWs);
+		}
+		return res + match;
+	});
 	descr = descr.replace(/^/gm, " * ");
 
 	// if (/\* \*/.test(descr)) {
