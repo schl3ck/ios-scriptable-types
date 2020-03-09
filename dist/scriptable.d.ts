@@ -3481,9 +3481,10 @@ declare class QuickLook {
      *
      * Chooses the best suited presentation of the item and performs the presentation if possible.
      * @param item - Item to be present.
+     * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/quicklook/#present
      */
-    static present(item: any): Promise<void>;
+    static present(item: any, fullscreen: boolean): Promise<void>;
 }
 
 /**
@@ -3991,6 +3992,14 @@ declare class Reminder {
     dueDate: Date;
 
     /**
+     * _Whether the due date includes a time._
+     *
+     * When this is true, assignments to the `dueDate` property will include a time, when this is false, the time component of the date will be ignored. Defaults to true.
+     * @see https://docs.scriptable.app/reminder/#duedateincludestime
+     */
+    dueDateIncludesTime: boolean;
+
+    /**
      * _Completion date of reminder._
      * @see https://docs.scriptable.app/reminder/#completiondate
      */
@@ -4453,9 +4462,10 @@ declare class Safari {
      *
      * Presents a website without leaving the app. To present a website and leave the app, take a look at the Application type.
      * @param url - URL of website to present.
+     * @param fullscreen - Optional. Set to true to display the web view in fullsceen. This only has an effect when used within the app. Defaults to true.
      * @see https://docs.scriptable.app/safari/#openinapp
      */
-    static openInApp(url: string): Promise<void>;
+    static openInApp(url: string, fullscreen: boolean): Promise<void>;
 
     /**
      * _Presents a website._
@@ -4675,9 +4685,10 @@ declare class UITable {
 
     /**
      * _Presents the table._
+     * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/uitable/#-present
      */
-    present(): Promise<void>;
+    present(fullscreen: boolean): Promise<void>;
 }
 
 /**
@@ -4968,10 +4979,11 @@ declare class WebView {
      * _Loads HTML and renders it._
      * @param html - HTML to load and render.
      * @param baseURL - Optional. Base URL used to resolve relative URLs in the HTML.
-     * @param preferredSize - Optional. Preferred size of the view. This size is not guaranteed to be respected.
+     * @param preferredSize - Optional. Preferred size of the view. This size is not guaranteed to be respected and is only used when the script is run with Siri or in the Shortcuts app.
+     * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/webview/#loadhtml
      */
-    static loadHTML(html: string, baseURL: string, preferredSize: Size): Promise<void>;
+    static loadHTML(html: string, baseURL: string, preferredSize: Size, fullscreen: boolean): Promise<void>;
 
     /**
      * _Loads a file and renders it._
@@ -4984,20 +4996,22 @@ declare class WebView {
      *
      * If you are displaying large images in a memory constrained envrionment, for example in a Siri Shortcut, you should use the WebView bridge instead of the QuickLook bridge. The technical reason for this is that a Siri Shortcut and other app extension processes have very limited memory and loading a very large image will cause the app extension to be terminated. However, the web view will run in a different process meaning that it is not affected by the same memory constraints.
      * @param fileURL - URL of the file to load and render.
-     * @param preferredSize - Optional. Preferred size of the view. This size is not guaranteed to be respected.
+     * @param preferredSize - Optional. Preferred size of the view. This size is not guaranteed to be respected and is only used when the script is run with Siri or in the Shortcuts app.
+     * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/webview/#loadfile
      */
-    static loadFile(fileURL: string, preferredSize: Size): Promise<void>;
+    static loadFile(fileURL: string, preferredSize: Size, fullscreen: boolean): Promise<void>;
 
     /**
      * _Loads URL in web view and presents the web view._
      *
      * The optional `preferredSize` parameter is ignored unless the script is run in a Siri Shortcut.
      * @param url - URL to load into the web view.
-     * @param preferredSize - Optional. Preferred size of the view. This size is not guaranteed to be respected.
+     * @param preferredSize - Optional. Preferred size of the view. This size is not guaranteed to be respected and is only used when the script is run with Siri or in the Shortcuts app.
+     * @param fullscreen - Optional. Set to true to present the web view in fullscreen. This only has an effect when used within the app. Defaults to false.
      * @see https://docs.scriptable.app/webview/#loadurl
      */
-    static loadURL(url: string, preferredSize: Size): Promise<void>;
+    static loadURL(url: string, preferredSize: Size, fullscreen: boolean): Promise<void>;
 
     /**
      * _Loads URL in web view._
@@ -5028,6 +5042,17 @@ declare class WebView {
     loadHTML(html: string, baseURL: string): Promise<void>;
 
     /**
+     * _Loads file in the web view._
+     *
+     * Files can be of various types, including HTML files and images.
+     *
+     * The supplied HTML file can reference files and nested directories in the same directory as the HTML file resides.
+     * @param fileURL - URL of the file to load and render.
+     * @see https://docs.scriptable.app/webview/#-loadfile
+     */
+    loadFile(fileURL: string): Promise<void>;
+
+    /**
      * _Evaluates JavaScript in the web view._
      *
      * Evaluates JavaScript in the current context of the web view. The returned promise carries the result of evaluating the JavaScript.
@@ -5053,9 +5078,11 @@ declare class WebView {
      * _Presents the web view._
      *
      * The web view is presented with the content that has been loaded into it.
+     *
+     * *   Parameter: Set to true to present the web view in fullscreen. Defaults to false.
      * @see https://docs.scriptable.app/webview/#-present
      */
-    present(): Promise<void>;
+    present(fullscreen: boolean): Promise<void>;
 
     /**
      * _Waits for the web view to load._
