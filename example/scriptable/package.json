@@ -4,7 +4,7 @@
   "eslintConfig": {
     "extends": "@scriptable-ios"
   },
-  "dependencies": {
+  "devDependencies": {
     "@scriptable-ios/eslint-config": "file:..../modules/@scriptable-ios/eslint-config",
     "@types/scriptable-ios": "file:../modules/@types/scriptable-ios",
     "eslint": "latest"
