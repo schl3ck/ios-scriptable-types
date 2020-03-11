@@ -1,4 +1,4 @@
-// Type definitions for scriptable-ios 1.4
+// Type definitions for non-npm package scriptable-ios 1.4
 // Project: https://scriptable.app/
 // Definitions by: schl3ck <https://github.com/schl3ck>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -5235,11 +5235,10 @@ declare class WebView {
      * _Presents the web view._
      *
      * The web view is presented with the content that has been loaded into it.
-     *
-     * *   Parameter: Set to true to present the web view in fullscreen. Defaults to false.
+     * @param fullscreen - Set to true to present the web view in fullscreen. Defaults to false.
      * @see https://docs.scriptable.app/webview/#-present
      */
-    present(fullscreen: boolean): Promise<void>;
+    present(fullscreen?: boolean): Promise<void>;
 
     /**
      * _Waits for the web view to load._
