@@ -1,1 +1,0 @@
-../../../../dist/scriptable.d.ts

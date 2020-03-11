@@ -1,0 +1,24 @@
+{
+  "name": "@scriptable-ios/eslint-config",
+  "version": "1.4.0",
+  "description": "ESLint config for iOS Scriptable scripts",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schl3ck/ios-scriptable-types.git"
+  },
+  "keywords": [
+    "eslint",
+    "eslintconfig",
+    "scriptable"
+  ],
+  "author": "schl3ck",
+  "license": "GPL-3.0",
+	"peerDependencies": {
+	  "eslint": "^6.8.0"
+	},
+  "bugs": {
+    "url": "https://github.com/schl3ck/ios-scriptable-types/issues"
+  },
+  "homepage": "https://github.com/schl3ck/ios-scriptable-types#readme"
+}
