@@ -1,6 +1,6 @@
 {
     "env": {
-        "es6": true
+        "es2020": true
     },
     "parserOptions": {
         "globalReturn": true,
