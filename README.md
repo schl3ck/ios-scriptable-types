@@ -1,6 +1,6 @@
 # ios-scriptable-types
 
-This project downloads a Tern definition file from htpps://docs.scriptable.app, parses it and creates the TypeScript declaration file. This can then be used to enable code completion in — for example — VS Code.
+This project downloads a Tern definition file from https://docs.scriptable.app, parses it and creates the TypeScript declaration file. This can then be used to enable code completion in — for example — VS Code.
 
 I've published the generated types with DefinitelyTyped. Install them with
 
