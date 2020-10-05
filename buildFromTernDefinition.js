@@ -226,7 +226,7 @@ ${interfaces.map((i) => `interface ${i}`).join("\n").replace(/^/gm, "\t")}
 
 		let eslintConfig = {
 			"env": {
-				"es6": true
+				"es2020": true
 			},
 			"parserOptions": {
 				"globalReturn": true,

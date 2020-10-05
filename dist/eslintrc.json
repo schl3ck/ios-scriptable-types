@@ -1,6 +1,6 @@
 {
     "env": {
-        "es6": true
+        "es2020": true
     },
     "parserOptions": {
         "globalReturn": true,
@@ -42,6 +42,7 @@
         "RelativeDateTimeFormatter": "readonly",
         "Reminder": "readonly",
         "Request": "readonly",
+        "SFSymbol": "readonly",
         "Safari": "readonly",
         "Script": "readonly",
         "ShareSheet": "readonly",
@@ -54,8 +55,10 @@
         "URLScheme": "readonly",
         "UUID": "readonly",
         "WebView": "readonly",
+        "WidgetDate": "readonly",
         "WidgetImage": "readonly",
         "WidgetSpacer": "readonly",
+        "WidgetStack": "readonly",
         "WidgetText": "readonly",
         "XMLParser": "readonly",
         "args": "readonly",
