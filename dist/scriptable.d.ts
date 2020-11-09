@@ -3227,7 +3227,7 @@ declare class ListWidget {
      * @param length - Length of the spacer. Pass null to create a spacer with a flexible length.
      * @see https://docs.scriptable.app/listwidget/#-addspacer
      */
-    addSpacer(length: number): WidgetSpacer;
+    addSpacer(length?: number): WidgetSpacer;
 
     /**
      * _Add stack._
@@ -6341,7 +6341,7 @@ declare class WidgetStack {
      * @param length - Length of the spacer. Pass null to create a spacer with a flexible length.
      * @see https://docs.scriptable.app/widgetstack/#-addspacer
      */
-    addSpacer(length: number): WidgetSpacer;
+    addSpacer(length?: number): WidgetSpacer;
 
     /**
      * _Add stack._
