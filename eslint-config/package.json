@@ -15,7 +15,7 @@
   "author": "schl3ck",
   "license": "GPL-3.0",
 	"peerDependencies": {
-	  "eslint": "^6.8.0"
+	  "eslint": "^6.8.0 || ^7.0.0"
 	},
   "bugs": {
     "url": "https://github.com/schl3ck/ios-scriptable-types/issues"
