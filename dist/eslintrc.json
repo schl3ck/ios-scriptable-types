@@ -4,7 +4,8 @@
     },
     "parserOptions": {
         "globalReturn": true,
-        "impliedStrict": true
+        "impliedStrict": true,
+        "ecmaVersion": "2020"
     },
     "globals": {
         "Alert": "readonly",

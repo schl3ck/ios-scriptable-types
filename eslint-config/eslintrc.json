@@ -4,7 +4,8 @@
     },
     "parserOptions": {
         "globalReturn": true,
-        "impliedStrict": true
+        "impliedStrict": true,
+        "ecmaVersion": "2020"
     },
     "globals": {
         "Alert": "readonly",
@@ -48,6 +49,7 @@
         "ShareSheet": "readonly",
         "Size": "readonly",
         "Speech": "readonly",
+        "TextField": "readonly",
         "Timer": "readonly",
         "UITable": "readonly",
         "UITableCell": "readonly",

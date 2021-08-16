@@ -281,6 +281,7 @@ ${interfaces
       parserOptions: {
         globalReturn: true,
         impliedStrict: true,
+        ecmaVersion: 2020,
       },
       globals: {},
     };
