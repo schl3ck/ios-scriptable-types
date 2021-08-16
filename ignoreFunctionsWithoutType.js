@@ -9,7 +9,4 @@
 	constructor			ignores every constructor function
 	Alert.addAction		ignores the function "addAction" in the class "Alert"
  */
-module.exports = [
-	"constructor",
-	"importModule"
-];
+module.exports = ["constructor", "importModule"];

@@ -29,43 +29,43 @@
 		"parameters" and "returns" are optional
 */
 module.exports = {
-	log: {
-		aliasFor: "console.log"
-	},
-	logWarning: {
-		aliasFor: "console.warn"
-	},
-	logError: {
-		aliasFor: "console.error"
-	},
-	atob: {
-		description: "Decodes base64 into a binary string (\"ASCII to binary\")",
-		definition: "function atob(str: string): string",
-		parameters: [
-			{
-				name: "str",
-				type: "string",
-				description: "The string to decode"
-			}
-		],
-		returns: {
-			type: "string",
-			description: "The decoded binary string"
-		}
-	},
-	btoa: {
-		description: "Encodes a binary string as base64 (\"binary to ASCII\")",
-		definition: "function btoa(str: string): string",
-		parameters: [
-			{
-				name: "str",
-				type: "string",
-				description: "The string to encode"
-			}
-		],
-		returns: {
-			type: "string",
-			description: "The base64 encoded string"
-		}
-	}
+  log: {
+    aliasFor: "console.log",
+  },
+  logWarning: {
+    aliasFor: "console.warn",
+  },
+  logError: {
+    aliasFor: "console.error",
+  },
+  atob: {
+    description: 'Decodes base64 into a binary string ("ASCII to binary")',
+    definition: "function atob(str: string): string",
+    parameters: [
+      {
+        name: "str",
+        type: "string",
+        description: "The string to decode",
+      },
+    ],
+    returns: {
+      type: "string",
+      description: "The decoded binary string",
+    },
+  },
+  btoa: {
+    description: 'Encodes a binary string as base64 ("binary to ASCII")',
+    definition: "function btoa(str: string): string",
+    parameters: [
+      {
+        name: "str",
+        type: "string",
+        description: "The string to encode",
+      },
+    ],
+    returns: {
+      type: "string",
+      description: "The base64 encoded string",
+    },
+  },
 };

@@ -8,7 +8,8 @@
     "build:tern": "node buildFromTernDefinition.js",
     "build:docs": "node buildFromDocs.js",
     "getUrls": "node getInvalidUrlsFromTern.js",
-    "prettier": "prettier --write dist/scriptable.d.ts",
+    "prettier:dts": "prettier --config dts.prettierrc.json --write dist/scriptable.d.ts",
+    "format:src": "prettier --config .prettierrc.json --write ./*.js && eslint --fix ./*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -36,6 +37,7 @@
     "node": ">=8.10.0"
   },
   "devDependencies": {
+    "eslint": "^7.32.0",
     "prettier": "^1.19.1"
   }
 }
