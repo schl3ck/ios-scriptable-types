@@ -194,14 +194,14 @@ request.get("/scriptable.json")
 						return `${str}\n${prop.definition};`;
 					})
 					.join("\n\n")
-					.replace(/^/gm, "\t");
+					.replace(/^(?!$)/gm, "    ");
 				// add } and if it is a var, also a ;
 				str += `\n}${symbol.type === "var" ? ";" : ""}\n`;
 			}
 
 			if (interfaces.length) {
 				let ints = `declare namespace ${symbol.name} {
-${interfaces.map((i) => `interface ${i}`).join("\n").replace(/^/gm, "\t")}
+${interfaces.map((i) => `interface ${i}`).join("\n").replace(/^(?!$)/gm, "    ")}
 }
 
 `;
@@ -447,7 +447,7 @@ function processDescription(obj, options) {
 			let t = typeof (v == null ? "" : v);
 			!types.includes(t) && types.push(t);
 			return t;
-		}, "\t").replace(/"(\w+)"(:\s*)"([a-zA-Z]+)",?/g, (match, p1, p2, p3) => {
+		}, "    ").replace(/"(\w+)"(:\s*)"([a-zA-Z]+)",?/g, (match, p1, p2, p3) => {
 			let optional =
 				keysAreRequired === true ?
 					!optionalOrRequiredKeys.includes(p1) :
