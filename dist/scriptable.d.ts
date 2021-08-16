@@ -69,7 +69,7 @@ declare class Alert {
      * @param text - Optional default value for the text field.
      * @see https://docs.scriptable.app/alert/#-addtextfield
      */
-    addTextField(placeholder?: string, text?: string): void;
+    addTextField(placeholder?: string, text?: string): TextField;
 
     /**
      * _Adds a secure text field prompting for user input._
@@ -80,7 +80,7 @@ declare class Alert {
      * @param text - Optional default value for the text field.
      * @see https://docs.scriptable.app/alert/#-addsecuretextfield
      */
-    addSecureTextField(placeholder?: string, text?: string): void;
+    addSecureTextField(placeholder?: string, text?: string): TextField;
 
     /**
      * _Retrieves value of a text field._
@@ -1024,7 +1024,7 @@ declare class Contact {
     /**
      * _Note for the contact._
      *
-     * For security reasons, a contacts notes cannot be accessed in Siri, the Shortcuts app and in a notification.
+     * For security reasons, a contact's notes cannot be accessed in Siri, the Shortcuts app and in a notification.
      * @see https://docs.scriptable.app/contact/#note
      */
     note: string;
@@ -1058,7 +1058,7 @@ declare class Contact {
     departmentName: string;
 
     /**
-     * _The contacts job title._
+     * _The contact's job title._
      * @see https://docs.scriptable.app/contact/#jobtitle
      */
     jobTitle: string;
@@ -5384,6 +5384,118 @@ declare var Speech: {
 };
 
 /**
+ * _Text field in an alert._
+ * @see https://docs.scriptable.app/textfield
+ */
+declare class TextField {
+    /**
+     * _Text in the text field._
+     * @see https://docs.scriptable.app/textfield/#text
+     */
+    text: string;
+
+    /**
+     * _Placeholder shown in the text field while it is empty._
+     * @see https://docs.scriptable.app/textfield/#placeholder
+     */
+    placeholder: string;
+
+    /**
+     * _Hides the text that is entered when set to true._
+     *
+     * The default value is false.
+     * @see https://docs.scriptable.app/textfield/#issecure
+     */
+    isSecure: boolean;
+
+    /**
+     * _Color of the text._
+     * @see https://docs.scriptable.app/textfield/#textcolor
+     */
+    textColor: Color;
+
+    /**
+     * _Font of the text._
+     * @see https://docs.scriptable.app/textfield/#font
+     */
+    font: Font;
+
+    /**
+     * _Use the default keyboard for entering text._
+     * @see https://docs.scriptable.app/textfield/#-setdefaultkeyboard
+     */
+    setDefaultKeyboard(): void;
+
+    /**
+     * _Use a keyboard that prominently features the numbers 0 through 9._
+     * @see https://docs.scriptable.app/textfield/#-setnumberpadkeyboard
+     */
+    setNumberPadKeyboard(): void;
+
+    /**
+     * _Use a numeric keyboard with a decimal point for entering text._
+     * @see https://docs.scriptable.app/textfield/#-setdecimalpadkeyboard
+     */
+    setDecimalPadKeyboard(): void;
+
+    /**
+     * _Use a numeric keyboard with punctuation for entering text._
+     * @see https://docs.scriptable.app/textfield/#-setnumbersandpunctuationkeyboard
+     */
+    setNumbersAndPunctuationKeyboard(): void;
+
+    /**
+     * _Use a keyboard that prominently features the numbers 0 through 9 and the * and # characters._
+     * @see https://docs.scriptable.app/textfield/#-setphonepadkeyboard
+     */
+    setPhonePadKeyboard(): void;
+
+    /**
+     * _Use a keyboard that prominently features the space and period characters._
+     * @see https://docs.scriptable.app/textfield/#-setwebsearchkeyboard
+     */
+    setWebSearchKeyboard(): void;
+
+    /**
+     * _Use a keyboard that prominently features the @, period and space characters._
+     * @see https://docs.scriptable.app/textfield/#-setemailaddresskeyboard
+     */
+    setEmailAddressKeyboard(): void;
+
+    /**
+     * _Use a keyboard that prominently features the period and slash characters and the ".com" string._
+     * @see https://docs.scriptable.app/textfield/#-seturlkeyboard
+     */
+    setURLKeyboard(): void;
+
+    /**
+     * _Use a keyboard that prominently features the @ and # characters._
+     * @see https://docs.scriptable.app/textfield/#-settwitterkeyboard
+     */
+    setTwitterKeyboard(): void;
+
+    /**
+     * _Left aligns the text._
+     *
+     * This is the default text alignment.
+     * @see https://docs.scriptable.app/textfield/#-leftaligntext
+     */
+    leftAlignText(): void;
+
+    /**
+     * _Center aligns the text._
+     * @see https://docs.scriptable.app/textfield/#-centeraligntext
+     */
+    centerAlignText(): void;
+
+    /**
+     * _Right aligns the text._
+     * @see https://docs.scriptable.app/textfield/#-rightaligntext
+     */
+    rightAlignText(): void;
+}
+
+/**
  * _A timer that fires after a time interval has elapsed._
  *
  * Constructs a timer that fires after a specified time interval.
@@ -5743,7 +5855,7 @@ declare class UITableRow {
      * Rows cannot be tapped when the tables is presented in Siri.
      * @see https://docs.scriptable.app/uitablerow/#onselect
      */
-    onSelect: (row: number) => void;
+    onSelect: () => void;
 }
 
 /**
@@ -6591,7 +6703,7 @@ declare class XMLParser {
      * Called by the parser when it encounters an end tag for an element. The function takes the element name as a parameter.
      * @see https://docs.scriptable.app/xmlparser/#didendelement
      */
-    didEndElement: (arg0: string) => void;
+    didEndElement: (name: string) => void;
 
     /**
      * _Function called when the parser finds characters of an element._
@@ -6599,7 +6711,7 @@ declare class XMLParser {
      * The parser calls this function with a string whenever it finds characters for the current element. This function may be called several times for a single element.
      * @see https://docs.scriptable.app/xmlparser/#foundcharacters
      */
-    foundCharacters: (arg0: string) => void;
+    foundCharacters: (str: string) => void;
 
     /**
      * _Function called when the parser encounters an error._
@@ -6607,7 +6719,7 @@ declare class XMLParser {
      * The parser will call this function when it encounters a fatal error preventing it from continuing to parse. When the function is called the parsing is stopped.
      * @see https://docs.scriptable.app/xmlparser/#parseerroroccurred
      */
-    parseErrorOccurred: (arg0: string) => void;
+    parseErrorOccurred: (error: string) => void;
 }
 
 /**
