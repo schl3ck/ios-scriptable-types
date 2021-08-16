@@ -240,7 +240,7 @@ ${interfaces.map((i) => `interface ${i}`).join("\n").replace(/^/gm, "\t")}
 		for (let symbol of eslintSymbols) {
 			eslintConfig.globals[symbol] = "readonly";
 		}
-		contents = JSON.stringify(eslintConfig, null, 4);
+		contents = JSON.stringify(eslintConfig, null, 4) + "\n";
 
 		if (outputFilenames.eslintGlobals.includes("/")) {
 			fs.mkdirSync(path.dirname(outputFilenames.eslintGlobals), { recursive: true });
