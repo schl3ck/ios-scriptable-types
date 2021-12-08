@@ -3311,7 +3311,7 @@ declare namespace Location {
     interface Location {
         verticalAccuracy: number;
         horizontalAccuracy: number;
-        altutude: number;
+        altitude: number;
         latitude: number;
         longitude: number;
     }
