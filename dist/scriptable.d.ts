@@ -2328,6 +2328,8 @@ declare class FileManager {
      */
     static iCloud(): FileManager;
 
+    private constructor();
+
     /**
      * _Read contents of a file as data._
      *
@@ -5246,6 +5248,8 @@ declare class SFSymbol {
      * @see https://docs.scriptable.app/sfsymbol/#image
      */
     image: Image;
+
+    private constructor();
 
     /**
      * _Constructs an SF symbol._
