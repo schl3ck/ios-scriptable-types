@@ -2,6 +2,7 @@
 // Project: https://scriptable.app/
 // Definitions by: schl3ck <https://github.com/schl3ck>
 //                 FuJuntao <https://github.com/FuJuntao>
+//                 FifiTheBulldog <https://github.com/FifiTheBulldog>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 /**
@@ -51,8 +52,8 @@ declare class Alert {
      *
      * Adds a cancel action to the alert. When a cancel action is selected, the index provided by presentAlert() or presentSheet() will always be -1. Please note that when running on the
      * iPad and presenting using presentSheet(), the action will not be shown in the list of actions. The operation is cancelled by tapping outside the sheet.
-	 * 
-	 * An alert can only contain a single cancel action. Attempting to add more cancel actions will remove any previously added cancel actions.
+     *
+     * An alert can only contain a single cancel action. Attempting to add more cancel actions will remove any previously added cancel actions.
      * @param title - Title of the action.
      * @see https://docs.scriptable.app/alert/#-addcancelaction
      */
@@ -564,7 +565,7 @@ declare class CalendarEvent {
  * Constructs an object that opens x-callback-url requests and waits for a response from the target app.
  * @see https://docs.scriptable.app/callbackurl/#-new-callbackurl
  */
-declare class CallbackURL {
+declare class CallbackURL<T extends string = string> {
     /**
      * _Open x-callback-url requests._
      *
@@ -572,7 +573,7 @@ declare class CallbackURL {
      * @param baseURL - Base URL of the request. This is usally something like my-app://x-callback-url/action
      * @see https://docs.scriptable.app/callbackurl/#-new-callbackurl
      */
-    constructor(baseURL: string);
+    constructor(baseURL: T);
 
     /**
      * _Construct CallbackURL._
@@ -593,7 +594,11 @@ declare class CallbackURL {
      * not invoke the callback.
      * @see https://docs.scriptable.app/callbackurl/#-open
      */
-    open(): Promise<any>;
+    open(): Promise<
+        T extends `shortcuts://x-callback-url/${string}`
+            ? { result: string | number | boolean | null }
+            : Record<string, string | number | boolean | null>
+    >;
 
     /**
      * _Creates the callback URL._
@@ -800,7 +805,7 @@ declare var config: {
     /**
      * The size of the widget the script is running in.
      *
-     * Possible values are: `small`, `medium`, `large` and `null`. The value is `null` when the script is not running in a widget.
+     * Possible values are: `small`, `medium`, `large`, `extraLarge` and `null`. The value is `null` when the script is not running in a widget.
      * @see https://docs.scriptable.app/config/#widgetfamily
      */
     widgetFamily: string;
@@ -2596,7 +2601,7 @@ declare class FileManager {
     /**
      * _Lists content of directory._
      *
-     * Lists all the contents in the specified directory. The returned array contains file paths to all files in the directory.
+     * Lists all the contents in the specified directory. The returned array contains filenames of all files and directories in the specified directory.
      * @param directoryPath - Path to directory.
      * @see https://docs.scriptable.app/filemanager/#-listcontents
      */
@@ -2712,7 +2717,7 @@ declare class FileManager {
     /**
      * _Reads all file bookmarks created in settings._
      *
-     * File bookmarks are used to bookmark a file or a folder and read or written to it later. File bookmarks are created from Scriptables settings.
+     * File bookmarks are used to bookmark a file or a folder to read from it or write to it later. File bookmarks are created from Scriptables settings.
      *
      * This function returns all file bookmarks as an array of objects that take the following form.
      *
@@ -3288,6 +3293,62 @@ declare class ListWidget {
      * @see https://docs.scriptable.app/listwidget/#-presentlarge
      */
     presentLarge(): Promise<void>;
+
+    /**
+     * _Presents a preview of the widget._
+     *
+     * The widget is presented in its extra large size.
+     *
+     * Widgets on the Home screen are updated periodically so while working on your widget you may want to preview it in the app.
+     *
+     * Please be aware that extra large widgets are only available on iPads running iOS 15 and newer.
+     * @see https://docs.scriptable.app/listwidget/#-presentextralarge
+     */
+    presentExtraLarge(): Promise<void>;
+}
+
+declare namespace Location {
+    interface Location {
+        verticalAccuracy: number;
+        horizontalAccuracy: number;
+        altutude: number;
+        latitude: number;
+        longitude: number;
+    }
+
+    interface GeocodePostalAddress {
+        country: string;
+        postalCode: string;
+        subAdministrativeArea: string;
+        subLocality: string;
+        state: string;
+        street: string;
+        city: string;
+        isoCountryCode: string;
+    }
+    interface GeocodeLocation {
+        altitude: number;
+        longitude: number;
+        latitude: number;
+    }
+    interface GeocodeSummary {
+        subAdministrativeArea: string | null;
+        postalAddress: GeocodePostalAddress;
+        isoCountryCode: string | null;
+        timeZone: string;
+        location: GeocodeLocation;
+        country: string | null;
+        subThoroughfare: string | null;
+        thoroughfare: string | null;
+        name: string;
+        locality: string | null;
+        areasOfInterest: string[] | null;
+        ocean: string | null;
+        subLocality: string | null;
+        postalCode: string | null;
+        administrativeArea: string | null;
+        inlandWater: string | null;
+    }
 }
 
 /**
@@ -3302,7 +3363,7 @@ declare var Location: {
      * vertical accuracy measured in meters.
      * @see https://docs.scriptable.app/location/#current
      */
-    current(): Promise<any>;
+    current(): Promise<Location.Location>;
 
     /**
      * _Uses best accuracy. This is default._
@@ -3345,7 +3406,7 @@ declare var Location: {
      * @param locale - Optional. Preferred locale to fetch information in. Uses the default locale of the device if null.
      * @see https://docs.scriptable.app/location/#reversegeocode
      */
-    reverseGeocode(latitude: number, longitude: number, locale?: string): Array<{ [key: string]: any }>;
+    reverseGeocode(latitude: number, longitude: number, locale?: string): Location.GeocodeSummary[];
 };
 
 /**
@@ -5329,6 +5390,18 @@ declare var Script: {
     setWidget(widget: any): void;
 };
 
+declare namespace ShareSheet {
+    interface Result {
+        /**
+         * If the share was completed by the user. This might still be `true`
+         * when the user has actually canceled the action.
+         */
+        completed: boolean;
+        /** The app or extension it was shared to */
+        activity_type: string;
+    }
+}
+
 /**
  * _Offers standard activities to perform on items._
  * @see https://docs.scriptable.app/sharesheet
@@ -5341,7 +5414,7 @@ declare var ShareSheet: {
      * @param activityItems - Items to perform activity on.
      * @see https://docs.scriptable.app/sharesheet/#present
      */
-    present(activityItems: any[]): Promise<any>;
+    present(activityItems: any[]): Promise<ShareSheet.Result>;
 };
 
 /**
@@ -6133,7 +6206,7 @@ declare class WidgetDate {
      * _URL to open._
      *
      * The URL will be opened when the text is tapped. This is only supported in medium and large widgets. Small widgets can only have a single tap target, which is specified by the `url`
-     * property on the widget.
+     * property in the widget configurator.
      * @see https://docs.scriptable.app/widgetdate/#url
      */
     url: string;
@@ -6602,7 +6675,7 @@ declare class WidgetText {
      * _URL to open._
      *
      * The URL will be opened when the text is tapped. This is only supported in medium and large widgets. Small widgets can only have a single tap target, which is specified by the `url`
-     * property on the widget.
+     * property in the widget configurator.
      * @see https://docs.scriptable.app/widgettext/#url
      */
     url: string;
