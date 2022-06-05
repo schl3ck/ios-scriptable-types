@@ -276,12 +276,12 @@ ${interfaces
 
     let eslintConfig = {
       env: {
-        es2020: true,
+        es2021: true,
       },
       parserOptions: {
         globalReturn: true,
         impliedStrict: true,
-        ecmaVersion: 2020,
+        ecmaVersion: 2021,
       },
       globals: {},
     };

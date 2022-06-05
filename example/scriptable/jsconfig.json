@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ES2018"]
+    "lib": ["ES2021"],
+		"moduleDetection": "force",
   }
 }

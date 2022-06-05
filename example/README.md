@@ -6,10 +6,12 @@ The [scriptable](./scriptable) folder contains an example of the `iCloud Drive/S
 ```json
 {
   "compilerOptions": {
-    "lib": ["ES2018"]
+    "lib": ["ES2021"],
+		"moduleDetection": "force",
   }
 }
 ```
+`lib` tells TypeScript which language features are available (this depends on the iOS version you are running) and `moduleDetection: force` (needs TypeScript 4.7 or newer) makes sure that all files are treated as single modules and not global scripts so you shouldn't get any errors that some variable is declared in another script.
 
 ### `package.json`:
 ```json
