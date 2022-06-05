@@ -7,7 +7,7 @@ The [scriptable](./scriptable) folder contains an example of the `iCloud Drive/S
 {
   "compilerOptions": {
     "lib": ["ES2021"],
-		"moduleDetection": "force",
+    "moduleDetection": "force",
   }
 }
 ```
