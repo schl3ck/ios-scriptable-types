@@ -1,6 +1,6 @@
 {
   "name": "@scriptable-ios/eslint-config",
-  "version": "1.6.5",
+  "version": "1.7.0",
   "description": "ESLint config for iOS Scriptable scripts",
   "main": "index.js",
   "repository": {
