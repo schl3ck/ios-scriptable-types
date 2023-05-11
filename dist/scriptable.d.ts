@@ -4805,7 +4805,7 @@ declare class Reminder {
      * _Notes associated with reminder._
      * @see https://docs.scriptable.app/reminder/#notes
      */
-    notes: string;
+    notes?: string;
 
     /**
      * _Whether the reminder is completed._
@@ -4831,7 +4831,7 @@ declare class Reminder {
      * _Due date of reminder._
      * @see https://docs.scriptable.app/reminder/#duedate
      */
-    dueDate: Date;
+    dueDate: Date | null;
 
     /**
      * _Whether the due date includes a time._
@@ -4845,13 +4845,13 @@ declare class Reminder {
      * _Completion date of reminder._
      * @see https://docs.scriptable.app/reminder/#completiondate
      */
-    completionDate: Date;
+    completionDate: Date | null;
 
     /**
      * _Creation date of reminder._
      * @see https://docs.scriptable.app/reminder/#creationdate
      */
-    creationDate: Date;
+    creationDate: Date | null;
 
     /**
      * _Calendar the reminder is stored in._
