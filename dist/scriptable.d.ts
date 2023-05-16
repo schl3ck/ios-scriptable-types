@@ -244,6 +244,12 @@ declare class Calendar {
     color: Color;
 
     /**
+     * _Holds reminders and events._
+     * @see https://docs.scriptable.app/calendar
+     */
+    private constructor();
+
+    /**
      * _Fetches calendars for reminders._
      *
      * A calendar can only hold either reminders or events. Call this function to fetch all calendars that can hold reminders.
@@ -1321,6 +1327,12 @@ declare class ContactsContainer {
     name: string;
 
     /**
+     * _Collection of contacts._
+     * @see https://docs.scriptable.app/contactscontainer
+     */
+    private constructor();
+
+    /**
      * _Fetches default contacts container._
      * @see https://docs.scriptable.app/contactscontainer/#default
      */
@@ -1442,6 +1454,12 @@ declare class ContactsGroup {
  * @see https://docs.scriptable.app/data
  */
 declare class Data {
+    /**
+     * _Raw data representation._
+     * @see https://docs.scriptable.app/data
+     */
+    private constructor();
+
     /**
      * _Creates data from string._
      *
@@ -2335,6 +2353,12 @@ declare namespace FileManager {
  */
 declare class FileManager {
     /**
+     * _Read and write files on disk._
+     * @see https://docs.scriptable.app/filemanager
+     */
+    private constructor();
+
+    /**
      * _Creates a local FileManager._
      *
      * Creates a file manager for operating with files stored locally.
@@ -2349,8 +2373,6 @@ declare class FileManager {
      * @see https://docs.scriptable.app/filemanager/#icloud
      */
     static iCloud(): FileManager;
-
-    private constructor();
 
     /**
      * _Read contents of a file as data._
@@ -2764,6 +2786,13 @@ declare class FileManager {
  */
 declare class Font {
     /**
+     * _This is only here for TypeScript_
+     *
+     * TypeScript can't distinguish an instance of this class from an empty object if it doesn't have at least one property or function
+     */
+    #font: boolean;
+
+    /**
      * _Represents a font and text size._
      *
      * Refer to [iosfonts.com](http://iosfonts.com) for a list of the fonts that are available in iOS and iPadOS.
@@ -3053,6 +3082,12 @@ declare class Image {
      * @see https://docs.scriptable.app/image/#size
      */
     size: Size;
+
+    /**
+     * _Manages image data._
+     * @see https://docs.scriptable.app/image
+     */
+    private constructor();
 
     /**
      * _Creates an image from file._
@@ -4388,9 +4423,20 @@ declare class Rect {
  * _Recurrence rule used with reminders and calendar events._
  * @see https://docs.scriptable.app/recurrencerule
  */
-declare class RecurrenceRule {}
+declare class RecurrenceRule {
+    /**
+     * _This is only here for TypeScript_
+     *
+     * TypeScript can't distinguish an instance of this class from an empty object if it doesn't have at least one property or function
+     */
+    #recurrenceRule: boolean;
 
-declare namespace RecurrenceRule {
+    /**
+     * _Recurrence rule used with reminders and calendar events._
+     * @see https://docs.scriptable.app/recurrencerule
+     */
+    private constructor();
+
     /**
      * _Constructs a daily recurrence rule._
      *
@@ -4399,7 +4445,7 @@ declare namespace RecurrenceRule {
      * @param interval - Interval at which to repeat the rule.
      * @see https://docs.scriptable.app/recurrencerule/#daily
      */
-    function daily(interval: number): RecurrenceRule;
+    static daily(interval: number): RecurrenceRule;
 
     /**
      * _Constructs a daily recurrence rule with an end date._
@@ -4410,7 +4456,7 @@ declare namespace RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#dailyenddate
      */
-    function dailyEndDate(interval: number, endDate: Date): RecurrenceRule;
+    static dailyEndDate(interval: number, endDate: Date): RecurrenceRule;
 
     /**
      * _Constructs a daily recurrence rule with an occurrence count._
@@ -4421,7 +4467,7 @@ declare namespace RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#dailyoccurrencecount
      */
-    function dailyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
+    static dailyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
 
     /**
      * _Constructs a weekly recurrence rule._
@@ -4431,7 +4477,7 @@ declare namespace RecurrenceRule {
      * @param interval - Interval at which to repeat the rule.
      * @see https://docs.scriptable.app/recurrencerule/#weekly
      */
-    function weekly(interval: number): RecurrenceRule;
+    static weekly(interval: number): RecurrenceRule;
 
     /**
      * _Constructs a weekly recurrence rule with an end date._
@@ -4442,7 +4488,7 @@ declare namespace RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#weeklyenddate
      */
-    function weeklyEndDate(interval: number, endDate: Date): RecurrenceRule;
+    static weeklyEndDate(interval: number, endDate: Date): RecurrenceRule;
 
     /**
      * _Constructs a weekly recurrence rule with an occurrence count._
@@ -4453,7 +4499,7 @@ declare namespace RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#weeklyoccurrencecount
      */
-    function weeklyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
+    static weeklyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
 
     /**
      * _Constructs a monthly recurrence rule._
@@ -4463,7 +4509,7 @@ declare namespace RecurrenceRule {
      * @param interval - Interval at which to repeat the rule.
      * @see https://docs.scriptable.app/recurrencerule/#monthly
      */
-    function monthly(interval: number): RecurrenceRule;
+    static monthly(interval: number): RecurrenceRule;
 
     /**
      * _Constructs a monthly recurrence rule with an end date._
@@ -4474,7 +4520,7 @@ declare namespace RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#monthlyenddate
      */
-    function monthlyEndDate(interval: number, endDate: Date): RecurrenceRule;
+    static monthlyEndDate(interval: number, endDate: Date): RecurrenceRule;
 
     /**
      * _Constructs a monthly recurrence rule with an occurrence count._
@@ -4485,7 +4531,7 @@ declare namespace RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#monthlyoccurrencecount
      */
-    function monthlyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
+    static monthlyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
 
     /**
      * _Constructs a yearly recurrence rule._
@@ -4495,7 +4541,7 @@ declare namespace RecurrenceRule {
      * @param interval - Interval at which to repeat the rule.
      * @see https://docs.scriptable.app/recurrencerule/#yearly
      */
-    function yearly(interval: number): RecurrenceRule;
+    static yearly(interval: number): RecurrenceRule;
 
     /**
      * _Constructs a yearly recurrence rule with an end date._
@@ -4506,7 +4552,7 @@ declare namespace RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#yearlyenddate
      */
-    function yearlyEndDate(interval: number, endDate: Date): RecurrenceRule;
+    static yearlyEndDate(interval: number, endDate: Date): RecurrenceRule;
 
     /**
      * _Constructs a yearly recurrence rule with an occurrence count._
@@ -4517,7 +4563,7 @@ declare namespace RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#yearlyoccurrencecount
      */
-    function yearlyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
+    static yearlyOccurrenceCount(interval: number, occurrenceCount: number): RecurrenceRule;
 
     /**
      * _Constructs a complex weekly recurrence rule._
@@ -4532,7 +4578,7 @@ declare namespace RecurrenceRule {
      * @param setPositions - Filters which recurrences to include in the rule's frequency.
      * @see https://docs.scriptable.app/recurrencerule/#complexweekly
      */
-    function complexWeekly(
+    static complexWeekly(
         interval: number,
         daysOfTheWeek: ReadonlyArray<number>,
         setPositions: ReadonlyArray<number>,
@@ -4552,7 +4598,7 @@ declare namespace RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#complexweeklyenddate
      */
-    function complexWeeklyEndDate(
+    static complexWeeklyEndDate(
         interval: number,
         daysOfTheWeek: ReadonlyArray<number>,
         setPositions: ReadonlyArray<number>,
@@ -4573,7 +4619,7 @@ declare namespace RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#complexweeklyoccurrencecount
      */
-    function complexWeeklyOccurrenceCount(
+    static complexWeeklyOccurrenceCount(
         interval: number,
         daysOfTheWeek: ReadonlyArray<number>,
         setPositions: ReadonlyArray<number>,
@@ -4594,7 +4640,7 @@ declare namespace RecurrenceRule {
      * @param setPositions - Filters which recurrences to include in the rule's frequency.
      * @see https://docs.scriptable.app/recurrencerule/#complexmonthly
      */
-    function complexMonthly(
+    static complexMonthly(
         interval: number,
         daysOfTheWeek: ReadonlyArray<number>,
         daysOfTheMonth: ReadonlyArray<number>,
@@ -4616,7 +4662,7 @@ declare namespace RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#complexmonthlyenddate
      */
-    function complexMonthlyEndDate(
+    static complexMonthlyEndDate(
         interval: number,
         daysOfTheWeek: ReadonlyArray<number>,
         daysOfTheMonth: ReadonlyArray<number>,
@@ -4639,7 +4685,7 @@ declare namespace RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#complexmonthlyoccurrencecount
      */
-    function complexMonthlyOccurrenceCount(
+    static complexMonthlyOccurrenceCount(
         interval: number,
         daysOfTheWeek: ReadonlyArray<number>,
         daysOfTheMonth: ReadonlyArray<number>,
@@ -4663,7 +4709,7 @@ declare namespace RecurrenceRule {
      * @param setPositions - Filters which recurrences to include in the rule's frequency.
      * @see https://docs.scriptable.app/recurrencerule/#complexyearly
      */
-    function complexYearly(
+    static complexYearly(
         interval: number,
         daysOfTheWeek: ReadonlyArray<number>,
         monthsOfTheYear: ReadonlyArray<number>,
@@ -4689,7 +4735,7 @@ declare namespace RecurrenceRule {
      * @param endDate - Date at which the recurrence rule should end.
      * @see https://docs.scriptable.app/recurrencerule/#complexyearlyenddate
      */
-    function complexYearlyEndDate(
+    static complexYearlyEndDate(
         interval: number,
         daysOfTheWeek: ReadonlyArray<number>,
         monthsOfTheYear: ReadonlyArray<number>,
@@ -4716,7 +4762,7 @@ declare namespace RecurrenceRule {
      * @param occurrenceCount - Number of times the rule should repeat before it ends.
      * @see https://docs.scriptable.app/recurrencerule/#complexyearlyoccurrencecount
      */
-    function complexYearlyOccurrenceCount(
+    static complexYearlyOccurrenceCount(
         interval: number,
         daysOfTheWeek: ReadonlyArray<number>,
         monthsOfTheYear: ReadonlyArray<number>,
@@ -5341,6 +5387,10 @@ declare class SFSymbol {
      */
     image: Image;
 
+    /**
+     * _Representation of an SF symbol._
+     * @see https://docs.scriptable.app/sfsymbol
+     */
     private constructor();
 
     /**
@@ -5844,6 +5894,12 @@ declare class UITableCell {
      * @see https://docs.scriptable.app/uitablecell/#subtitlefont
      */
     subtitleFont: Font;
+
+    /**
+     * _Cell in a UITableRow._
+     * @see https://docs.scriptable.app/uitablecell
+     */
+    private constructor();
 
     /**
      * _Constructs a text cell._
@@ -6592,6 +6648,12 @@ declare class WidgetStack {
      * @see https://docs.scriptable.app/widgetstack/#url
      */
     url: string;
+
+    /**
+     * _Stack element shown in widget._
+     * @see https://docs.scriptable.app/widgetstack
+     */
+    private constructor();
 
     /**
      * _Add text to the stack._

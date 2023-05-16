@@ -89,7 +89,7 @@ request
      * @property {{[key: string]: NestedSymbol}} functions
      */
     /**
-     * @typedef {NestedSymbol | TopLevelSymbolExtension} TopLevelSymbol
+     * @typedef {NestedSymbol & TopLevelSymbolExtension} TopLevelSymbol
      */
     /**
      * @type {{[key: string]: TopLevelSymbol}}
@@ -182,33 +182,67 @@ request
         }) + "\n";
       if (symbol.interface) interfaces.push(symbol.interface);
 
+      const symbolUsedAsTypeRegex = new RegExp(
+        String.raw`\b${symbol.name}\b`,
+        "g",
+      );
+
+      /** @type {(NestedSymbol | TopLevelSymbol)[]} */
       const props = [
         ...Object.values(symbol.properties),
-        symbol.definition.length ? symbol : {},
         ...Object.values(symbol.functions),
-      ].filter((prop) => Object.getOwnPropertyNames(prop).length);
-      // check if it only contains static methods/properties
+      ];
+
+      const symbolUsedAsType = props.some((p) =>
+        symbolUsedAsTypeRegex.test(p.definition),
+      );
       if (
         symbol.type === "class"
-        && props.every(
-          /** @param {NestedSymbol} p */ (p) =>
-            p.definition.startsWith("static "),
+        && symbol.definition.length === 0
+        && symbolUsedAsType
+      ) {
+        // we have a class thats also used as type but doesn't have a constructor => add a private one
+        symbol.definition = "private constructor()";
+      }
+
+      if (
+        symbol.type === "class"
+        && Object.values(symbol.properties).length === 0
+        && Object.values(symbol.functions).every((p) =>
+          p.definition.startsWith("static "),
         )
       ) {
-        if (
-          props.every(
-            /** @param {NestedSymbol} p */ (p) =>
-              new RegExp(String.raw`\b${symbol.name}\b`, "g").test(p.definition),
-          )
-        ) {
-          // special treatment, as this is class has only static methods, but is used also as type
-          str += `declare class ${symbol.name} {}\n\n`;
-          symbol.type = "namespace";
-          // TODO: test this
+        // this class has no properties and only static functions ...
+        if (symbolUsedAsType) {
+          // ... and is also used as type
+          // TypeScript can't distinguish its instance from an empty object => add a private property
+
+          const propName = `#${symbol.name[0].toLowerCase()}${symbol.name.slice(
+            1,
+          )}`;
+          symbol.properties[propName] = {
+            shortDoc: "This is only here for TypeScript",
+            longDoc:
+              "TypeScript can't distinguish an instance of this class from an empty object if it doesn't have at least one property or function",
+            url: "",
+            definition: `${propName}: boolean`,
+            parameters: [],
+            name: propName,
+          };
         } else {
+          // ... and is not used as a type so it shouldn't be a class
           symbol.type = "var";
         }
       }
+
+      props.splice(0, props.length);
+      props.push(
+        ...Object.values(symbol.properties),
+      );
+      if (symbol.definition.length) {
+        props.push(symbol);
+      } 
+      props.push(...Object.values(symbol.functions));
 
       str += `declare ${symbol.type}`;
       if (symbol.type === "function") {
