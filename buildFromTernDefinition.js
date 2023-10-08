@@ -13,6 +13,7 @@ const path = require("path");
 const axios = require("axios");
 const turndown = require("turndown");
 const cc = require("console-control-strings");
+const typoCorrections = require("./typoCorrection.json");
 
 const outputFilenames = {
   typings: "dist/scriptable.d.ts",
@@ -517,6 +518,9 @@ function processDescription(obj, options) {
     descr += `\n@see ${obj.url}`;
   }
 
+  for (const [key, value] of Object.entries(typoCorrections)) {
+    descr = descr.replaceAll(key, value);
+  }
   descr = descr.replace(/^[^\n]{180,}/gm, (match) => {
     let res = "";
     while (match.length > 180) {
