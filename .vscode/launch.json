@@ -9,7 +9,7 @@
 			"request": "launch",
 			"name": "Build from Tern",
 			"program": "${workspaceFolder}/buildFromTernDefinition.js",
-			"postDebugTask": "prettier"
+			"postDebugTask": "prettier:dts"
 		},
 		{
 			"type": "node",
