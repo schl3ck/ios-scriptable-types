@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/schl3ck/ios-scriptable-types#readme",
   "dependencies": {
-    "axios": "^0.24.0",
+    "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.3",
     "console-control-strings": "^1.1.0",
     "turndown": "^7.1.1"
