@@ -1059,6 +1059,7 @@ declare class Contact {
      *
      * For security reasons, a contact's notes cannot be accessed in Siri, the Shortcuts app and in a notification.
      * @see https://docs.scriptable.app/contact/#note
+     * @deprecated Deprecated since 1.7.5
      */
     note: string;
 
@@ -1189,6 +1190,7 @@ declare class Contact {
      *
      * The `note` property may not be available if the container does not support it. In that case any value set on the property will be ignored.
      * @see https://docs.scriptable.app/contact/#isnoteavailable
+     * @deprecated Deprecated since 1.7.5
      */
     isNoteAvailable: boolean;
 
@@ -1500,6 +1502,13 @@ declare class Data {
      * @see https://docs.scriptable.app/data/#frompng
      */
     static fromPNG(image: Image): Data;
+
+    /**
+     * _Creates data from an array of bytes._
+     * @param bytes - Array of bytes to convert to data.
+     * @see https://docs.scriptable.app/data/#frombytes
+     */
+    static fromBytes(bytes: ReadonlyArray<number>): Data;
 
     /**
      * _Creates a string from the data._
