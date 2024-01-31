@@ -373,7 +373,7 @@ function processType(type, name, options = {}) {
     .replace(/Promise\[:t=(.+)\]/g, "Promise<$1>") // replace Promise type
     .replace(/Promise(?!<)/g, "Promise<void>") // add void type to promise to generate valid TypeScript, but state that it doesn't carry a value
     .replace(/\(.*?\)/g, (match) =>
-      match.replace(/\[([^\]]+)\]/g, "ReadonlyArray<$1>"),
+      match.replace(/\[([^\]]+)\]/g, "readonly $1[]"),
     ) // replace array definitions in functions
     .replace(/\[([^\]]+)\]/g, "$1[]") // replace remaining array definitions
     .replace(/^((?:atob|btoa)\(.*\): )void$/, "$1string") // set return type of atob() and btoa() to string if they are set to void because of the missing return type replacement earlier
