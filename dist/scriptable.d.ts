@@ -6009,7 +6009,7 @@ declare class UITableRow {
      * _Background color._
      * @see https://docs.scriptable.app/uitablerow/#backgroundcolor
      */
-    backgroundColor: Color;
+    backgroundColor: Color | null;
 
     /**
      * _Row in a UITable._
