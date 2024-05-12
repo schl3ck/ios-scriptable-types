@@ -3213,7 +3213,7 @@ declare class ListWidget {
      * Defaults to a solid color in widgets placed on the Home Screen and a transparent color placed on the Lock Screen.
      * @see https://docs.scriptable.app/listwidget/#backgroundcolor
      */
-    backgroundColor: Color;
+    backgroundColor: Color | null;
 
     /**
      * _Background image._
@@ -5624,7 +5624,8 @@ declare class TextField {
      * _Color of the text._
      * @see https://docs.scriptable.app/textfield/#textcolor
      */
-    textColor: Color;
+    get textColor(): Color | null;
+    set textColor(value: Color);
 
     /**
      * _Font of the text._
@@ -5865,7 +5866,7 @@ declare class UITableCell {
      * context the script is running in.
      * @see https://docs.scriptable.app/uitablecell/#titlecolor
      */
-    titleColor: Color;
+    titleColor: Color | undefined;
 
     /**
      * _Color of the subtitle._
@@ -5874,7 +5875,7 @@ declare class UITableCell {
      * context the script is running in.
      * @see https://docs.scriptable.app/uitablecell/#subtitlecolor
      */
-    subtitleColor: Color;
+    subtitleColor: Color | null;
 
     /**
      * _Font of the title._
@@ -6290,7 +6291,7 @@ declare class WidgetDate {
      * _Color of the text._
      * @see https://docs.scriptable.app/widgetdate/#textcolor
      */
-    textColor: Color;
+    textColor: Color | null;
 
     /**
      * _Font and text size of the text._
@@ -6765,7 +6766,7 @@ declare class WidgetText {
      * _Color of the text._
      * @see https://docs.scriptable.app/widgettext/#textcolor
      */
-    textColor: Color;
+    textColor: Color | null;
 
     /**
      * _Font and text size of the text._
